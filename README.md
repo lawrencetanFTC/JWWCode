@@ -1,3 +1,3 @@
 # JWWCode
 
-Arnav was here
+This is the full Jasper Wolves White #19897 FTC Code
