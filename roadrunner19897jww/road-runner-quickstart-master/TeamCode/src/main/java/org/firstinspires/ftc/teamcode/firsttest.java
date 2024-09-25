@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode;
-
+import com.qualcomm.robotcore.TeleOp
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class MecanumDrive extends OpMode {
-
+    @TeleOp
     // Define motors
     private DcMotor frontLeft;
     private DcMotor frontRight;
@@ -34,8 +34,8 @@ public class MecanumDrive extends OpMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
 
-        frontRight.setDirection(DcMotor.Direction.REVERSE);
-        backRight.setDirection(DcMotor.Direction.REVERSE);
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
 
         // Initialize the servos
         clawServo = hardwareMap.get(Servo.class, "clawServo");
@@ -109,3 +109,4 @@ public class MecanumDrive extends OpMode {
             armServo.setPosition(armServoPosition);
         }
     }
+}
