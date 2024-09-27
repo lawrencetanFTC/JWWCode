@@ -1,30 +1,31 @@
 package org.firstinspires.ftc.teamcode;
-import com.qualcomm.robotcore.TeleOp
+
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class MecanumDrive extends OpMode {
-    @TeleOp
+@TeleOp(name = "TeleOpFirst")
+public class TeleOpFirst extends OpMode {
     // Define motors
     private DcMotor frontLeft;
     private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
-    private DcMotor hangLeft; //left planetary motor on slides
-    private DcMotor hangRight; //right planetary motor on slides
-    private DcMotor idkMotor; //Motor in the back with slides connected to it
+    private DcMotor hangLeft;
+    private DcMotor hangRight;
+    private DcMotor idkMotor;
 
     // Define servos
-    private Servo clawServo; // picks up the box
-    private Servo holdServo; // holds the sample before hang
-    private Servo extendServo; // extends the arm
-    private Servo armServo; // moves the arm up and down
+    private Servo clawServo;
+    private Servo holdServo;
+    private Servo extendServo;
+    private Servo armServo;
 
-    // Servo positions for extendServo and armServo
-    private double extendServoPosition = 0.0; // starts fully retracted
-    private double armServoPosition = 0.0; // starts fully lowered
-    private final double SERVO_INCREMENT = 0.05; // the incremental change when button is held
+    // Servo positions
+    // private double extendServoPosition = 0.0;
+    // private double armServoPosition = 0.0;
+    // private final double SERVO_INCREMENT = 0.05;
 
     @Override
     public void init() {
@@ -38,18 +39,20 @@ public class MecanumDrive extends OpMode {
         backLeft.setDirection(DcMotor.Direction.REVERSE);
 
         // Initialize the servos
-        clawServo = hardwareMap.get(Servo.class, "clawServo");
-        extendServo = hardwareMap.get(Servo.class, "extendServo");
-        armServo = hardwareMap.get(Servo.class, "armServo"); // added armServo initialization
+        // clawServo = hardwareMap.get(Servo.class, "clawServo");
+        // holdServo = hardwareMap.get(Servo.class, "holdServo"); // Added initialization
+        // extendServo = hardwareMap.get(Servo.class, "extendServo");
+        // armServo = hardwareMap.get(Servo.class, "armServo");
     }
 
     @Override
     public void loop() {
-        // mecanum drive logic
-        double y = -gamepad1.left_stick_y;
-        double x = gamepad1.left_stick_x;
-        double turn = gamepad1.right_stick_x;
+        // Mecanum drive logic
+        double y = -gamepad1.left_stick_y; // Forward/backward
+        double x = gamepad1.left_stick_x * 1.1; // Strafing, scaled for more precision
+        double turn = gamepad1.right_stick_x; // Turning
 
+        // Corrected mecanum wheel drive formula
         double frontLeftPower = y + x + turn;
         double frontRightPower = y - x - turn;
         double backLeftPower = y - x + turn;
@@ -60,53 +63,36 @@ public class MecanumDrive extends OpMode {
         backLeft.setPower(backLeftPower);
         backRight.setPower(backRightPower);
 
-        // ALL SERVO CODE IS ASSUMNIG THAT THE POSITIONS IN THE CAD MODEL
-        // ARE ALREADY CALIBRATED TO POSITION 0.00
-        // MAKE SURE THE BUILDING TEAM CALIBRATES THIS WHILE BUILDING
+        // Servo control
+        // if (gamepad1.a) {
+        //     clawServo.setPosition(0.5);
+        // } else if (gamepad1.b) {
+        //     clawServo.setPosition(0.0);
+        // }
 
-        if (gamepad1.a) {
-            clawServo.setPosition(0.5); // open the servo to catch box
-        } else if (gamepad1.b) {
-            clawServo.setPosition(0.0); // close the servo to hold box
-        }
+        // if (gamepad1.x) {
+        //     holdServo.setPosition(0.5);
+        // } else if (gamepad1.y) {
+        //     holdServo.setPosition(0.0);
+        // }
 
-        if (gamepad1.x) {
-            holdServo.setPosition(0.5); // open the servo to catch sample
-        } else if (gamepad1.y) {
-            holdServo.setPosition(0.0); // close the servo to hold sample
-        }
+        // // Arm and extension control
+        // if (gamepad2.a) {
+        //     extendServoPosition += SERVO_INCREMENT;
+        //     extendServoPosition = Math.min(extendServoPosition, 1.0);
+        // } else if (gamepad2.b) {
+        //     extendServoPosition -= SERVO_INCREMENT;
+        //     extendServoPosition = Math.max(extendServoPosition, 0.0);
+        // }
+        // extendServo.setPosition(extendServoPosition);
 
-        if (gamepad2.a) {
-            // extend the arm
-            extendServoPosition += SERVO_INCREMENT;
-            if (extendServoPosition > 1.0) {
-                extendServoPosition = 1.0;
-
-            } else if (gamepad2.b) {
-                // retract the arm
-                extendServoPosition -= SERVO_INCREMENT;
-                if (extendServoPosition < 0.0) {
-                    extendServoPosition = 0.0;
-                }
-            }
-
-            extendServo.setPosition(extendServoPosition);
-
-
-            if (gamepad2.x) {
-                // move arm up
-                armServoPosition += SERVO_INCREMENT;
-                if (armServoPosition > 1.0) {
-                    armServoPosition = 1.0;
-                }
-            } else if (gamepad2.y) {
-                // move arm down
-                armServoPosition -= SERVO_INCREMENT;
-                if (armServoPosition < 0.0) {
-                    armServoPosition = 0.0;
-                }
-            }
-            armServo.setPosition(armServoPosition);
-        }
+        // if (gamepad2.x) {
+        //     armServoPosition += SERVO_INCREMENT;
+        //     armServoPosition = Math.min(armServoPosition, 1.0);
+        // } else if (gamepad2.y) {
+        //     armServoPosition -= SERVO_INCREMENT;
+        //     armServoPosition = Math.max(armServoPosition, 0.0);
+        // }
+        // armServo.setPosition(armServoPosition);
     }
 }
