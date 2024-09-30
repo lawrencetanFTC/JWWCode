@@ -50,13 +50,13 @@ public class TeleOpFirst extends OpMode {
         // Mecanum drive logic
         double y = -gamepad1.left_stick_y; // Forward/backward
         double x = gamepad1.left_stick_x * 1.1; // Strafing, scaled for more precision
-        double turn = gamepad1.right_stick_x * 0.5; // Turning, with tuning
+        double turn = gamepad1.right_stick_x; // Turning
 
         // Corrected mecanum wheel drive formula
-        double frontLeftPower = y + x + turn;
-        double frontRightPower = y - x - turn;
-        double backLeftPower = y - x + turn;
-        double backRightPower = y + x - turn;
+        double frontLeftPower =.75*( y + x + turn);
+        double frontRightPower = (y - x - turn) *.75;
+        double backLeftPower = (y - x + turn)*.75;
+        double backRightPower = (y + x - turn) *.75;
 
         frontLeft.setPower(frontLeftPower);
         frontRight.setPower(frontRightPower);
