@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode;
-
+import DriveConstants
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -53,7 +53,10 @@ public class TeleOpFirst extends OpMode {
         double turn = gamepad1.right_stick_x; // Turning
 
         // Corrected mecanum wheel drive formula
-        double frontLeftPower =.75*( y + x + turn);
+        // needs to add distance from center to wheel, it should be
+        // double frontleftPower = .75 *( x - y - (turn * (xdist + ydist)))
+        // etc.
+        double frontLeftPower =.75 * (x - y - turn)
         double frontRightPower = (y - x - turn) *.75;
         double backLeftPower = (y - x + turn)*.75;
         double backRightPower = (y + x - turn) *.75;
