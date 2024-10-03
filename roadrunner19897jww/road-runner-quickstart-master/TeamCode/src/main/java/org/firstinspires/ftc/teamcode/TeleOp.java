@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "TeleOpFirst")
-public class TeleOpFirst extends OpMode {
+@TeleOp(name = "TeleOp")
+public class TeleOp extends OpMode {
     // Define motors
     private DcMotor frontLeft;
     private DcMotor frontRight;
@@ -17,10 +17,10 @@ public class TeleOpFirst extends OpMode {
     private DcMotor idkMotor;
 
     // Define servos
-    private Servo clawServo;
-    private Servo holdServo;
-    private Servo extendServo;
-    private Servo armServo;
+//    private Servo clawServo;
+//    private Servo holdServo;
+//    private Servo extendServo;
+//    private Servo armServo;
 
     // Servo positions
     // private double extendServoPosition = 0.0;
