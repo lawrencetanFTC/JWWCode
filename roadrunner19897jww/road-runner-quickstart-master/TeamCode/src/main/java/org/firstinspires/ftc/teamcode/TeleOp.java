@@ -54,7 +54,7 @@ public class TeleOpFirst extends OpMode {
 
         // Corrected mecanum wheel drive formula
         // needs to add distance from center to wheel, it should be
-        // double frontleftPower = (.75 *( x - y - (turn * (xdist + ydist))) / 29.3215313
+        // double frontleftPower = .75 *( x - y - (turn * (xdist + ydist)))
         // etc.
         double frontLeftPower =.75 * (x - y - turn)
         double frontRightPower = (y - x - turn) *.75;
