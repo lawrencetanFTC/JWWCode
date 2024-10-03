@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,16 +12,20 @@ public class TeleOpFirst extends OpMode {
     private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
+    private DcMotor hangLeft;
+    private DcMotor hangRight;
+    private DcMotor idkMotor;
+
+    // Define servos
+    private Servo clawServo;
+    private Servo holdServo;
+    private Servo extendServo;
+    private Servo armServo;
 
     // Servo positions
     // private double extendServoPosition = 0.0;
     // private double armServoPosition = 0.0;
     // private final double SERVO_INCREMENT = 0.05;
-
-//    private Servo clawServo;
-//    private Servo holdServo;
-//    private Servo extendServo;
-//    private Servo armServo;
 
     @Override
     public void init() {
@@ -35,15 +38,9 @@ public class TeleOpFirst extends OpMode {
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        // Set zero power behavior (optional but recommended)
-        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        // Initialize the servos if needed
+        // Initialize the servos
         // clawServo = hardwareMap.get(Servo.class, "clawServo");
-        // holdServo = hardwareMap.get(Servo.class, "holdServo");
+        // holdServo = hardwareMap.get(Servo.class, "holdServo"); // Added initialization
         // extendServo = hardwareMap.get(Servo.class, "extendServo");
         // armServo = hardwareMap.get(Servo.class, "armServo");
     }
@@ -55,13 +52,12 @@ public class TeleOpFirst extends OpMode {
         double x = gamepad1.left_stick_x * 1.1; // Strafing, scaled for more precision
         double turn = gamepad1.right_stick_x; // Turning
 
-        // Mecanum drive formula
-        double frontLeftPower = .75 * (y + x + turn);
-        double frontRightPower = .75 * (y - x - turn);
-        double backLeftPower = .75 * (y - x + turn);
-        double backRightPower = .75 * (y + x - turn);
+        // Corrected mecanum wheel drive formula
+        double frontLeftPower =.75*( y + x + turn);
+        double frontRightPower = (y - x - turn) *.75;
+        double backLeftPower = (y - x + turn)*.75;
+        double backRightPower = (y + x - turn) *.75;
 
-        // Set motor powers
         frontLeft.setPower(frontLeftPower);
         frontRight.setPower(frontRightPower);
         backLeft.setPower(backLeftPower);
