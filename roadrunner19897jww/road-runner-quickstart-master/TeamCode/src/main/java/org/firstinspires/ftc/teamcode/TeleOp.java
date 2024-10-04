@@ -94,7 +94,7 @@ public class TeleOp extends OpMode {
         //     armServoPosition = Math.min(armServoPosition, 1.0);
         // } else if (gamepad2.y) {
         //     armServoPosition -= SERVO_INCREMENT;
-        //     armServoPosition = Math.max(armServoPosition, 0.0);
+        //     armSeanyrvoPosition = Math.max(armServoPosition, 0.0);
         // }
         // armServo.setPosition(armServoPosition);
     }
