@@ -26,7 +26,6 @@ public class TeleOp extends OpMode {
     // private double extendServoPosition = 0.0;
     // private double armServoPosition = 0.0;
     // private final double SERVO_INCREMENT = 0.05;
-
     @Override
     public void init() {
         // Initialize the motors
@@ -94,7 +93,7 @@ public class TeleOp extends OpMode {
         //     armServoPosition = Math.min(armServoPosition, 1.0);
         // } else if (gamepad2.y) {
         //     armServoPosition -= SERVO_INCREMENT;
-        //     armServoPosition = Math.max(armServoPosition, 0.0);
+        //     armSeanyrvoPosition = Math.max(armServoPosition, 0.0);
         // }
         // armServo.setPosition(armServoPosition);
     }
