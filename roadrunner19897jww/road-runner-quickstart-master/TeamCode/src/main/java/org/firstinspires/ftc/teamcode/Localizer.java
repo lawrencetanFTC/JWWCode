@@ -11,7 +11,7 @@ public class Robot {
     Encoder leftEncoder;
     Encoder rightEncoder;
     double encoderTicksPerInch = 1000; // Example value, adjust as per  robot's setup
-    double wheelDiameter = 4.0; // Example in inches
+    double wheelDiameter = 2; // Example in inches
 
     // Constructor
     public Robot() {

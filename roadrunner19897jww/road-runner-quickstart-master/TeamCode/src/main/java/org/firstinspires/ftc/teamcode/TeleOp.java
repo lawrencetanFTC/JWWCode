@@ -26,7 +26,6 @@ public class TeleOp extends OpMode {
     // private double extendServoPosition = 0.0;
     // private double armServoPosition = 0.0;
     // private final double SERVO_INCREMENT = 0.05;
-
     @Override
     public void init() {
         // Initialize the motors
