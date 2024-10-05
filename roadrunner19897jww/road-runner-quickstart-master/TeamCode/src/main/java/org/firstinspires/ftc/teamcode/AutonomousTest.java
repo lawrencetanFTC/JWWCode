@@ -1,10 +1,12 @@
-package org.firstinspires.ftc.teamcode.auton;
+package org.firstinspires.ftc.teamcode;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Trajectory;
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 @Autonomous(name = "Autonomous")
 public class AutonomousTest extends LinearOpMode {
@@ -12,7 +14,7 @@ public class AutonomousTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         // Initialize Road Runner drivetrain
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0,0,0));
 
         // Set starting pose at (0, 0) with a heading of 0 radians
         Pose2d startPose = new Pose2d(0, 0, 0);
