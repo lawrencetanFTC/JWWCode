@@ -5,13 +5,25 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Autonomous(name = "AutonomousTestOne", group = "Autonomous")
 public class BlueDeckAutonomous extends LinearOpMode {
+    double motorPower = 0.24; // 24%double motorPower = 0.24; // 24%
 
     @Override
     public void runOpMode() {
         // Starting pose (0, 0, 0)
+        DcMotor frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+        DcMotor frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        DcMotor backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+        DcMotor backRight = hardwareMap.get(DcMotor.class, "backRight");
+
+        frontLeft.setPower(motorPower);
+        backLeft.setPower(motorPower);
+        frontRight.setPower(motorPower);
+        backRight.setPower(motorPower);
+
         Pose2d beginPose = new Pose2d(0, 0, 0);
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
 
