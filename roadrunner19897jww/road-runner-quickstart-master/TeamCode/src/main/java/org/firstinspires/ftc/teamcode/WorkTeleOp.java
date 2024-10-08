@@ -1,20 +1,19 @@
 package org.firstinspires.ftc.teamcode;
-import DriveConstants
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "TeleOp")
-public class TeleOp extends OpMode {
+public class WorkTeleOp extends OpMode {
     // Define motors
     private DcMotor frontLeft;
     private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
-    private DcMotor hangLeft;
-    private DcMotor hangRight;
-    private DcMotor idkMotor;
+//    private DcMotor hangLeft;
+//    private DcMotor hangRight;
+//    private DcMotor idkMotor;
 
     // Define servos
 //    private Servo clawServo;
@@ -55,7 +54,7 @@ public class TeleOp extends OpMode {
         // needs to add distance from center to wheel, it should be
         // double frontleftPower = .75 *( x - y - (turn * (xdist + ydist)))
         // etc.
-        double frontLeftPower =.75 * (x - y - turn)
+        double frontLeftPower =.75 * (x - y - turn);
         double frontRightPower = (y - x - turn) *.75;
         double backLeftPower = (y - x + turn)*.75;
         double backRightPower = (y + x - turn) *.75;
