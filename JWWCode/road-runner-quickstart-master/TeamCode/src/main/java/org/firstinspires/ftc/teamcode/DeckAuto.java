@@ -7,13 +7,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "AutonomousTestOne", group = "Autonomous")
-public class BlueDeckAutonomous extends LinearOpMode {
+@Autonomous(name = "DeckAuto", group = "Autonomous")
+public class DeckAuto extends LinearOpMode {
     double motorPower = 0.24; // 24%double motorPower = 0.24; // 24%
 
     @Override
     public void runOpMode() {
         // Starting pose (0, 0, 0)
+        Pose2d beginPose = new Pose2d(0, 0, 0);
+        MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
         DcMotor frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         DcMotor frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         DcMotor backLeft = hardwareMap.get(DcMotor.class, "backLeft");
@@ -24,37 +26,35 @@ public class BlueDeckAutonomous extends LinearOpMode {
         frontRight.setPower(motorPower);
         backRight.setPower(motorPower);
 
-        Pose2d beginPose = new Pose2d(0, 0, 0);
-        MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
-
         waitForStart();
 
         if (opModeIsActive()) {
-            // Move to Waypoint 1 (from (0, 0) to (-5, -24))
+            // Move to Waypoint 1 (from (0, 0) to (-6, -24))
             Actions.runBlocking(
-                    drive.actionBuilder(new Pose2d(0, 0, 0))
-                            .splineTo(new Vector2d(-5, -24), Math.toRadians(-90)) // Facing down
+                    drive.actionBuilder(new Pose2d(0, 0, Math.toRadians(0))) // Deposit specimen
+                            .strafeTo(new Vector2d(6, -24))
                             .build()
             );
 
             // Move to Waypoint 2 (-48, -24)
             Actions.runBlocking(
-                    drive.actionBuilder(new Pose2d(-5, -24, Math.toRadians(-90)))
-                            .splineTo(new Vector2d(-48, -24), Math.toRadians(-90)) // Continue along Y axis
+                    drive.actionBuilder(new Pose2d(-6, -24, Math.toRadians(0))) // Move to samples
+                            .strafeTo(new Vector2d(-48, -24))
                             .build()
             );
 
-            // Move to Waypoint 3 (-48, -60)
+            // Move to Waypoint 3 (-48, -6)
             Actions.runBlocking(
-                    drive.actionBuilder(new Pose2d(-48, -24, Math.toRadians(-90)))
-                            .splineTo(new Vector2d(-48, -60), Math.toRadians(-90)) // Move straight down
+                    drive.actionBuilder(new Pose2d(-48, -24, Math.toRadians(0)))
+                            .strafeToLinearHeading(new Vector2d(-48, -6), Math.toRadians(180)) // Push samples in observation zone
                             .build()
             );
 
-            // Move to Waypoint 4 (-6, -60)
+            // Move to Waypoint 4 (-12, -60)
             Actions.runBlocking(
-                    drive.actionBuilder(new Pose2d(-48, -60, Math.toRadians(-90)))
-                            .splineTo(new Vector2d(-6, -60), Math.toRadians(180)) // Move right
+                    drive.actionBuilder(new Pose2d(-48, -6, Math.toRadians(180)))
+                            // change this to linetox or smth
+                            .strafeToLinearHeading(new Vector2d(-6, -60), Math.toRadians(90)) // Move to landing zone
                             .build()
             );
         }
