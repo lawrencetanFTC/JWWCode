@@ -47,7 +47,7 @@ public class BasketAuto extends LinearOpMode {
 
             // Move to Waypoint 3 (20, -6)
             Actions.runBlocking(
-                    drive.actionBuilder(new Pose2d(24, -24, Math.toRadians(0)))  // Replace 90 with your desired angle
+                    drive.actionBuilder(new Pose2d(24, -24, Math.toRadians(0)))
                             .strafeToLinearHeading(new Vector2d(20, -6), Math.toRadians(135)) // Move to basket
                             // Palce stuff in high basket code will go here
                             .build()
