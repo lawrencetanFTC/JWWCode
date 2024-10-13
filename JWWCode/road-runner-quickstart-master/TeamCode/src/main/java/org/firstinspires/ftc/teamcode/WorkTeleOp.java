@@ -3,97 +3,116 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "WorkTeleOp")
 public class WorkTeleOp extends OpMode {
-    // Define motors
+    // Define motors for driving
     private DcMotor frontLeft;
     private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
-//    private DcMotor hangLeft;
-//    private DcMotor hangRight;
-//    private DcMotor idkMotor;
 
-    // Define servos
-//    private Servo clawServo;
-//    private Servo holdServo;
-//    private Servo extendServo;
-//    private Servo armServo;
+    // Define continuous servos and regular servos
+    private CRServo spinTake;            // Continuous servo for intake spin
+    private CRServo rackAndPinionServo;  // Continuous servo for rack and pinion extension
+    private DcMotor armMotor;            // Motor for spin take arm up and down
 
-    // Servo positions
-    // private double extendServoPosition = 0.0;
-    // private double armServoPosition = 0.0;
-    // private final double SERVO_INCREMENT = 0.05;
+    // Define servos for Gamepad B controls (e.g., claw)
+    private Servo clawServo;             // Servo for claw control
+    private DcMotor leftSideMotor;       // Motor for left-side mechanism
+    private DcMotor rightSideMotor;      // Motor for right-side mechanism
+
+    // Claw positions
+    private final double CLAW_OPEN_POSITION = 0.8;
+    private final double CLAW_CLOSE_POSITION = 0.2;
+
     @Override
     public void init() {
-        // Initialize the motors
+        // Initialize the motors for driving
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
 
+        // Reverse the motors on the left side for proper directionality
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        // Initialize the servos
-        // clawServo = hardwareMap.get(Servo.class, "clawServo");
-        // holdServo = hardwareMap.get(Servo.class, "holdServo"); // Added initialization
-        // extendServo = hardwareMap.get(Servo.class, "extendServo");
-        // armServo = hardwareMap.get(Servo.class, "armServo");
+        // Initialize servos and motor for mechanisms
+        spinTake = hardwareMap.get(CRServo.class, "spinTake");                  // Spin intake
+        rackAndPinionServo = hardwareMap.get(CRServo.class, "rackAndPinion");   // Rack and pinion extension
+        armMotor = hardwareMap.get(DcMotor.class, "armMotor");                  // Arm up/down movement
+
+        // Initialize claw and side mechanism controls (for Gamepad B)
+        clawServo = hardwareMap.get(Servo.class, "clawServo");                  // Claw servo
+        leftSideMotor = hardwareMap.get(DcMotor.class, "leftSideMotor");        // Left-side mechanism
+        rightSideMotor = hardwareMap.get(DcMotor.class, "rightSideMotor");      // Right-side mechanism
     }
 
     @Override
     public void loop() {
-        // Mecanum drive logic
+        // Mecanum drive logic for strafing, moving forward/backward, and rotating (Gamepad A)
         double y = -gamepad1.left_stick_y; // Forward/backward
         double x = gamepad1.left_stick_x * 1.1; // Strafing, scaled for more precision
-        double turn = gamepad1.right_stick_x; // Turning
+        double turn = gamepad1.right_stick_x; // Turning/rotation
 
-        // Corrected mecanum wheel drive formula
-        // needs to add distance from center to wheel, it should be
-        // double frontleftPower = .75 *( x - y - (turn * (xdist + ydist)))
-        // etc.
-        double frontLeftPower =.75 * (x - y - turn);
-        double frontRightPower = (y - x - turn) *.75;
-        double backLeftPower = (y - x + turn)*.75;
-        double backRightPower = (y + x - turn) *.75;
+        // Calculate power for each wheel (mecanum wheel configuration)
+        double frontLeftPower = .75 * (x - y - turn);
+        double frontRightPower = (y - x - turn) * .75;
+        double backLeftPower = (y - x + turn) * .75;
+        double backRightPower = (y + x - turn) * .75;
 
+        // Set power to the motors
         frontLeft.setPower(frontLeftPower);
         frontRight.setPower(frontRightPower);
         backLeft.setPower(backLeftPower);
         backRight.setPower(backRightPower);
 
-        // Servo control
-        // if (gamepad1.a) {
-        //     clawServo.setPosition(0.5);
-        // } else if (gamepad1.b) {
-        //     clawServo.setPosition(0.0);
-        // }
+        // **Gamepad A Controls (Already Implemented)**
+        // Arm Movement (Spin take arm up/down with bumpers)
+        if (gamepad1.left_bumper) {
+            armMotor.setPower(0.5); // Spin take arm up
+        } else if (gamepad1.right_bumper) {
+            armMotor.setPower(-0.5); // Spin take arm down
+        } else {
+            armMotor.setPower(0); // Stop arm movement when no button is pressed
+        }
 
-        // if (gamepad1.x) {
-        //     holdServo.setPosition(0.5);
-        // } else if (gamepad1.y) {
-        //     holdServo.setPosition(0.0);
-        // }
+        // Spin take control (Continuous servo for intake)
+        if (gamepad1.a) {
+            spinTake.setPower(1.0); // Spin take forward
+        } else if (gamepad1.b) {
+            spinTake.setPower(-1.0); // Spin take reverse
+        } else {
+            spinTake.setPower(0); // Stop spin take when no button is pressed
+        }
 
-        // // Arm and extension control
-        // if (gamepad2.a) {
-        //     extendServoPosition += SERVO_INCREMENT;
-        //     extendServoPosition = Math.min(extendServoPosition, 1.0);
-        // } else if (gamepad2.b) {
-        //     extendServoPosition -= SERVO_INCREMENT;
-        //     extendServoPosition = Math.max(extendServoPosition, 0.0);
-        // }
-        // extendServo.setPosition(extendServoPosition);
+        // Rack and Pinion control (Continuous servo for extending mechanism)
+        if (gamepad1.x) {
+            rackAndPinionServo.setPower(1.0); // Extend rack and pinion forward
+        } else if (gamepad1.y) {
+            rackAndPinionServo.setPower(-1.0); // Retract rack and pinion
+        } else {
+            rackAndPinionServo.setPower(0); // Stop movement when no button is pressed
 
-        // if (gamepad2.x) {
-        //     armServoPosition += SERVO_INCREMENT;
-        //     armServoPosition = Math.min(armServoPosition, 1.0);
-        // } else if (gamepad2.y) {
-        //     armServoPosition -= SERVO_INCREMENT;
-        //     armSeanyrvoPosition = Math.max(armServoPosition, 0.0);
-        // }
-        // armServo.setPosition(armServoPosition);
+            // **Gamepad B Controls**
+
+            // Claw control (Open/Close with bumpers)
+            if (gamepad2.left_bumper) {
+                clawServo.setPosition(CLAW_OPEN_POSITION); // Open claw
+            } else if (gamepad2.right_bumper) {
+                clawServo.setPosition(CLAW_CLOSE_POSITION); // Close claw
+            }
+
+            // Left side control (Left stick Y-axis)
+            double leftSidePower = -gamepad2.left_stick_y; // Y-axis of left stick for control
+            leftSideMotor.setPower(leftSidePower);
+
+            // Right side control (Right stick Y-axis)
+            double rightSidePower = -gamepad2.right_stick_y; // Y-axis of right stick for control
+            rightSideMotor.setPower(rightSidePower);
+        }
     }
 }
