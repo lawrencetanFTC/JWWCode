@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -13,7 +14,7 @@ public class BasketAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        // Starting pose (0, 0, 0)
+
         DcMotor frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         DcMotor frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         DcMotor backLeft = hardwareMap.get(DcMotor.class, "backLeft");
@@ -23,7 +24,7 @@ public class BasketAuto extends LinearOpMode {
         backLeft.setPower(motorPower);
         frontRight.setPower(motorPower);
         backRight.setPower(motorPower);
-
+        // Starting pose (0, 0, 0)
         Pose2d beginPose = new Pose2d(0, 0, 0);
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
 
@@ -40,13 +41,13 @@ public class BasketAuto extends LinearOpMode {
             // Move to Waypoint 2 (24, -24)
             Actions.runBlocking(
                     drive.actionBuilder(new Pose2d(-34, -24, Math.toRadians(0)))
-                            .strafeTo(new Vector2d(24, -24), Math.toRadians(0)) // Move to samples
+                            .strafeTo(new Vector2d(24, -24)) // Move to samples
                             .build()
             );
 
             // Move to Waypoint 3 (20, -6)
             Actions.runBlocking(
-                    drive.actionBuilder(new Pose2d(24, -24, Math.toRadians()))
+                    drive.actionBuilder(new Pose2d(24, -24, Math.toRadians(0)))  // Replace 90 with your desired angle
                             .strafeToLinearHeading(new Vector2d(20, -6), Math.toRadians(135)) // Move to basket
                             // Palce stuff in high basket code will go here
                             .build()
