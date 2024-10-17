@@ -40,7 +40,7 @@ This is the TeleOp code that allows the drivers to control the robot manually du
 * Right stick for turning.
 * Bumpers for arm control.
 * Buttons for activating spin take and rack and pinion mechanisms.
-**Gamepad 2:**
+#### Gamepad 2:
 * Bumpers to open/close the claw.
 * Joysticks for controlling additional side mechanisms.
   
@@ -87,11 +87,36 @@ To run any of the programs:
 * Select DeckAuto, BasketAuto, or ColorBasedMoveWithDistance based on the task at hand.
 
 ## Contributing
-### If you wish to contribute:
+#### How to Contribute
+We welcome contributions to improve the robot’s functionality, optimize code, or add new features. Here's how you can contribute:
 
-1. Fork the repository.
-2. Create a new branch with your changes.
-3. Push your changes and submit a pull request.
+1. **Fork this repository** by clicking on the "Fork" button at the top of this page.
+2. **Clone** your fork to your local machine:
+   ```bash
+   git clone https://github.com/your-username/repository-name.git
+3. Create a new branch for your new feature of bugfix:
+   ```bash
+   git checkout -b my-feature-branch
+4. Make changes and commit your work:
+   ```bash
+   git commit -m "Added new feature or bugfix"
+5. Push to your fork and submit a pull request:
+   ```bash
+   git push origin my-feature-branch
+
+### 4. **Tests**
+If your code includes automated tests, add a section that explains how to run the tests:
+
+## Running Tests
+To ensure that everything is working correctly, we have included unit tests for the main modules.
+
+### Running Tests in Android Studio:
+1. Open Android Studio and load the project.
+2. Navigate to `src/test/java/org/firstinspires/ftc/teamcode/tests/`.
+3. Right-click on a test file and choose **Run**.
+
+Make sure to test all the relevant OpModes before deployment.
+
 
 ## Creating Your Own OpModes
 
@@ -127,5 +152,26 @@ To modify an OpMode or create your own, follow these steps:
    ```java
    @TeleOp(name="Your Custom OpMode Name", group="TeleOp/Auto")
    @Disabled
+
+## Troubleshooting/FAQ
+### Common Issues
+- **Gradle sync failed:** Ensure you have the correct version of the FTC SDK and that all dependencies are installed.
+- **Robot Controller app crashes:** Check that you have properly deployed the latest version of the app, and ensure no conflicting OpModes are running.
+- **RoadRunner not functioning properly:** Verify that the RoadRunner paths are correctly set up in the configuration file.
+
+If you encounter other issues, please open a [GitHub Issue](https://github.com/your-repo/issues).
+
+## Changelog
+#### [v1.1.0] - 2024-10-16
+- Added ReadMe
+#### [v1.0.0] - 2024-10-17
+- 
+
+## Credits
+- FTC SDK: [FTC GitHub Repository](https://github.com/FIRST-Tech-Challenge)
+- RoadRunner Library: [RoadRunner Documentation](https://learnroadrunner.com)
+- OpenCV: [OpenCV Official Site](https://opencv.org)
+
+Special thanks to all the team members who contributed to this project!
 
 
