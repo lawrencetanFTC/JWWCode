@@ -1,3 +1,7 @@
+# FTC Robotics Team Codebase
+
+Welcome to the code repository of **19897**, participating in the FIRST Tech Challenge (FTC). This project includes all code necessary for the TeleOp and Autonomous phases of the competition, utilizing advanced technologies like OpenCV for color detection and RoadRunner for motion planning. Our robot is designed for precision and efficiency, aiming to excel in every aspect of the competition.
+
 ## Project Overview
 This repository contains the code for our FTC robotics team. We have implemented both TeleOp and Autonomous programs for controlling the robot during different phases of the competition. Additionally, we use OpenCV for color detection, allowing the robot to react to color-based tasks automatically.
 
@@ -9,6 +13,14 @@ Follow the instructions below to set up the development environment and run the 
 * Android Studio: To program and deploy code to the FTC robot controller.
 * FTC SDK: Download from the official FTC GitHub repository.
 * RoadRunner Library (for motion planning): Follow the instructions from the official RoadRunner documentation.
+
+#### System Requirements:
+* Operating System: Windows 10 / macOS 10.14 or later
+* Android Device: Requires a device running Android 7.0 (Nougat) or higher
+* Minimum Storage: 500 MB of free space
+* Internet: For syncing with GitHub and downloading dependencies
+#### OpenCV Version
+* OpenCV Version: 4.5.3 or higher. Ensure that you have this version installed in your Android Studio project dependencies.
 
 ## Steps
 Clone this repository to your local machine.
@@ -279,5 +291,15 @@ If you encounter other issues, please open a [GitHub Issue](https://github.com/y
 - OpenCV: [OpenCV Official Site](https://opencv.org)
 
 Special thanks to all the team members who contributed to this project!
+- **Programming Team Members**:
+  - Lawrence (Lead Programmer)
+  - Shreyansh 
+  - Arnav
+  - Sohan
+  - Omar
+  - Pratham
+  - Samvarth
+  - Aarav
+  - Zhuoran
 
 
