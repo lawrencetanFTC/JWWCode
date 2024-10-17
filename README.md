@@ -21,7 +21,7 @@ git clone <repository-url>
 4. Connect your Android phone (robot controller) and deploy the code using Run > Run ‘FtcRobotController’.
 5. Install the Driver Station app on your driver phone (available on Google Play Store).
 
-### Code Structure
+## Code Structure
 The code is divided into several programs, each serving different phases of the competition. Below are descriptions of each program:
 
 **TeleOp**: WorkTeleOp
@@ -74,6 +74,112 @@ This program uses OpenCV for color detection and movement based on color recogni
 **Key Features:**
 Custom OpenCV pipeline to filter blue and red colors.
 Precise motor control based on encoder counts to move the robot in small increments.
+
+For a detailed look at all files, visit the [directory](JWWCode/road-runner-quickstart-master/TeamCode/src/main/java/org/firstinspires/ftc/teamcode).
+
+### Breif MecanumDrive Class Overview
+
+This class implements a mecanum drive system for an FTC robot, including motor control, localization, and trajectory following.
+
+#### Components:
+1. **Params**: 
+   - Configurable parameters for the mecanum drive, such as IMU orientation, feedforward constants, path/turn profile parameters, and controller gains.
+
+2. **Kinematics**: 
+   - Uses `MecanumKinematics` to convert between wheel velocities and robot movement (forward, lateral, and rotation).
+
+3. **Motors**: 
+   - Four `DcMotorEx` motors: `leftFront`, `leftBack`, `rightBack`, `rightFront`.
+   - These control the four mecanum wheels.
+
+4. **IMU**:
+   - Uses `LazyImu` for obtaining heading information from the robot’s Inertial Measurement Unit (IMU).
+
+5. **Localizer**:
+   - The `DriveLocalizer` class calculates the robot’s position (pose) based on wheel encoder readings and IMU data.
+
+#### Key Methods:
+
+1. **setDrivePowers()**: 
+   - Sets the power for each wheel based on the robot's desired movement in 2D space.
+
+2. **updatePoseEstimate()**: 
+   - Updates the robot's current position and velocity based on sensor data.
+
+3. **Trajectory Following**:
+   - `FollowTrajectoryAction`: Executes a time-based trajectory to move the robot along a path.
+   - `TurnAction`: Rotates the robot to a specific angle.
+
+4. **Visualization**:
+   - Uses the `Canvas` class to draw the robot’s estimated pose and trajectory on the dashboard.
+
+#### Example Usage:
+- The `MecanumDrive` can be initialized with hardware from the `HardwareMap` and configured using the `PARAMS`.
+- Trajectories can be followed using predefined paths, and the robot's movement is adjusted with feedback from the IMU and encoders.
+
+### About `DriveConstants.java`
+
+**The `DriveConstants.java` file is crucial for defining key constants and configurations that your robot uses for motion and control. Here's is what it contains:**
+#### 1. **Motor Control** 
+- **Constants like `TICKS_PER_REV`, `MAX_RPM`, and `MOTOR_VELO_PID`**: These are used to control motor behavior, especially when managing velocity through encoders.
+- **`RUN_USING_ENCODER`**: This flag determines if you're using encoder feedback for precise motor control, which is critical for accurate movement.
+
+#### 2. **Feedforward and Motion Parameters** 
+- **Parameters like `kV`, `kA`, and `kStatic`**: These constants model how the motors respond to commands. They are essential for trajectory generation and motion control, especially when using tools like RoadRunner.
+
+#### 3. **Physical Robot Parameters** 
+- **Constants like `WHEEL_RADIUS`, `TRACK_WIDTH`, and `GEAR_RATIO`**: These define your robot's physical dimensions. These values are critical for accurate distance and angular calculations during movement.
+- These constants impact both autonomous and manual (TeleOp) robot control.
+
+#### 4. **Trajectory Generation** 
+- **Constants like `MAX_VEL`, `MAX_ACCEL`, `MAX_ANG_VEL`, and `MAX_ANG_ACCEL`**: These are used by the RoadRunner library for planning paths and ensuring the robot moves within safe, physical limits.
+
+#### 5. **Robot Orientation**
+- **`LOGO_FACING_DIR` and `USB_FACING_DIR`**: These define how your robot's control hub is mounted, helping the SDK and RoadRunner library determine the correct reference frame for orientation tracking.
+
+#### 6. **Encoders and Velocity Calculations**
+- **Functions like `encoderTicksToInches` and `rpmToVelocity`**: These convert encoder ticks and motor RPMs into practical units (like inches), which are crucial for both feedback control and motion planning.
+
+---
+
+- If you're using **RoadRunner for motion planning**, this file ensures that your robot moves accurately according to its mechanical design.
+- It **centralizes important constants**, making it easier to update and tune the robot without modifying multiple files.
+- These values affect both **autonomous movement** (via trajectory planning) and possibly **manual control** (if using encoder feedback in TeleOp).
+
+### What to Do in this file
+1. **Tune the Constants**: The comments suggest some constants (e.g., `MOTOR_VELO_PID`, `kV`, `kA`) need tuning. This is essential for optimal robot performance.
+2. **Review Physical Constants**: Make sure measurements like **wheel radius** and **track width** match your robot's actual dimensions.
+3. **Dashboard Use**: You can adjust certain parameters using the **FTC Dashboard**, and this file allows you to make those changes persist in your code.
+
+### Two-Wheel Localizer
+
+Our robot uses a **two-wheel localizer** for tracking position on the field. The localizer consists of two dead wheels (parallel and perpendicular), which provide accurate positional feedback during autonomous operations. This approach allows the robot to maintain precise localization without relying on odometry from the drive motors.
+
+#### How It Works
+- The **parallel encoder** measures the robot’s forward/backward movement.
+- The **perpendicular encoder** measures the robot’s lateral (side-to-side) movement.
+- An **IMU (Inertial Measurement Unit)** is used to track the robot's heading (rotation).
+
+By combining data from both encoders and the IMU, we can accurately calculate the robot’s position and orientation during autonomous motion. This data is used to control the robot’s movement and trajectory in real time.
+
+#### Key Features
+- **Encoders:** The two dead wheels are attached to encoders that track movement independently of the drive motors.
+- **IMU Integration:** The IMU tracks the robot's heading, and this information is combined with encoder data for precise localization.
+- **Flight Recorder:** The system logs key data (encoder values, heading) for debugging and fine-tuning.
+
+#### Code Implementation
+We use the `TwoDeadWheelLocalizer` class to implement the two-wheel localization system. Here are some key components:
+
+- `par` (parallel encoder) and `perp` (perpendicular encoder): These measure the robot's movement in respective directions.
+- `imu`: Tracks the robot's orientation.
+- The `update()` method combines encoder and IMU data to provide a **twist** representing the robot's motion (translation and rotation).
+
+#### Benefits of Two-Wheel Localizer
+- **Accurate Position Tracking:** The two-wheel setup allows for more precise localization compared to single encoder-based systems, especially when combined with the IMU.
+- **Independent of Drive Motors:** Since the encoders are not attached to the drive motors, the localization is not affected by wheel slippage or drivetrain inconsistencies.
+
+This localization method is especially useful for our **Autonomous** programs (`DeckAuto`, `BasketAuto`), where precise movement and positioning are crucial for task completion.
+
 
 ## Usage
 To run any of the programs:
