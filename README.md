@@ -71,7 +71,7 @@ This program uses OpenCV for color detection and movement based on color recogni
 * If red is detected, the robot moves backward.
 **Encoders**: Motor encoders are used to control the movement distance.
 
-###Key Features:
+**Key Features:**
 Custom OpenCV pipeline to filter blue and red colors.
 Precise motor control based on encoder counts to move the robot in small increments.
 
@@ -81,9 +81,9 @@ To run any of the programs:
 1. Open the Driver Station app and pair it with the Robot Controller.
 2. Choose between TeleOp or Autonomous modes.
 3. Follow the controls as described in the code structure.
-###TeleOp Mode:
+### TeleOp Mode:
 * Select WorkTeleOp from the TeleOp options.
-###Autonomous Mode:
+### Autonomous Mode:
 * Select DeckAuto, BasketAuto, or ColorBasedMoveWithDistance based on the task at hand.
 
 ## Contributing
