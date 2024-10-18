@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.opencv.core.Core;
@@ -12,7 +13,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name = "ColorBasedMoveWithDistance")
+@Autonomous(name = "ColorBasedMoveWithDistance")
 public class PropDetectionProcessor   extends LinearOpMode {
 
     // Declare motor variables for driving the robot
