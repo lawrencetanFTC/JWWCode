@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -10,20 +9,22 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 @Autonomous(name = "BasketAuto", group = "Autonomous")
 public class BasketAuto extends LinearOpMode {
-    double motorPower = 0.24; // 24%double motorPower = 0.24; // 24%
+    double motorPower = 0.24; // 24% motor power
 
     @Override
     public void runOpMode() {
-
+        // Initialize motors
         DcMotor frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         DcMotor frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         DcMotor backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         DcMotor backRight = hardwareMap.get(DcMotor.class, "backRight");
 
-        frontLeft.setPower(motorPower);
-        backLeft.setPower(motorPower);
-        frontRight.setPower(motorPower);
-        backRight.setPower(motorPower);
+        // Ensure motors are stopped before the game starts
+        frontLeft.setPower(0);
+        backLeft.setPower(0);
+        frontRight.setPower(0);
+        backRight.setPower(0);
+
         // Starting pose (0, 0, 0)
         Pose2d beginPose = new Pose2d(0, 0, 0);
         MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
@@ -31,12 +32,19 @@ public class BasketAuto extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
+            // Set motor power after the game starts
+            frontLeft.setPower(motorPower);
+            backLeft.setPower(motorPower);
+            frontRight.setPower(motorPower);
+            backRight.setPower(motorPower);
+
             // Move to Waypoint 1 (from (0, 0) to (-34, -24))
             Actions.runBlocking(
                     drive.actionBuilder(new Pose2d(0, 0, 0))
                             .strafeTo(new Vector2d(-34, -24)) // Drop off specimen
                             .build()
             );
+            stopMotors(frontLeft, backLeft, frontRight, backRight);
 
             // Move to Waypoint 2 (24, -24)
             Actions.runBlocking(
@@ -44,14 +52,16 @@ public class BasketAuto extends LinearOpMode {
                             .strafeTo(new Vector2d(24, -24)) // Move to samples
                             .build()
             );
+            stopMotors(frontLeft, backLeft, frontRight, backRight);
 
             // Move to Waypoint 3 (20, -6)
             Actions.runBlocking(
                     drive.actionBuilder(new Pose2d(24, -24, Math.toRadians(0)))
                             .strafeToLinearHeading(new Vector2d(20, -6), Math.toRadians(135)) // Move to basket
-                            // Palce stuff in high basket code will go here
+                            // Place stuff in high basket code will go here
                             .build()
             );
+            stopMotors(frontLeft, backLeft, frontRight, backRight);
 
             // Move back to Waypoint 2 (34, -24) for TeleOp
             Actions.runBlocking(
@@ -59,6 +69,15 @@ public class BasketAuto extends LinearOpMode {
                             .strafeToLinearHeading(new Vector2d(34, -24), Math.toRadians(0)) // Move to landing zone
                             .build()
             );
+            stopMotors(frontLeft, backLeft, frontRight, backRight);
         }
+    }
+
+    // Method to stop all drive motors
+    public void stopMotors(DcMotor frontLeft, DcMotor backLeft, DcMotor frontRight, DcMotor backRight) {
+        frontLeft.setPower(0);
+        backLeft.setPower(0);
+        frontRight.setPower(0);
+        backRight.setPower(0);
     }
 }
