@@ -53,10 +53,10 @@ public class BasketAuto extends LinearOpMode {
                             .build()
             );
 
-            // Move to Waypoint 4 (-14, -60)
+            // Move back to Waypoint 2 (34, -24) for TeleOp
             Actions.runBlocking(
                     drive.actionBuilder(new Pose2d(20, -6, Math.toRadians(135)))
-                            .strafeToLinearHeading(new Vector2d(-14, -60), Math.toRadians(-90)) // Move to landing zone
+                            .strafeToLinearHeading(new Vector2d(34, -24), Math.toRadians(0)) // Move to landing zone
                             .build()
             );
         }

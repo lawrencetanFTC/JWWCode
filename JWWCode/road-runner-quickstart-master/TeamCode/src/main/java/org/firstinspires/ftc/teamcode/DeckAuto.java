@@ -36,6 +36,8 @@ public class DeckAuto extends LinearOpMode {
                             .build()
             );
 
+            // This part needs to be repeated 3 times {
+
             // Move to Waypoint 2 (-48, -24)
             Actions.runBlocking(
                     drive.actionBuilder(new Pose2d(-6, -24, Math.toRadians(0))) // Move to samples
@@ -50,11 +52,12 @@ public class DeckAuto extends LinearOpMode {
                             .build()
             );
 
-            // Move to Waypoint 4 (-12, -60)
+            // } The "part" ends here
+
+            // Move back to Waypoint 2 (6, -24) for TeleOp
             Actions.runBlocking(
-                    drive.actionBuilder(new Pose2d(-48, -6, Math.toRadians(180)))
-                            // change this to linetox or smth
-                            .strafeToLinearHeading(new Vector2d(-6, -60), Math.toRadians(90)) // Move to landing zone
+                    drive.actionBuilder(new Pose2d(-48, -6, Math.toRadians(180))
+                            .strafeToLinearHeading(new Vector2d(6, -24), Math.toRadians(0)) // Move to landing zone
                             .build()
             );
         }
