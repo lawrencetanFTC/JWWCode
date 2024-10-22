@@ -24,19 +24,13 @@ public class DeckAuto extends LinearOpMode {
         DcMotor backRight = hardwareMap.get(DcMotor.class, "backRight");
 
         // Ensure motors are stopped before the game starts
-        frontLeft.setPower(0);
-        backLeft.setPower(0);
-        frontRight.setPower(0);
-        backRight.setPower(0);
+        stopMotors(frontLeft, backLeft, frontRight, backRight);
 
         waitForStart();
 
         if (opModeIsActive()) {
             // Set motor power after the game starts
-            frontLeft.setPower(motorPower);
-            backLeft.setPower(motorPower);
-            frontRight.setPower(motorPower);
-            backRight.setPower(motorPower);
+            DefaultMotorPower(frontLeft, backLeft, frontRight, backRight);
 
             // Move to Waypoint 1 (from (0, 0) to (-6, -24))
             Actions.runBlocking(
@@ -45,6 +39,7 @@ public class DeckAuto extends LinearOpMode {
                             .build()
             );
             stopMotors(frontLeft, backLeft, frontRight, backRight);
+            DefaultMotorPower(frontLeft, backLeft, frontRight, backRight);
 
             // Repeat 3 times {
             // Move to Waypoint 2 (-48, -24)
@@ -54,6 +49,7 @@ public class DeckAuto extends LinearOpMode {
                             .build()
             );
             stopMotors(frontLeft, backLeft, frontRight, backRight);
+            DefaultMotorPower(frontLeft, backLeft, frontRight, backRight);
 
             // Move to Waypoint 3 (-48, -6)
             Actions.runBlocking(
@@ -62,6 +58,7 @@ public class DeckAuto extends LinearOpMode {
                             .build()
             );
             stopMotors(frontLeft, backLeft, frontRight, backRight);
+            DefaultMotorPower(frontLeft, backLeft, frontRight, backRight);
             // }
 
             // Move back to Waypoint 2 (6, -24) for TeleOp
@@ -71,7 +68,16 @@ public class DeckAuto extends LinearOpMode {
                             .build()
             );
             stopMotors(frontLeft, backLeft, frontRight, backRight);
+            DefaultMotorPower(frontLeft, backLeft, frontRight, backRight);
         }
+    }
+
+
+    public void DefaultMotorPower(DcMotor frontLeft, DcMotor backLeft, DcMotor frontRight, DcMotor backRight) {
+        frontLeft.setPower(motorPower);
+        backLeft.setPower(motorPower);
+        frontRight.setPower(motorPower);
+        backRight.setPower(motorPower);
     }
 
     // Method to stop all drive motors

@@ -20,10 +20,7 @@ public class BasketAuto extends LinearOpMode {
         DcMotor backRight = hardwareMap.get(DcMotor.class, "backRight");
 
         // Ensure motors are stopped before the game starts
-        frontLeft.setPower(0);
-        backLeft.setPower(0);
-        frontRight.setPower(0);
-        backRight.setPower(0);
+        stopMotors(frontLeft, backLeft, frontRight, backRight);
 
         // Starting pose (0, 0, 0)
         Pose2d beginPose = new Pose2d(0, 0, 0);
@@ -33,10 +30,7 @@ public class BasketAuto extends LinearOpMode {
 
         if (opModeIsActive()) {
             // Set motor power after the game starts
-            frontLeft.setPower(motorPower);
-            backLeft.setPower(motorPower);
-            frontRight.setPower(motorPower);
-            backRight.setPower(motorPower);
+            DefaultMotorPower(frontLeft, backLeft, frontRight, backRight);
 
             // Move to Waypoint 1 (from (0, 0) to (-34, -24))
             Actions.runBlocking(
@@ -45,6 +39,7 @@ public class BasketAuto extends LinearOpMode {
                             .build()
             );
             stopMotors(frontLeft, backLeft, frontRight, backRight);
+            DefaultMotorPower(frontLeft, backLeft, frontRight, backRight);
 
             // Move to Waypoint 2 (24, -24)
             Actions.runBlocking(
@@ -53,6 +48,7 @@ public class BasketAuto extends LinearOpMode {
                             .build()
             );
             stopMotors(frontLeft, backLeft, frontRight, backRight);
+            DefaultMotorPower(frontLeft, backLeft, frontRight, backRight);
 
             // Move to Waypoint 3 (20, -6)
             Actions.runBlocking(
@@ -62,6 +58,7 @@ public class BasketAuto extends LinearOpMode {
                             .build()
             );
             stopMotors(frontLeft, backLeft, frontRight, backRight);
+            DefaultMotorPower(frontLeft, backLeft, frontRight, backRight);
 
             // Move back to Waypoint 2 (34, -24) for TeleOp
             Actions.runBlocking(
@@ -70,7 +67,15 @@ public class BasketAuto extends LinearOpMode {
                             .build()
             );
             stopMotors(frontLeft, backLeft, frontRight, backRight);
+            DefaultMotorPower(frontLeft, backLeft, frontRight, backRight);
         }
+    }
+
+    public void DefaultMotorPower(DcMotor frontLeft, DcMotor backLeft, DcMotor frontRight, DcMotor backRight) {
+        frontLeft.setPower(motorPower);
+        backLeft.setPower(motorPower);
+        frontRight.setPower(motorPower);
+        backRight.setPower(motorPower);
     }
 
     // Method to stop all drive motors
