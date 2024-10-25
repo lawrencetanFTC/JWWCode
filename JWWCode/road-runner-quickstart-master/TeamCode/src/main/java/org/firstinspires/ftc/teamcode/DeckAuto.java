@@ -34,7 +34,7 @@ public class DeckAuto extends LinearOpMode {
             // Set motor power after the game starts
             DefaultMotorPower(frontLeft, backLeft, frontRight, backRight);
 
-            // Move to Waypoint 1 (from (0, 0) to (-6, -24))
+            // Move from Waypoint 1 (0, 0) to Waypoint 2 (-6, -24)
             Actions.runBlocking(
                     drive.actionBuilder(new Pose2d(0, 0, Math.toRadians(0))) // Deposit specimen
                             .strafeTo(new Vector2d(6, -24))
@@ -45,7 +45,7 @@ public class DeckAuto extends LinearOpMode {
             DefaultMotorPower(frontLeft, backLeft, frontRight, backRight);
 
             // Repeat 3 times {
-            // Move to Waypoint 2 (-48, -24)
+            // Move to Waypoint 3 (-48, -24)
             Actions.runBlocking(
                     drive.actionBuilder(new Pose2d(-6, -24, Math.toRadians(0))) // Move to samples
                             .strafeTo(new Vector2d(-48, -24))
@@ -54,7 +54,7 @@ public class DeckAuto extends LinearOpMode {
             stopMotors(frontLeft, backLeft, frontRight, backRight);
             DefaultMotorPower(frontLeft, backLeft, frontRight, backRight);
 
-            // Move to Waypoint 3 (-48, -6)
+            // Move to Waypoint 4 (-48, -6)
             Actions.runBlocking(
                     drive.actionBuilder(new Pose2d(-48, -24, Math.toRadians(0)))
                             .strafeToLinearHeading(new Vector2d(-48, -6), Math.toRadians(180)) // Push samples in observation zone
