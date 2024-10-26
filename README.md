@@ -25,7 +25,7 @@ Follow the instructions below to set up the development environment and run the 
 ## Steps
 Clone this repository to your local machine.
 ```
-git clone <repository-url>
+git clone https://github.com/lawrencetanFTC/JWWCode.git
 ```
 1. Open the project in Android Studio.
 2. Go to File > Open and select the project folder.
