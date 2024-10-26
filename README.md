@@ -1,6 +1,6 @@
 # FTC Robotics Team Codebase
 
-Welcome to the code repository of **19897**, participating in the FIRST Tech Challenge (FTC). This project includes all code necessary for the TeleOp and Autonomous phases of the competition, utilizing advanced technologies like OpenCV for color detection and RoadRunner for motion planning. Our robot is designed for precision and efficiency, aiming to excel in every aspect of the competition.
+Welcome to the code repository of **19897 JWW**, participating in the FIRST Tech Challenge (FTC). This project includes all code necessary for the TeleOp and Autonomous phases of the competition, utilizing advanced technologies like OpenCV for color detection and RoadRunner for motion planning. Our robot is designed for precision and efficiency, aiming to excel in every aspect of the competition.
 
 ## Project Overview
 This repository contains the code for our FTC robotics team. We have implemented both TeleOp and Autonomous programs for controlling the robot during different phases of the competition. Additionally, we use OpenCV for color detection, allowing the robot to react to color-based tasks automatically.
