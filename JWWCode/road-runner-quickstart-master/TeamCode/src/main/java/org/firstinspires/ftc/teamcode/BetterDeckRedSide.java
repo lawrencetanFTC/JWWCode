@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 @Autonomous(name = "BetterDeckAuto", group = "Autonomous")
 public class BetterDeckRedSide extends LinearOpMode {
 
-    /* REMEBER TO DELETE THE ONES WE DON'T NEED!!
+    /* REMEMBER TO DELETE THE ONES WE DON'T NEED!!
         Index of Non-drivetrain Motors and Servos
        1. RP Servo
        2. Spintake Servo
