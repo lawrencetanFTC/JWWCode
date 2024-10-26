@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -11,9 +12,10 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "BetterDeckAuto", group = "Autonomous")
-public class DeckAuto extends LinearOpMode {
+public class BetterDeckRedSide extends LinearOpMode {
 
     /* REMEBER TO DELETE THE ONES WE DON'T NEED!!
         Index of Non-drivetrain Motors and Servos
@@ -79,9 +81,9 @@ public class DeckAuto extends LinearOpMode {
 
         public ClawMotor(HardwareMap hardwareMap) {
             clawmotor = hardwareMap.get(DcMotor.class, "clawmotor");
-            clawmotor.setZeroPowerBehavior(DcMotor.ZeropowerBehavior.BRAKE);
+            clawmotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             // Might cause problem, delete comment if works
-            clawmotor.setDirection(DcMotor.Direction.FORWARD)
+            clawmotor.setDirection(DcMotor.Direction.FORWARD);
         }
         // Actions Go here
     }
@@ -93,9 +95,9 @@ public class DeckAuto extends LinearOpMode {
 
         public ShoulderMotor(HardwareMap hardwareMap) {
             shouldermotor = hardwareMap.get(DcMotor.class, "clawmotor");
-            shouldermotor.setZeroPowerBehavior(DcMotor.ZeropowerBehavior.BRAKE);
+            shouldermotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             // Might cause problem, delete comment if works
-            shouldermotor.setDirection(DcMotor.Direction.FORWARD)
+            shouldermotor.setDirection(DcMotor.Direction.FORWARD);
         }
         // Actions Go here
     }
@@ -103,64 +105,58 @@ public class DeckAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        // Starting pose (0, 0, 0)
+        // Starting pose for the red side (mirrored coordinates)
         Pose2d InitialPose = new Pose2d(0, 0, 0);
 
-        MecanumDrive drive = new MecanumDrive(hardwareMap, beginPose);
+        MecanumDrive drive = new MecanumDrive(hardwareMap, InitialPose);
 
         waitForStart();
 
         if (opModeIsActive()) {
 
-            // Build all the Actions here
+            // Actions for the red side
 
-            // Move from Waypoint 1 (0, 0) to Waypoint 2 (-6, -24)
+            // Move from Waypoint 1 (0, 0) to Waypoint 2 (6, 24)
             TrajectoryActionBuilder OneToTwo = drive.actionBuilder(InitialPose)
-                    .strafeTo(new Vector2d(6, -24))
-                    .build();
+                    .strafeTo(new Vector2d(6, 24));
 
-            // Move to Waypoint 3 (-48, -19)
-            TrajectoryActionBuilder TwoToThree = drive.actionBuilder(new Pose2d(-6, -24, Math.toRadians(0))
-                    .strafeTo(new Vector2d(-48, -19))
-                    .build();
+            // Move to Waypoint 3 (48, 19)
+            TrajectoryActionBuilder TwoToThree = drive.actionBuilder(new Pose2d(6, 24, Math.toRadians(0)))
+                    .strafeTo(new Vector2d(48, 19));
 
-            // Repeat 3 times {
-            // Move to Waypoint 4 (-48, -19)
-            TrajectoryActionBuilder ThreeToFour = drive.actionBuilder(new Pose2d(-48, -19, Math.toRadians(0)))
-                    .TurnTo(Math.toRadians(180))
-                    .build();
+            // Repeat 3 times
+            // Move to Waypoint 4 (48, 19) with a turn to 180 degrees
+            TrajectoryActionBuilder ThreeToFour = drive.actionBuilder(new Pose2d(48, 19, Math.toRadians(0)))
+                    .turnTo(Math.toRadians(180));
 
-            // Move back to Waypoint 3 (-48, -19)
-            TrajectoryActionBuilder FourToThree = drive.actionBuilder(new Pose2d(-48, -19, Math.toRadians(180)))
-                    .TurnTo(Math.toRadians(0))
-                    .build();
-            // }
+            // Move back to Waypoint 3 (48, 19) with a turn to 0 degrees
+            TrajectoryActionBuilder FourToThree = drive.actionBuilder(new Pose2d(48, 19, Math.toRadians(180)))
+                    .turnTo(Math.toRadians(0));
 
-            // Move back to Waypoint 2 (6, -24) for TeleOp
-            TrajectoryActionBuilder FourToTwo = drive.actionBuilder(new Pose2d(-48, -19, Math.toRadians(180))
-                    .strafeToLinearHeading(new Vector2d(6, -24), Math.toRadians(0))
-                    .build();
+            // Move back to Waypoint 2 (-6, 24) for TeleOp
+            TrajectoryActionBuilder FourToTwo = drive.actionBuilder(new Pose2d(48, 19, Math.toRadians(180)))
+                    .strafeTo(new Vector2d(-6, 24));
 
             // This should stop if you press stop
             if (isStopRequested()) return;
 
             Actions.runBlocking(
                     new SequentialAction(
-                            OneToTwo,
+                            OneToTwo.build(),
                             // Deposit Specimen
-                            TwoToThree,
+                            TwoToThree.build(),
                             // Pick up Sample
-                            ThreeToFour,
+                            ThreeToFour.build(),
                             // Deposit Sample
-                            FourToThree,
+                            FourToThree.build(),
                             // Pick up Sample
-                            ThreeToFour,
+                            ThreeToFour.build(),
                             // Deposit Sample
-                            FourToThree,
+                            FourToThree.build(),
                             // Pick up Sample
-                            ThreeToFour,
+                            ThreeToFour.build(),
                             // Deposit Sample
-                            FourToTwo
+                            FourToTwo.build()
                     )
             );
         }
