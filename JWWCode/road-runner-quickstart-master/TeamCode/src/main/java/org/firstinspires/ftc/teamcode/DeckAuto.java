@@ -28,6 +28,8 @@ public class DeckAuto extends LinearOpMode {
 
         waitForStart();
 
+
+
         if (opModeIsActive()) {
             // Set motor power after the game starts
             DefaultMotorPower(frontLeft, backLeft, frontRight, backRight);
@@ -39,6 +41,7 @@ public class DeckAuto extends LinearOpMode {
                             .build()
             );
             stopMotors(frontLeft, backLeft, frontRight, backRight);
+            //insert servo code here
             DefaultMotorPower(frontLeft, backLeft, frontRight, backRight);
 
             // Repeat 3 times {
