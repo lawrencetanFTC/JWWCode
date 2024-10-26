@@ -105,7 +105,6 @@ public class BetterBasketBlueSide extends LinearOpMode {
     public void runOpMode() {
         // Starting pose (0, 0, 0)
         Pose2d InitialPose = new Pose2d(0, 0, 0);
-        Pose2d secondPose = new Pose2d(-6, -24, 0);
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, InitialPose);
 
@@ -113,50 +112,56 @@ public class BetterBasketBlueSide extends LinearOpMode {
 
         if (opModeIsActive()) {
 
-            // Build all the Actions here
+            // All Actions defined here
 
             // Move from Waypoint 1 (0, 0) to Waypoint 2 (-6, -24)
-            TrajectoryActionBuilder OneToTwo = drive.actionBuilder(InitialPose)
-                    .strafeTo(new Vector2d(-6, -24));
+            Action OneToTwo = drive.actionBuilder(InitialPose)
+                    .strafeTo(new Vector2d(-6, -24))
+                    .build();
 
             // Move to Waypoint 3 (-48, -24)
-            TrajectoryActionBuilder TwoToThree = drive.actionBuilder(secondPose)
-                    .strafeTo(new Vector2d(-48, -24));
+            Action TwoToThree = drive.actionBuilder(-6, -24)
+                    .strafeTo(new Vector2d(-48, -24))
+                    .build();
 
             // Repeat 3 times {
             // Move to Waypoint 4 (-48, -6)
-            TrajectoryActionBuilder ThreeToFour = drive.actionBuilder(new Pose2d(-48, -24, Math.toRadians(0)))
-                    .strafeToLinearHeading(new Vector2d(-48, -6), Math.toRadians(135));
+            Action ThreeToFour = drive.actionBuilder(new Pose2d(-48, -24, Math.toRadians(0)))
+                    .strafeToLinearHeading(new Vector2d(-48, -6), Math.toRadians(135))
+                    .build();
 
             // Move back to Waypoint 3 (-48, -24)
-            TrajectoryActionBuilder FourToThree = drive.actionBuilder(new Pose2d(-48, -6, Math.toRadians(135)))
-                    .strafeToLinearHeading(new Vector2d(-48, -24), Math.toRadians(0));
+            Action FourToThree = drive.actionBuilder(new Pose2d(-48, -6, Math.toRadians(135)))
+                    .strafeToLinearHeading(new Vector2d(-48, -24), Math.toRadians(0))
+                    .build();
             // }
 
             // Move back to Waypoint 2 (-6, -24) for TeleOp
-            TrajectoryActionBuilder FourToTwo = drive.actionBuilder(new Pose2d(-48, -6, Math.toRadians(135)))
-                    .strafeToLinearHeading(new Vector2d(-6, -24), Math.toRadians(0));
+            Action FourToTwo = drive.actionBuilder(new Pose2d(-48, -6, Math.toRadians(135)))
+                    .strafeToLinearHeading(new Vector2d(-6, -24), Math.toRadians(0))
+                    .build();
 
             // This should stop if you press stop
             if (isStopRequested()) return;
 
             Actions.runBlocking(
                     new SequentialAction(
-                            OneToTwo.build(),
+                            OneToTwo,
                             // Hang Specimen
-                            TwoToThree.build(),
+                            // Get Sample
+                            TwoToThree,
                             // Get Samples
-                            ThreeToFour.build(),
+                            ThreeToFour,
                             // Push samples in Observation zone
-                            FourToThree.build(),
+                            FourToThree,
                             // Get Samples again
-                            ThreeToFour.build(),
+                            ThreeToFour,
                             // Push samples in Observation zone
-                            FourToThree.build(),
+                            FourToThree,
                             // Get Samples once more
-                            ThreeToFour.build(),
+                            ThreeToFour,
                             // Return to Waypoint 2 for TeleOp
-                            FourToTwo.build()
+                            FourToTwo
                     )
             );
         }
