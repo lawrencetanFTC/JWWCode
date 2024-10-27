@@ -135,7 +135,7 @@ public class BetterDeckBlueSide extends LinearOpMode {
             // Move back to Waypoint 3 (-48, -19) with a turn to 0 degrees
             Action FourToThree = drive.actionBuilder(new Pose2d(-48, -19, Math.toRadians(180)))
                     .turnTo(Math.toRadians(0))
-                    .build;
+                    .build();
 
             // Move back to Waypoint 2 (6, -24) for TeleOp
             Action FourToTwo = drive.actionBuilder(new Pose2d(-48, -19, Math.toRadians(180)))
