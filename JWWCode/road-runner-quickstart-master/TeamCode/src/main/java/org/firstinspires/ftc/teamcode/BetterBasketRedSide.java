@@ -1,4 +1,4 @@
-ppackage org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
@@ -107,6 +107,7 @@ public class BetterBasketRedSide extends LinearOpMode {
         public void runOpMode() {
             // Starting pose (0, 0, 0)
             Pose2d InitialPose = new Pose2d(0, 0, 0);
+            Pose2d secondPose = new Pose2d(-6, -24, 0);
 
             MecanumDrive drive = new MecanumDrive(hardwareMap, InitialPose);
 
@@ -114,56 +115,50 @@ public class BetterBasketRedSide extends LinearOpMode {
 
             if (opModeIsActive()) {
 
-                // All Actions defined here
+                // Build all the Actions here
 
                 // Move from Waypoint 1 (0, 0) to Waypoint 2 (-6, -24)
-                Action OneToTwo = drive.actionBuilder(InitialPose)
-                        .strafeTo(new Vector2d(-6, -24))
-                        .build();
+                TrajectoryActionBuilder OneToTwo = drive.actionBuilder(InitialPose)
+                        .strafeTo(new Vector2d(-6, -24));
 
                 // Move to Waypoint 3 (-48, -24)
-                Action TwoToThree = drive.actionBuilder(new Pose2d(-6, -24))
-                        .strafeTo(new Vector2d(-48, -24))
-                        .build();
+                TrajectoryActionBuilder TwoToThree = drive.actionBuilder(secondPose)
+                        .strafeTo(new Vector2d(-48, -24));
 
                 // Repeat 3 times {
                 // Move to Waypoint 4 (-48, -6)
-                Action ThreeToFour = drive.actionBuilder(new Pose2d(-48, -24, Math.toRadians(0)))
-                        .strafeToLinearHeading(new Vector2d(-48, -6), Math.toRadians(135))
-                        .build();
+                TrajectoryActionBuilder ThreeToFour = drive.actionBuilder(new Pose2d(-48, -24, Math.toRadians(0)))
+                        .strafeToLinearHeading(new Vector2d(-48, -6), Math.toRadians(135));
 
                 // Move back to Waypoint 3 (-48, -24)
-                Action FourToThree = drive.actionBuilder(new Pose2d(-48, -6, Math.toRadians(135)))
-                        .strafeToLinearHeading(new Vector2d(-48, -24), Math.toRadians(0))
-                        .build();
+                TrajectoryActionBuilder FourToThree = drive.actionBuilder(new Pose2d(-48, -6, Math.toRadians(135)))
+                        .strafeToLinearHeading(new Vector2d(-48, -24), Math.toRadians(0));
                 // }
 
                 // Move back to Waypoint 2 (-6, -24) for TeleOp
-                Action FourToTwo = drive.actionBuilder(new Pose2d(-48, -6, Math.toRadians(135)))
-                        .strafeToLinearHeading(new Vector2d(-6, -24), Math.toRadians(0))
-                        .build();
+                TrajectoryActionBuilder FourToTwo = drive.actionBuilder(new Pose2d(-48, -6, Math.toRadians(135)))
+                        .strafeToLinearHeading(new Vector2d(-6, -24), Math.toRadians(0));
 
                 // This should stop if you press stop
                 if (isStopRequested()) return;
 
                 Actions.runBlocking(
                         new SequentialAction(
-                                OneToTwo,
+                                OneToTwo.build(),
                                 // Hang Specimen
-                                // Get Sample 
-                                TwoToThree,
+                                TwoToThree.build(),
                                 // Get Samples
-                                ThreeToFour,
+                                ThreeToFour.build(),
                                 // Push samples in Observation zone
-                                FourToThree,
+                                FourToThree.build(),
                                 // Get Samples again
-                                ThreeToFour,
+                                ThreeToFour.build(),
                                 // Push samples in Observation zone
-                                FourToThree,
+                                FourToThree.build(),
                                 // Get Samples once more
-                                ThreeToFour,
+                                ThreeToFour.build(),
                                 // Return to Waypoint 2 for TeleOp
-                                FourToTwo
+                                FourToTwo.build()
                         )
                 );
             }
