@@ -120,7 +120,7 @@ public class BetterBasketBlueSide extends LinearOpMode {
                     .build();
 
             // Move to Waypoint 3 (-48, -24)
-            Action TwoToThree = drive.actionBuilder(-6, -24)
+            Action TwoToThree = drive.actionBuilder(new Pose2d(-6, -24, Math.toRadians(0))
                     .strafeTo(new Vector2d(-48, -24))
                     .build();
 
