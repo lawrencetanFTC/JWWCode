@@ -114,28 +114,33 @@ public class BetterDeckBlueSide extends LinearOpMode {
 
         if (opModeIsActive()) {
 
-            // Build all the Actions here
+            // All Actions defined here
 
             // Move from Waypoint 1 (0, 0) to Waypoint 2 (-6, -24)
-            TrajectoryActionBuilder OneToTwo = drive.actionBuilder(InitialPose)
-                    .strafeTo(new Vector2d(-6, -24));
+            Action OneToTwo = drive.actionBuilder(InitialPose)
+                    .strafeTo(new Vector2d(-6, -24))
+                    .build();
 
             // Move to Waypoint 3 (-48, -19)
-            TrajectoryActionBuilder TwoToThree = drive.actionBuilder(new Pose2d(-6, -24, Math.toRadians(0)))
-                    .strafeTo(new Vector2d(-48, -19));
+            Action TwoToThree = drive.actionBuilder(new Pose2d(-6, -24, Math.toRadians(0)))
+                    .strafeTo(new Vector2d(-48, -19))
+                    .build();
 
             // Repeat 3 times
             // Move to Waypoint 4 (-48, -19) with a turn to 180 degrees
-            TrajectoryActionBuilder ThreeToFour = drive.actionBuilder(new Pose2d(-48, -19, Math.toRadians(0)))
-                    .turnTo(Math.toRadians(180));
+            Action ThreeToFour = drive.actionBuilder(new Pose2d(-48, -19, Math.toRadians(0)))
+                    .turnTo(Math.toRadians(180))
+                    .build();
 
             // Move back to Waypoint 3 (-48, -19) with a turn to 0 degrees
-            TrajectoryActionBuilder FourToThree = drive.actionBuilder(new Pose2d(-48, -19, Math.toRadians(180)))
-                    .turnTo(Math.toRadians(0));
+            Action FourToThree = drive.actionBuilder(new Pose2d(-48, -19, Math.toRadians(180)))
+                    .turnTo(Math.toRadians(0))
+                    .build;
 
             // Move back to Waypoint 2 (6, -24) for TeleOp
-            TrajectoryActionBuilder FourToTwo = drive.actionBuilder(new Pose2d(-48, -19, Math.toRadians(180)))
-                    .strafeTo(new Vector2d(6, -24));
+            Action FourToTwo = drive.actionBuilder(new Pose2d(-48, -19, Math.toRadians(180)))
+                    .strafeTo(new Vector2d(6, -24))
+                    .build();
 
 
             // This should stop if you press stop
@@ -143,21 +148,22 @@ public class BetterDeckBlueSide extends LinearOpMode {
 
             Actions.runBlocking(
                     new SequentialAction(
-                            OneToTwo.build(),
+                            OneToTwo,
                             // Deposit Specimen
-                            TwoToThree.build(),
+                            // Pick up sample
+                            TwoToThree,
                             // Pick up Sample
-                            ThreeToFour.build(),
+                            ThreeToFour,
                             // Deposit Sample
-                            FourToThree.build(),
+                            FourToThree,
                             // Pick up Sample
-                            ThreeToFour.build(),
+                            ThreeToFour,
                             // Deposit Sample
-                            FourToThree.build(),
+                            FourToThree,
                             // Pick up Sample
-                            ThreeToFour.build(),
+                            ThreeToFour,
                             // Deposit Sample
-                            FourToTwo.build()
+                            FourToTwo
                     )
             );
         }
