@@ -117,52 +117,46 @@ public class BetterDeckRedSide extends LinearOpMode {
             // Actions for the red side
 
             // Move from Waypoint 1 (0, 0) to Waypoint 2 (6, 24)
-            Action OneToTwo = drive.actionBuilder(InitialPose)
-                    .strafeTo(new Vector2d(6, 24))
-                    .build();
+            TrajectoryActionBuilder OneToTwo = drive.actionBuilder(InitialPose)
+                    .strafeTo(new Vector2d(6, 24));
 
             // Move to Waypoint 3 (48, 19)
-            Action TwoToThree = drive.actionBuilder(new Pose2d(6, 24, Math.toRadians(0)))
-                    .strafeTo(new Vector2d(48, 19))
-                    .build();
+            TrajectoryActionBuilder TwoToThree = drive.actionBuilder(new Pose2d(6, 24, Math.toRadians(0)))
+                    .strafeTo(new Vector2d(48, 19));
 
             // Repeat 3 times
             // Move to Waypoint 4 (48, 19) with a turn to 180 degrees
-            Action ThreeToFour = drive.actionBuilder(new Pose2d(48, 19, Math.toRadians(0)))
-                    .turnTo(Math.toRadians(180))
-                    .build();
+            TrajectoryActionBuilder ThreeToFour = drive.actionBuilder(new Pose2d(48, 19, Math.toRadians(0)))
+                    .turnTo(Math.toRadians(180));
 
             // Move back to Waypoint 3 (48, 19) with a turn to 0 degrees
-            Action FourToThree = drive.actionBuilder(new Pose2d(48, 19, Math.toRadians(180)))
-                    .turnTo(Math.toRadians(0))
-                    .build();
+            TrajectoryActionBuilder FourToThree = drive.actionBuilder(new Pose2d(48, 19, Math.toRadians(180)))
+                    .turnTo(Math.toRadians(0));
 
             // Move back to Waypoint 2 (-6, 24) for TeleOp
-            Action FourToTwo = drive.actionBuilder(new Pose2d(48, 19, Math.toRadians(180)))
-                    .strafeTo(new Vector2d(-6, 24))
-                    .build();
+            TrajectoryActionBuilder FourToTwo = drive.actionBuilder(new Pose2d(48, 19, Math.toRadians(180)))
+                    .strafeTo(new Vector2d(-6, 24));
 
             // This should stop if you press stop
             if (isStopRequested()) return;
 
             Actions.runBlocking(
                     new SequentialAction(
-                            OneToTwo,
+                            OneToTwo.build(),
                             // Deposit Specimen
+                            TwoToThree.build(),
                             // Pick up Sample
-                            TwoToThree,
-                            // Pick up Sample
-                            ThreeToFour,
+                            ThreeToFour.build(),
                             // Deposit Sample
-                            FourToThree,
+                            FourToThree.build(),
                             // Pick up Sample
-                            ThreeToFour,
+                            ThreeToFour.build(),
                             // Deposit Sample
-                            FourToThree,
+                            FourToThree.build(),
                             // Pick up Sample
-                            ThreeToFour,
+                            ThreeToFour.build(),
                             // Deposit Sample
-                            FourToTwo
+                            FourToTwo.build()
                     )
             );
         }
