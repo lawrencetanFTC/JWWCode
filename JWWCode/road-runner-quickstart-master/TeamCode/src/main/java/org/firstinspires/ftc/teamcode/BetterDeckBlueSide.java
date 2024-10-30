@@ -118,11 +118,11 @@ public class BetterDeckBlueSide extends LinearOpMode {
 
             // Move from Waypoint 1 (0, 0) to Waypoint 2 (-6, -24)
             TrajectoryActionBuilder OneToTwo = drive.actionBuilder(InitialPose)
-                    .strafeTo(new Vector2d(-6, -24));
+                    .strafeTo(new Vector2d(-18, -24));
 
             // Move to Waypoint 3 (-48, -19)
             TrajectoryActionBuilder TwoToThree = drive.actionBuilder(new Pose2d(-6, -24, Math.toRadians(0)))
-                    .strafeTo(new Vector2d(-48, -19));
+                    .strafeTo(new Vector2d(-36, -19));
 
             // Repeat 3 times
             // Move to Waypoint 4 (-48, -19) with a turn to 180 degrees
@@ -135,7 +135,7 @@ public class BetterDeckBlueSide extends LinearOpMode {
 
             // Move back to Waypoint 2 (6, -24) for TeleOp
             TrajectoryActionBuilder FourToTwo = drive.actionBuilder(new Pose2d(-48, -19, Math.toRadians(180)))
-                    .strafeTo(new Vector2d(6, -24));
+                    .strafeTo(new Vector2d(-18, -24));
 
 
             // This should stop if you press stop

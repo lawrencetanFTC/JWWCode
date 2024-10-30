@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 @Autonomous(name = "AutonDeck", group = "Autonomous")
-public class AutonPosition extends LinearOpMode {
+public class AutonPositionDeck extends LinearOpMode {
 
     public class PID {
         DcMotorEx motor;
