@@ -298,7 +298,7 @@ Special thanks to all the team members who contributed to this project!
   - Sohan(Also outreach)
   - Likith(Also engineering)
   - Samvarth(Also engineering)
-  - **Programming Team Members on reserve **
+  - **Programming Team Members on reserve**
   - Omar
   - Pratham
 
