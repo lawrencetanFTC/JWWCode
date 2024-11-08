@@ -25,7 +25,7 @@ public class AutonPositionDeck extends LinearOpMode {
 
 
 
-        public PID(HardwareMap hardwareMap, String deviceName, double kp, double ki, double kd) {
+        private PID(HardwareMap hardwareMap, String deviceName, double kp, double ki, double kd) {
             motor = hardwareMap.get(DcMotorEx.class, deviceName);
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             KP = kp;
@@ -63,15 +63,17 @@ public class AutonPositionDeck extends LinearOpMode {
             motor.setPower(power);
         }
 
-
         // Example of instantiation (this should be done in the main op mode)
     }
 
 
+
+
     // Example instantiation
-    PID spintakeMotor = new PID(hardwareMap, "spintakeMotor", 1.0, 0.1, 0.01);
-    PID clawMotor = new PID(hardwareMap, "clawMotor", 1.0, 0.1, 0.01);
-    PID shoulderMotor = new PID(hardwareMap, "shoulderMotor", 1.0, 0.1, 0.01);
+
+    public PID spintakeMotor = new PID(hardwareMap, "spintakeMotor", 1.0, 0.1, 0.01);
+    public PID clawMotor = new PID(hardwareMap, "clawMotor", 1.0, 0.1, 0.01);
+    public PID shoulderMotor = new PID(hardwareMap, "shoulderMotor", 1.0, 0.1, 0.01);
 
 
 
@@ -164,7 +166,7 @@ public class AutonPositionDeck extends LinearOpMode {
             // Set motor power after the game starts
             DefaultMotorPower(frontLeft, backLeft, frontRight, backRight);
 
-//
+            //
 //            Actions.runBlocking(
 //                    // Insert Servo code here (Robot arm can extend from 0,0 to hang specimen
 //            );
@@ -199,10 +201,10 @@ public class AutonPositionDeck extends LinearOpMode {
 
 
     public void DefaultMotorPower(DcMotor frontLeft, DcMotor backLeft, DcMotor frontRight, DcMotor backRight) {
-//        frontLeft.setPower(motorPower);
-//        backLeft.setPower(motorPower);
-//        frontRight.setPower(motorPower);
-//        backRight.setPower(motorPower);
+        // frontLeft.setPower(motorPower);
+        // backLeft.setPower(motorPower);
+        // frontRight.setPower(motorPower);
+        // backRight.setPower(motorPower);
     }
 
 
