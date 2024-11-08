@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -11,7 +10,6 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
 
 @Autonomous(name = "AutonDeck", group = "Autonomous")
 public class AutonPositionDeck extends LinearOpMode {
@@ -24,7 +22,6 @@ public class AutonPositionDeck extends LinearOpMode {
         ElapsedTime timer = new ElapsedTime();
 
 
-
         private PID(HardwareMap hardwareMap, String deviceName, double kp, double ki, double kd) {
             motor = hardwareMap.get(DcMotorEx.class, deviceName);
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -32,7 +29,6 @@ public class AutonPositionDeck extends LinearOpMode {
             KI = ki;
             KD = kd;
         }
-
 
 
         public void runOpMode() throws InterruptedException {

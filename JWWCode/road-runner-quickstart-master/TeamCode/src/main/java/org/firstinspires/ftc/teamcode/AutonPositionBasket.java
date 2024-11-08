@@ -11,8 +11,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.MecanumDrive;
-
 @Autonomous(name = "BasketAuto", group = "Autonomous")
 public class AutonPositionBasket extends LinearOpMode {
 
