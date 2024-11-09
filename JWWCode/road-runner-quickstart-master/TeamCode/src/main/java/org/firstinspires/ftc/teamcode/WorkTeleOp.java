@@ -36,7 +36,7 @@ public class WorkTeleOp extends OpMode {
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
 
-        // Reverse the motors on the left side for proper directionality
+        // Reverse the motoon the left side for proper directionality
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
 
