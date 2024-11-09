@@ -30,12 +30,15 @@ public class goForward  extends LinearOpMode {
         Pose2d InitialPose = new Pose2d(0, 0, 0);
         waitForStart();
         if (opModeIsActive()) {;
+
             DefaultMotorPower(frontLeft, backLeft, frontRight, backRight);
             Actions.runBlocking(
                 drive.actionBuilder(new Pose2d(0, 0, Math.toRadians(0)))
                         .strafeToLinearHeading(new Vector2d(0,1), 0)
                         .build()
             );
+            power = 0;
+            DefaultMotorPower(frontLeft, backLeft, frontRight,backRight);
 
 
         }
