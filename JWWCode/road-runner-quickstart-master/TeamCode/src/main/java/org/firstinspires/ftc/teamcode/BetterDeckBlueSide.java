@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 
@@ -38,13 +39,13 @@ public class BetterDeckBlueSide extends LinearOpMode {
             RShoudler = hardwareMap.get(DcMotor.class, "RShoulderMotor");
             RShoudler.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             // Might cause problems, delete comment if works
-            RShoudler.setDirection(DcMotor.Direction.BACKWARD);
+            RShoudler.setDirection(DcMotor.Direction.REVERSE);
         }
         // Actions go here
     }
 
     // 2
-    public class LShoulderMotor {
+    public static class LShoulderMotor {
         private DcMotor LShoudler;
 
         public LShoulderMotor(HardwareMap hardwareMap) {
@@ -57,7 +58,7 @@ public class BetterDeckBlueSide extends LinearOpMode {
     }
 
     // 3
-    public class SpintakeBaseMotor {
+    public static class SpintakeBaseMotor {
         private DcMotor SpintakeBase;
 
         public SpintakeBaseMotor(HardwareMap hardwareMap) {
@@ -70,29 +71,29 @@ public class BetterDeckBlueSide extends LinearOpMode {
     }
 
     // 4
-    public class BackMotor {
+    public static class BackMotor {
         private DcMotor BackM;
 
         public BackMotor(HardwareMap hardwareMap) {
             BackM = hardwareMap.get(DcMotor.class, "RshoulderMotor");
             BackM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             // Might cause problems, delete comment if works
-            BackM.setDirection(DcMotor.Direction.BACKWARD);
+            BackM.setDirection(DcMotor.Direction.REVERSE);
         }
         // Actions go here
     }
 
     // 5
-    public class SpintakeBaseMotor {
+    public static class SpintakeBaseServo {
         private Servo SpintakeBase;
 
-        public SpintakeBaseMotor(HardwareMap hardwareMap) {
+        public SpintakeBaseServo(HardwareMap hardwareMap) {
             SpintakeBase = hardwareMap.get(Servo.class, "SpintakeBaseServo");
         }
     }
 
     // 6
-    public class SpintakeServo {
+    public static class SpintakeServo {
         private Servo Spintake;
 
         public SpintakeServo(HardwareMap hardwareMap) {

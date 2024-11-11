@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -36,7 +37,7 @@ public class BetterBasketBlueSide extends LinearOpMode {
             RShoudler = hardwareMap.get(DcMotor.class, "RShoulderMotor");
             RShoudler.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             // Might cause problems, delete comment if works
-            RShoudler.setDirection(DcMotor.Direction.BACKWARD);
+            RShoudler.setDirection(DcMotor.Direction.REVERSE);
         }
         // Actions go here
     }
@@ -75,16 +76,16 @@ public class BetterBasketBlueSide extends LinearOpMode {
             BackM = hardwareMap.get(DcMotor.class, "RshoulderMotor");
             BackM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             // Might cause problems, delete comment if works
-            BackM.setDirection(DcMotor.Direction.BACKWARD);
+            BackM.setDirection(DcMotor.Direction.REVERSE);
         }
         // Actions go here
     }
     
     // 5
-    public class SpintakeBaseMotor {
+    public class SpintakeBaseServo {
         private Servo SpintakeBase;
 
-        public SpintakeBaseMotor(HardwareMap hardwareMap) {
+        public SpintakeBaseServo(HardwareMap hardwareMap) {
             SpintakeBase = hardwareMap.get(Servo.class, "SpintakeBaseServo");
         }
     }
