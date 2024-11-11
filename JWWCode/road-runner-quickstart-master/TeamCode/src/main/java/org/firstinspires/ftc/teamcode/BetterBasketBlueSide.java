@@ -8,6 +8,7 @@ import com.acmerobotics.roadrunner.Pose2d;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -17,90 +18,86 @@ public class BetterBasketBlueSide extends LinearOpMode {
 
     /* REMEMBER TO DELETE THE ONES WE DON'T NEED!!
         Index of Non-drivetrain Motors and Servos
-       1. RP Servo
-       2. Spintake Servo
-       3. Claw Servo
-       4. Shoulder Servo
-       5. Claw Motor
-       6. Shoulder Motor
-       7. Back Motor (ignore??)
+       1. Right Shoulder Motor
+       2. Left Shoulder Motor
+       3. Spintake Base Motor
+       4. Back Motor
+       5. Spintake Base Servo
+       6. Spintake Servo
 
        THESE NAMES ARE NOT PERMANENT!!!!!!
+       DOUBLE CHECK EVERY hardwareMap.get() !!!!!!!!!
      */
 
     // 1
-    public class RPServo {
-        private Servo rpservo;
-
-        public RPServo(HardwareMap hardwareMap) {
-            // CHANGE LATER
-            rpservo = hardwareMap.get(Servo.class, "rpservo");
+    public class RShoulderMotor {
+        private DcMotor RShoudler;
+        
+        public RShoulderMotor(HardwareMap hardwareMap) {
+            RShoudler = hardwareMap.get(DcMotor.class, "RShoulderMotor");
+            RShoudler.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            // Might cause problems, delete comment if works
+            RShoudler.setDirection(DcMotor.Direction.REVERSE);
         }
-        // Actions Go here
+        // Actions go here
     }
 
     // 2
-    public static class SpintakeServo {
-        private Servo spntkservo;
+    public class LShoulderMotor {
+        private DcMotor LShoudler;
 
-        public SpintakeServo(HardwareMap hardwareMap) {
-            // CHANGE LATER
-            spntkservo = hardwareMap.get(Servo.class, "spntkservo");
+        public LShoulderMotor(HardwareMap hardwareMap) {
+            LShoudler = hardwareMap.get(DcMotor.class, "LShoulderMotor");
+            LShoudler.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            // Might cause problems, delete comment if works
+            LShoudler.setDirection(DcMotor.Direction.FORWARD);
         }
-        // Actions Go here
+        // Actions go here
     }
 
     // 3
-    public static class ClawServo {
-        private Servo claw;
+    public class SpintakeBaseMotor {
+        private DcMotor SpintakeBase;
 
-        public ClawServo(HardwareMap hardwareMap) {
-            // CHANGE LATER
-            claw = hardwareMap.get(Servo.class, "clawservo");
+        public SpintakeBaseMotor(HardwareMap hardwareMap) {
+            SpintakeBase = hardwareMap.get(DcMotor.class, "SpintakeBaseMotor");
+            SpintakeBase.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            // Might cause problems, delete comment if works
+            SpintakeBase.setDirection(DcMotor.Direction.FORWARD);
         }
-        // Actions Go here
+        // Actions go here
     }
 
     // 4
-    public static class ShoulderServo {
-        private Servo shoulder;
+    public class BackMotor {
+        private DcMotor BackM;
 
-        public ShoulderServo(HardwareMap hardwareMap) {
-            // CHANGE LATER
-            shoulder = hardwareMap.get(Servo.class, "shoulderservo");
+        public BackMotor(HardwareMap hardwareMap) {
+            BackM = hardwareMap.get(DcMotor.class, "RshoulderMotor");
+            BackM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            // Might cause problems, delete comment if works
+            BackM.setDirection(DcMotor.Direction.REVERSE);
         }
-        // Actions Go here
+        // Actions go here
     }
-
+    
     // 5
-    public static class ClawMotor {
-        // Might be something else Do check later
-        private DcMotor clawmotor;
+    public class SpintakeBaseServo {
+        private Servo SpintakeBase;
 
-        public ClawMotor(HardwareMap hardwareMap) {
-            clawmotor = hardwareMap.get(DcMotor.class, "clawmotor");
-            clawmotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            // Might cause problem, delete comment if works
-            clawmotor.setDirection(DcMotor.Direction.FORWARD);
+        public SpintakeBaseServo(HardwareMap hardwareMap) {
+            SpintakeBase = hardwareMap.get(Servo.class, "SpintakeBaseServo");
         }
-        // Actions Go here
     }
 
-    // 5
-    public static class ShoulderMotor {
-        // Might be something else Do check later
-        private DcMotor shouldermotor;
+    // 6
+    public class SpintakeServo {
+        private Servo Spintake;
 
-        public ShoulderMotor(HardwareMap hardwareMap) {
-            shouldermotor = hardwareMap.get(DcMotor.class, "clawmotor");
-            shouldermotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            // Might cause problem, delete comment if works
-            shouldermotor.setDirection(DcMotor.Direction.FORWARD);
+        public SpintakeServo(HardwareMap hardwareMap) {
+            Spintake = hardwareMap.get(Servo.class, "SpintakeServo");
         }
-        // Actions Go here
-
     }
-
 
     @Override
     public void runOpMode() {
