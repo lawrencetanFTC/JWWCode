@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 
-@Autonomous(name = "BetterDeckAuto", group = "Autonomous")
+@Autonomous(name = "ASBetterAutoBasketBlue", group = "Autonomous")
 public class BetterBasketBlueSide extends LinearOpMode {
 
     /* REMEMBER TO DELETE THE ONES WE DON'T NEED!!

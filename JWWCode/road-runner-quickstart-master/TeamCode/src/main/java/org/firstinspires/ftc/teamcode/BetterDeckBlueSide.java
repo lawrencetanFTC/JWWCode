@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "BetterDeckAuto", group = "Autonomous")
+@Autonomous(name = "BetterDeckAutoASBlue", group = "Autonomous")
 public class BetterDeckBlueSide extends LinearOpMode {
 
     /* REMEMBER TO DELETE THE ONES WE DON'T NEED!!

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "DeckAuto", group = "Autonomous")
+@Autonomous(name = "ASDeckAuto", group = "Autonomous")
 public class DeckAuto extends LinearOpMode {
     double motorPower = 0.24; // 24% motor power
 

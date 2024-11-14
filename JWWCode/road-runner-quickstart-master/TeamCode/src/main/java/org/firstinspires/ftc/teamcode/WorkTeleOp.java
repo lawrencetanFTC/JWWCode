@@ -1,13 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "WorkTeleOp")
+@TeleOp(name = "ASWorkTeleOp")
 public class WorkTeleOp extends OpMode {
     // Define motors for driving
     private DcMotor frontLeft;
@@ -101,9 +100,9 @@ public class WorkTeleOp extends OpMode {
 
         // **Left Side Motor with PID Control**
         if (gamepad2.dpad_up) {
-            leftSideTargetPosition += 10;
+            rightSideTargetPosition += 3;
         } else if (gamepad2.dpad_down) {
-            leftSideTargetPosition -= 10;
+            leftSideTargetPosition -= 3;
         }
 
         // Left Side Motor with PID Control and Boundary Limits
@@ -117,9 +116,9 @@ public class WorkTeleOp extends OpMode {
 
         // **Right Side Motor with PID Control**
         if (gamepad2.dpad_up) {
-            rightSideTargetPosition += 10;
+            rightSideTargetPosition += 3;
         } else if (gamepad2.dpad_down) {
-            rightSideTargetPosition -= 10;
+            leftSideTargetPosition -= 3;
         }
 
         pidControl(rightSideMotor, rightSideTargetPosition, Kp, Ki, Kd, previousErrorRightSide, integralSumRightSide);
