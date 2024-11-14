@@ -75,7 +75,7 @@ public class AutonPositionDeck extends LinearOpMode {
 
 
     public class RPServo {
-        private Servo rpservo;
+         private Servo rpservo;
 
 
         public RPServo(HardwareMap hardwareMap) {
@@ -169,6 +169,11 @@ public class AutonPositionDeck extends LinearOpMode {
 
 
             Actions.runBlocking(
+//                    drive.actionBuilder(new Pose2d(0, 0, Math.toRadians(0)))
+//                            .strafeTo()
+//                            .build();
+
+
                     drive.actionBuilder(new Pose2d(0, 0, Math.toRadians(0))) // Move to Samples
                             .splineToConstantHeading(new Vector2d(-48, -24), Math.PI/2)
                             .build()
