@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 
 @Autonomous(name = "BetterDeckAuto", group = "Autonomous")
 public class BetterBasketBlueSide extends LinearOpMode {
@@ -19,11 +20,12 @@ public class BetterBasketBlueSide extends LinearOpMode {
     /* REMEMBER TO DELETE THE ONES WE DON'T NEED!!
         Index of Non-drivetrain Motors and Servos
        1. Right Shoulder Motor
-       2. Left Shoulder Motor
+       2. Claw Motor
        3. Spintake Base Motor
        4. Back Motor
        5. Spintake Base Servo
        6. Spintake Servo
+       7. Claw Servo
 
        THESE NAMES ARE NOT PERMANENT!!!!!!
        DOUBLE CHECK EVERY hardwareMap.get() !!!!!!!!!
@@ -40,17 +42,18 @@ public class BetterBasketBlueSide extends LinearOpMode {
             RShoudler.setDirection(DcMotor.Direction.REVERSE);
         }
         // Actions go here
+
     }
 
     // 2
-    public class LShoulderMotor {
-        private DcMotor LShoudler;
+    public class ClawMotor {
+        private DcMotor ClawM;
 
-        public LShoulderMotor(HardwareMap hardwareMap) {
-            LShoudler = hardwareMap.get(DcMotor.class, "LShoulderMotor");
-            LShoudler.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        public ClawMotor(HardwareMap hardwareMap) {
+            ClawM = hardwareMap.get(DcMotor.class, "ClawM");
+            ClawM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             // Might cause problems, delete comment if works
-            LShoudler.setDirection(DcMotor.Direction.FORWARD);
+            ClawM.setDirection(DcMotor.Direction.FORWARD);
         }
         // Actions go here
     }
@@ -96,6 +99,15 @@ public class BetterBasketBlueSide extends LinearOpMode {
 
         public SpintakeServo(HardwareMap hardwareMap) {
             Spintake = hardwareMap.get(Servo.class, "SpintakeServo");
+        }
+    }
+
+    // 7
+    public class ClawServo {
+        private Servo ClawS;
+
+        public ClawServo(HardwareMap hardwareMap) {
+            ClawS = hardwareMap.get(Servo.class, "ClawServo");
         }
     }
 
