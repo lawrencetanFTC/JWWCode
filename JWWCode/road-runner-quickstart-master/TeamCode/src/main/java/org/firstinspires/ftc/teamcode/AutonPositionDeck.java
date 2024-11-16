@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "AutonDeck", group = "Autonomous")
+@Autonomous(name = "AutonPositionDeck", group = "Autonomous")
 public class AutonPositionDeck extends LinearOpMode {
 
     public class PID {
