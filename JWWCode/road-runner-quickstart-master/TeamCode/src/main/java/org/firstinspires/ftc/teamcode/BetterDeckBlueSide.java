@@ -21,7 +21,7 @@ public class BetterDeckBlueSide extends LinearOpMode {
     /* REMEMBER TO DELETE THE ONES WE DON'T NEED!!
         Index of Non-drivetrain Motors and Servos
        1. Right Shoulder Motor
-       2. Left Shoulder Motor
+       2. Claw Motor
        3. Spintake Base Motor
        4. Back Motor
        5. Spintake Base Servo

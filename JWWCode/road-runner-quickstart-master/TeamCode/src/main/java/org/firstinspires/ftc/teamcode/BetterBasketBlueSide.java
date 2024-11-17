@@ -4,7 +4,10 @@ import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -14,7 +17,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 
-@Autonomous(name = "ASBetterAutoBasketBlue", group = "Autonomous")
+import org.firstinspires.ftc.teamcode.MecanumDrive;
+
+@Autonomous(name = "BetterBasketAuto", group = "Autonomous")
 public class BetterBasketBlueSide extends LinearOpMode {
 
     /* REMEMBER TO DELETE THE ONES WE DON'T NEED!!
@@ -29,6 +34,19 @@ public class BetterBasketBlueSide extends LinearOpMode {
 
        THESE NAMES ARE NOT PERMANENT!!!!!!
        DOUBLE CHECK EVERY hardwareMap.get() !!!!!!!!!
+
+       Code snippet for Actions for Programming Arnav to ctrlcv
+
+       public class ActionName implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                // Stuff here
+                return false;
+            }
+        }
+        public Action actionName() {
+            return new ActionName();
+        }
      */
 
     // 1
@@ -42,6 +60,16 @@ public class BetterBasketBlueSide extends LinearOpMode {
             RShoudler.setDirection(DcMotor.Direction.REVERSE);
         }
         // Actions go here
+        public class ActionName implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                // Stuff here
+                return false;
+            }
+        }
+        public Action actionName() {
+            return new ActionName();
+        }
 
     }
 
@@ -50,7 +78,7 @@ public class BetterBasketBlueSide extends LinearOpMode {
         private DcMotor ClawM;
 
         public ClawMotor(HardwareMap hardwareMap) {
-            ClawM = hardwareMap.get(DcMotor.class, "ClawM");
+            ClawM = hardwareMap.get(DcMotor.class, "ClawMotor");
             ClawM.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             // Might cause problems, delete comment if works
             ClawM.setDirection(DcMotor.Direction.FORWARD);
@@ -95,10 +123,43 @@ public class BetterBasketBlueSide extends LinearOpMode {
 
     // 6
     public class SpintakeServo {
-        private Servo Spintake;
+        private CRServo Spintake;
 
         public SpintakeServo(HardwareMap hardwareMap) {
-            Spintake = hardwareMap.get(Servo.class, "SpintakeServo");
+            Spintake = hardwareMap.get(CRServo.class, "SpintakeServo");
+        }
+
+        public class StopSpintake implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                Spintake.setPower(0.0);
+                return false;
+            }
+        }
+        public Action stopSpintake() {
+            return new StopSpintake();
+        }
+
+        public class Intake implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                Spintake.setPower(0.5);
+                return false;
+            }
+        }
+        public Action intake() {
+            return new Intake();
+        }
+
+        public class Extake implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                Spintake.setPower(-0.5);
+                return false;
+            }
+        }
+        public Action extake() {
+            return new Extake();
         }
     }
 
@@ -109,6 +170,29 @@ public class BetterBasketBlueSide extends LinearOpMode {
         public ClawServo(HardwareMap hardwareMap) {
             ClawS = hardwareMap.get(Servo.class, "ClawServo");
         }
+
+        public class CloseClaw implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                ClawS.setPosition(0.55);
+                return false;
+            }
+        }
+        public Action closeClaw() {
+            return new CloseClaw();
+        }
+
+        public class OpenClaw implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                ClawS.setPosition(1.0);
+                return false;
+            }
+        }
+        public Action openClaw() {
+            return new OpenClaw();
+        }
+
     }
 
     @Override
