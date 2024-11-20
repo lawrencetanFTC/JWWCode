@@ -25,8 +25,8 @@ public class WorkTeleOp extends OpMode {
 
     // PID things
     private final double Kp =  0.5;      // Proportional gain (tune as needed)
-    private final double Ki = 0.02;      // Integral gain (tune as needed)
-    private final double Kd = 0.03;      // Derivative gain (tune as needed)
+    private final double Ki = 0;      // Integral gain (tune as needed)
+    private final double Kd = 0;      // Derivative gain (tune as needed)
 
     // PID variables
     private double targetPosition = 0; // Desired encoder position
