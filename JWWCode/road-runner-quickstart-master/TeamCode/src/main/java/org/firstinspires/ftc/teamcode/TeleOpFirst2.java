@@ -3,11 +3,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "ASTeleOpSecondPID", group = "TeleOp")
+@TeleOp(name = "ASTeleOp1234567", group = "TeleOp")
 public class TeleOpFirst2 extends OpMode {
     // Define motors for driving
     private DcMotor frontLeft;
@@ -18,10 +17,14 @@ public class TeleOpFirst2 extends OpMode {
     // Servos and mechanisms
     private Servo clawServo;
     private CRServo spinTake;
-    private DcMotorEx armMotor; // Using DcMotorEx for advanced control
+
+    // armMotors
+    private DcMotor armMotor;
+    private DcMotor armMotor2;
+
     private CRServo extendServo;
-    private DcMotor leftSideMotor;
-    private DcMotor rightSideMotor;
+    private DcMotor leftSlideMotor;
+    private DcMotor rightSlideMotor;
 
     // PID constants and variables for arm control
     private final double Kp = 0.5; // Proportional gain
@@ -31,12 +34,8 @@ public class TeleOpFirst2 extends OpMode {
     private double integralSum = 0;
     private double lastError = 0;
 
-    // Arm rotation limits
-    private final int ARM_LIMIT_UP = 60; // 60 degrees
-    private final int ARM_LIMIT_DOWN = 45; // 45 degrees
-    private final int TICKS_PER_DEGREE = 4; // 4 ticks per degree for 117 RPM goBilda motor
-    private final int MAX_ARM_TICKS = ARM_LIMIT_UP * TICKS_PER_DEGREE;
-    private final int MIN_ARM_TICKS = ARM_LIMIT_DOWN * TICKS_PER_DEGREE;
+    private final int SLIDE_MIN_LIMIT = 0; // Minimum slide position (fully retracted)
+    private final int SLIDE_MAX_LIMIT = 500; // Maximum slide position (fully extended)
 
     // Constants for claw servo
     private final double CLAW_OPEN_POSITION = 0.52;
@@ -49,23 +48,39 @@ public class TeleOpFirst2 extends OpMode {
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
-
         // Reverse left motors for proper directionality
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
 
         // Arm motor setup using DcMotorEx for better position control
-        armMotor = hardwareMap.get(DcMotorEx.class, "armMotor");
+        armMotor = hardwareMap.get(DcMotor.class, "armMotor");
         armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        armMotor2 = hardwareMap.get(DcMotor.class, "armMotor2");
+        armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        armMotor2.setDirection(DcMotor.Direction.REVERSE);
 
         // Servos and side motors
         spinTake = hardwareMap.get(CRServo.class, "spinTake");
         extendServo = hardwareMap.get(CRServo.class, "extendServo");
         clawServo = hardwareMap.get(Servo.class, "clawServo");
-        leftSideMotor = hardwareMap.get(DcMotor.class, "leftSideMotor");
-        rightSideMotor = hardwareMap.get(DcMotor.class, "rightSideMotor");
+
+        leftSlideMotor = hardwareMap.get(DcMotor.class, "leftSlideMotor");
+        rightSlideMotor = hardwareMap.get(DcMotor.class, "rightSlideMotor");
+
+        // Reset encoders for the slide motors
+        leftSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        // Set them to run using encoders after reset
+        leftSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
 
     @Override
@@ -76,46 +91,16 @@ public class TeleOpFirst2 extends OpMode {
         double turn = gamepad1.right_stick_x; // Rotation
 
         // Use original formulas for mecanum drive
-        double frontLeftPower = (y + x + turn) * .79;
-        double frontRightPower = (y - x - turn) * .79;
-        double backLeftPower = (y - x + turn) * .90;
-        double backRightPower = (y + x - turn) * .90;
+        double frontLeftPower = (y + x + turn) * .85;
+        double frontRightPower = (y - x - turn) * .85;
+        double backLeftPower = (y - x + turn) * .85;
+        double backRightPower = (y + x - turn) * .85;
 
         // Apply power directly
         frontLeft.setPower(frontLeftPower);
         frontRight.setPower(frontRightPower);
         backLeft.setPower(backLeftPower);
         backRight.setPower(backRightPower);
-
-        // ---- Arm Control with PID and Rotation Limits ----
-        // Control for arm movement
-
-        while (gamepad2.right_stick_y > 0) {
-            targetPosition += 0.04;
-        }
-
-        // Apply PID control
-        int currentPosition = armMotor.getCurrentPosition();
-        double error = targetPosition - currentPosition;
-        integralSum += error;
-        double derivative = error - lastError;
-
-        double powerOutput = (Kp * error) + (Ki * integralSum) + (Kd * derivative);
-
-        if (powerOutput <= 0.5) {
-            armMotor.setPower(powerOutput);
-        } else {
-            armMotor.setPower(0);
-        }
-        lastError = error;
-
-        // Update motor position target
-
-
-        // Telemetry for debugging
-        telemetry.addData("Arm Target", targetPosition);
-        telemetry.addData("Arm Position", currentPosition);
-        telemetry.addData("Arm Power", powerOutput);
 
         // ---- Servo Control ----
         if (gamepad2.dpad_up) {
@@ -140,26 +125,125 @@ public class TeleOpFirst2 extends OpMode {
             clawServo.setPosition(CLAW_CLOSE_POSITION);
         }
 
-        // ---- Slide Motor Limits ----
-        int leftSlidePosition = leftSideMotor.getCurrentPosition();
-        int rightSlidePosition = rightSideMotor.getCurrentPosition();
+//        if (gamepad2.a) {
+//            armMotor.setPower(-1);
+//            armMotor2.setPower(1);
+//        } else if (gamepad2.y) {
+//            armMotor.setPower(1);
+//            armMotor2.setPower(-1);
+//        }
+//        else {
+//            armMotor.setPower(0);
+//            armMotor2.setPower(0);
+//        }
 
-        if (gamepad2.left_stick_y > 0.1) {
-            leftSideMotor.setPower(0.8);
-        } else if (gamepad2.left_stick_y > 0.1) {
-            leftSideMotor.setPower(-0.8);
+        double NORMAL_INCREMENT = .001;
+
+        if (gamepad1.dpad_up) {
+            targetPosition += NORMAL_INCREMENT;
+        } else if (gamepad1.dpad_down) {
+            targetPosition -= NORMAL_INCREMENT; // Adjust target position
+        }
+        pidControl();
+        // armMotor.setConstraints(new TrajectoryVelocityConstraint(9.65), new TrajectoryAcceleration(9.65));
+
+        if (gamepad2.left_bumper) {
+            // armMotor.setTargetPosition(5);
+            // armMotor2.setTargetPosition(5);
+            // armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            // armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armMotor.setPower(.5);
+            armMotor2.setPower(.5);
+        } else if (gamepad2.right_bumper) {
+            // armMotor.setTargetPosition(-5);
+            // armMotor2.setTargetPosition(-5);
+            // armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            // armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armMotor.setPower(-.5);
+            armMotor2.setPower(-.5);
         } else {
-            leftSideMotor.setPower(0);
+            armMotor2.setPower(0);
+            armMotor.setPower(0);
         }
 
-        if (gamepad2.left_stick_y > 0.1 ) {
-            rightSideMotor.setPower(0.8);
-        } else if (gamepad2.left_stick_y > 0.1) {
-            rightSideMotor.setPower(-0.8);
+        // slides with limits
+        // Get user input for slide power
+        // double slideInputPower = -gamepad2.left_stick_y * 0.85;
+
+        // Calculate power for both motors with limits
+        // double leftPower = calculateMotorPower(leftSlideMotor, slideInputPower, SLIDE_MIN_LIMIT, SLIDE_MAX_LIMIT);
+        // double rightPower = calculateMotorPower(rightSlideMotor, slideInputPower, SLIDE_MIN_LIMIT, SLIDE_MAX_LIMIT);
+
+        // leftSlideMotor.setPower(leftPower);
+        // rightSlideMotor.setPower(rightPower);
+
+        // rightSlideMotor.setConstraints(new TrajectoryVelocityConstraint(9.65), new TrajectoryAcceleration(9.65));
+        // leftSllideMotor.setConstraints(new TrajectoryVelocityConstraint(9.65), new TrajectoryAcceleration(9.65));
+
+        if (gamepad2.left_stick_y < 0 && leftSlideMotor.getCurrentPosition() < 8100 && rightSlideMotor.getCurrentPosition() > -8100) {
+            rightSlideMotor.setPower(-gamepad2.left_stick_y * -0.7);
+            leftSlideMotor.setPower(-gamepad2.left_stick_y * 0.7);
+        } else if (gamepad2.left_stick_y > 0 && leftSlideMotor.getCurrentPosition() > 0 && rightSlideMotor.getCurrentPosition() < 0) {
+            rightSlideMotor.setPower(-gamepad2.left_stick_y * -0.7);
+            leftSlideMotor.setPower(-gamepad2.left_stick_y * 0.7);
         } else {
-            rightSideMotor.setPower(0);
+            rightSlideMotor.setPower(0);
+            leftSlideMotor.setPower(0);
         }
-        telemetry.update();
+
+        if (gamepad2.y) {
+            rightSlideMotor.setPower(-gamepad2.left_stick_y * -0.7);
+            leftSlideMotor.setPower(-gamepad2.left_stick_y * 0.7);
+        }
+
+
+
+        telemetry.addData("arm 1: ", armMotor.getCurrentPosition());
+        telemetry.addData("arm 2", armMotor2.getCurrentPosition());
+
+
+
+        telemetry.addData("Arm Motor 1 Position: ", armMotor.getCurrentPosition());
+        telemetry.addData("Arm Motor 2 Position: ", armMotor2.getCurrentPosition());
+        telemetry.addData("PID Target Position: ", targetPosition);
+        telemetry.addData("Error: ", targetPosition - armMotor.getCurrentPosition());
+
+
+
+    }
+
+    private void pidControl() {
+        int currentPosition1 = armMotor.getCurrentPosition();
+        int currentPosition2 = armMotor2.getCurrentPosition();
+        double averagePosition = ((double) currentPosition1 + currentPosition2) / 2;
+        double feedforward = 0.2;
+
+        double error = targetPosition - averagePosition;
+        integralSum += error;
+        double derivative = error - lastError;
+
+        double power = (Kp * error) + (Ki * integralSum) + (Kd * derivative);
+        double scale = 1.0 / 15;  // scale power approx in range of -1 to 1
+        power = power * scale;
+        power = Math.signum(power) * Math.min(0.7, Math.abs(power));  // max power is 0.7 or -0.7
+        if(power == 0){
+            power = feedforward;
+        }
+
+        armMotor.setPower(power);
+        armMotor2.setPower(power);
+
+        lastError = error;
+    }
+
+    private double calculateMotorPower(DcMotor motor, double inputPower, int minLimit, int maxLimit) {
+        int currentPosition = motor.getCurrentPosition();
+
+        if ((inputPower > 0 && currentPosition >= maxLimit) ||
+                (inputPower < 0 && currentPosition <= minLimit)) {
+            return 0;
+        }
+        return inputPower;
     }
 }
 
