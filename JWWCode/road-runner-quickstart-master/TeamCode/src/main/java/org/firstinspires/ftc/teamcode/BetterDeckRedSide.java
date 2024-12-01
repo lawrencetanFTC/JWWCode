@@ -3,6 +3,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -46,13 +48,23 @@ public class BetterDeckRedSide extends LinearOpMode {
 
     // 2
     public class SpintakeServo {
-        private Servo spntkservo;
+        private CRServo spntkservo;
 
         public SpintakeServo(HardwareMap hardwareMap) {
             // CHANGE LATER
-            spntkservo = hardwareMap.get(Servo.class, "spntkservo");
+            spntkservo = hardwareMap.get(CRServo.class, "spntkservo");
         }
         // Actions Go here
+        public void spinIn() {
+            spntkservo.setPower(.5);
+            sleep(1500);
+            spntkservo.setPower(0);
+        }
+        public void spinOut(){
+            spntkservo.setPower(-.5);
+            sleep(3000);
+            spntkservo.setPower(0);
+        }
     }
 
     // 3
@@ -89,6 +101,7 @@ public class BetterDeckRedSide extends LinearOpMode {
             clawmotor.setDirection(DcMotor.Direction.FORWARD);
         }
         // Actions Go here
+
     }
 
     // 5

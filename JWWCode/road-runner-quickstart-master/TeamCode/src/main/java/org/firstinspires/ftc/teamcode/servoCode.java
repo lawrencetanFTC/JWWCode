@@ -44,7 +44,6 @@ public class servoCode extends OpMode {
            rightextendServo.setPosition(extendPos);
        }
 
-
     }
 
 }
