@@ -222,8 +222,8 @@ public class NewAutoBasket extends LinearOpMode {
         public class WristVertical implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                leftWristServo.setPosition(1);
-                rightWristServo.setPosition(-1);
+                leftWristServo.setPosition(0.3);
+                rightWristServo.setPosition(-0.3);
                 return false;
             }
         }
@@ -255,7 +255,7 @@ public class NewAutoBasket extends LinearOpMode {
         public class OpenDrop implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                dropServo.setPosition(1);
+                dropServo.setPosition(0.1);
                 return false;
             }
         }
@@ -270,6 +270,8 @@ public class NewAutoBasket extends LinearOpMode {
         }
         public Action closeDrop() {return new CloseDrop();}
     }
+
+    // Hi lawrence
 
 }
 
