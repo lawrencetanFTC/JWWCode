@@ -42,6 +42,7 @@ public class NewAutoBasket extends LinearOpMode {
         Actions.runBlocking(slide.hook());
         Actions.runBlocking(claw.open());
         Actions.runBlocking(slide.moveToLow());
+        Actions.runBlocking(SpinTake.spin);
 
 
     }
