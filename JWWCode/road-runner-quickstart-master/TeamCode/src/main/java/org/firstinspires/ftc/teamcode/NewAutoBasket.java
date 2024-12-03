@@ -55,14 +55,6 @@ public class NewAutoBasket extends LinearOpMode {
             spinTakeRight = hardwareMap.get(CRServo.class, "spinTakeRight");
         }
 
-        public Action spinIn(long runMs) {
-            return new SpinAction(runMs, DcMotorSimple.Direction.FORWARD);
-        }
-
-        public Action spinOut(long runMs) {
-            return new SpinAction(runMs, DcMotorSimple.Direction.REVERSE);
-        }
-
         private class SpinAction implements Action {
             private final long runMs;
             private final DcMotorSimple.Direction direction;
@@ -87,6 +79,10 @@ public class NewAutoBasket extends LinearOpMode {
                 }
                 return running;
             }
+        }
+
+        public Action spinIn(long runMs) {
+            return new SpinAction(runMs, DcMotorSimple.Direction.FORWARD);
         }
     }
 
@@ -210,6 +206,68 @@ public class NewAutoBasket extends LinearOpMode {
         public Action close(){
             return new SetClawPos(CLOSE_POS);
         }
+    }
+
+    // Code that Arnav added
+    public class Wrist {
+        Servo leftWristServo;
+        Servo rightWristServo;
+
+        public Wrist(HardwareMap hardwareMap) {
+            leftWristServo = hardwareMap.get(Servo.class, "leftWristServo");
+            rightWristServo = hardwareMap.get(Servo.class, "rightWristServo");
+        }
+
+        public class WristVertical implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                leftWristServo.setPosition(1);
+                rightWristServo.setPosition(-1);
+                return false;
+            }
+        }
+        public Action wristUp() {
+            return new WristVertical();
+        }
+
+        public class WristHorizontal implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                leftWristServo.setPosition(0);
+                rightWristServo.setPosition(0);
+                return false;
+            }
+        }
+        public Action wristDown() {
+            return new WristHorizontal();
+        }
+
+    }
+
+    public class Drop {
+        Servo dropServo;
+
+        public Drop(Hardwaremap hardwaremap) {
+            dropServo = hardwaremap.get(Servo.class, "dropServo")
+        }
+
+        public class OpenDrop implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                dropServo.setPosition(1);
+                return false;
+            }
+        }
+        public Action dropSample() {return new OpenDrop();}
+
+        public class CloseDrop implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                dropServo.setPosition(0);
+                return false;
+            }
+        }
+        public Action closeDrop() {return new CloseDrop();}
     }
 
 }
