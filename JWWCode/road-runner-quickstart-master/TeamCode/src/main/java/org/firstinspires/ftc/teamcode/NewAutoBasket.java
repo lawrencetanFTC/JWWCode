@@ -98,7 +98,34 @@ public class NewAutoBasket extends LinearOpMode {
 
 
         // Actions Go here.
-        // Please code this.
+        // NUMBERS IN ARNAV CODE ARE PURPOSFULLY LOW
+        // THESE NUMBERES WILL BE TUNED LATER
+
+        //Actions added by arnav
+        public class ArmVertical implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                lArmServo.setPosition(0.5);
+                rArmServo.setPosition(-0.5);
+                return false;
+            }
+        }
+        public Action armUp() {
+            return new ArmVertical();
+        }
+
+        public class ArmHorizontal implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                lArmServo.setPosition(0);
+                rArmServo.setPosition(0);
+                return false;
+            }
+        }
+        public Action armDown() {
+            return new ArmHorizontal();
+        }
+        // End of arnav code
 
     }
 
