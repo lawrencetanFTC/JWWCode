@@ -47,10 +47,12 @@ public class NewAutoBasket extends LinearOpMode {
     }
 
     public class SpinTake {
-        CRServo spinTakeServo;
+        CRServo spinTakeLeft;
+        CRServo spinTakeRight;
 
         public SpinTake(HardwareMap hardwareMap) {
-            spinTakeServo = hardwareMap.get(CRServo.class, "spintakeservo");
+            spinTakeLeft = hardwareMap.get(CRServo.class, "spinTakeLeft");
+            spinTakeRight = hardwareMap.get(CRServo.class, "spinTakeRight");
         }
 
         public Action spinIn(long runMs) {
@@ -75,13 +77,13 @@ public class NewAutoBasket extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 if (startTime == 0) {
-                    spinTakeServo.setPower(.5);
-                    spinTakeServo.setDirection(direction);
+                    spinTakeLeft.setPower(.5);
+                    spinTakeLeft.setDirection(direction);
                     startTime = System.currentTimeMillis();
                 }
                 boolean running = System.currentTimeMillis() - startTime < runMs;
                 if (!running) {
-                    spinTakeServo.setPower(0);
+                    spinTakeLeft.setPower(0);
                 }
                 return running;
             }
@@ -209,5 +211,6 @@ public class NewAutoBasket extends LinearOpMode {
             return new SetClawPos(CLOSE_POS);
         }
     }
+
 }
 

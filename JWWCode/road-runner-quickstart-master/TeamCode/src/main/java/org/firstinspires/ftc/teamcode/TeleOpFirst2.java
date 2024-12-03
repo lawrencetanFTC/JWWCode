@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "ASTeleOp12345", group = "TeleOp")
+@TeleOp(name = "ASTeleOp122345", group = "TeleOp")
 public class TeleOpFirst2 extends OpMode {
     // Define motors for driving
     private DcMotor frontLeft;
@@ -44,7 +44,7 @@ public class TeleOpFirst2 extends OpMode {
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        clawServo = hardwareMap.get(Servo.class, "clawServo");
+        // clawServo = hardwareMap.get(Servo.class, "clawServo");
 
         leftSlideMotor = hardwareMap.get(DcMotor.class, "leftSlideMotor");
         rightSlideMotor = hardwareMap.get(DcMotor.class, "rightSlideMotor");
@@ -62,8 +62,8 @@ public class TeleOpFirst2 extends OpMode {
         leftExtendServo = hardwareMap.get(Servo.class, "leftExtendServo");
         rightExtendServo = hardwareMap.get(Servo.class, "rightExtendServo");
         // arm turning servos
-        leftArmServo = hardwareMap.get(Servo.class, "leftArmServo");
-        rightArmServo = hardwareMap.get(Servo.class, "rightArmServo");
+        // leftArmServo = hardwareMap.get(Servo.class, "leftArmServo");
+        // rightArmServo = hardwareMap.get(Servo.class, "rightArmServo");
         // wriste turn thing servos :)
         leftWristServo = hardwareMap.get(Servo.class, "leftWristServo");
         rightWristServo = hardwareMap.get(Servo.class, "rightWristServo");
@@ -125,11 +125,11 @@ public class TeleOpFirst2 extends OpMode {
         }
 
         if (gamepad2.left_trigger > 0) {
-            leftArmServo.setPosition(leftArmServo.getPosition() + .1);
-            rightArmServo.setPosition(rightArmServo.getPosition() + -.1);
+            // leftArmServo.setPosition(leftArmServo.getPosition() + .1);
+            // rightArmServo.setPosition(rightArmServo.getPosition() + -.1);
         } else if (gamepad2.right_trigger > 0) {
-            leftArmServo.setPosition(leftArmServo.getPosition() + -.1);
-            rightArmServo.setPosition(rightArmServo.getPosition() + .1);
+            // leftArmServo.setPosition(leftArmServo.getPosition() + -.1);
+            // rightArmServo.setPosition(rightArmServo.getPosition() + .1);
         }
 
         // SLIDES movement code
@@ -148,40 +148,34 @@ public class TeleOpFirst2 extends OpMode {
             rightSlideMotor.setPower(-gamepad2.left_stick_y * -0.7);
             leftSlideMotor.setPower(-gamepad2.left_stick_y * 0.7);
         }
-
         if(gamepad2.dpad_up){
 
+            leftExtendServo.setPosition(leftExtendServo.getPosition() - .005);
+            rightExtendServo.setPosition(Math.min(rightExtendServo.getPosition() + .005,Math.abs(1 - leftExtendServo.getPosition() )));
 
-            leftExtendServo.setPosition(.8);
-            rightExtendServo.setPosition(.2);
-            extendinit = true;
         }else if(gamepad2.dpad_down) {
-            extendinit = false;
+            leftExtendServo.setPosition(leftExtendServo.getPosition() + .005);
+            rightExtendServo.setPosition(Math.max(rightExtendServo.getPosition() - .005, Math.abs(1 - leftExtendServo.getPosition())));
 
-        }else{
-            if(!extendinit) {
-                rightExtendServo.setPosition(0);
-                leftExtendServo.setPosition(0);
-            }
         }
 
         if(gamepad2.dpad_left){
             leftWristServo.setPosition(leftWristServo.getPosition() - .05);
-            rightWristServo.setPosition(leftWristServo.getPosition() + .05);
+            rightWristServo.setPosition(rightWristServo.getPosition() + .05);
         }else if(gamepad2.dpad_right){
             leftWristServo.setPosition(leftWristServo.getPosition() + .05);
-            rightWristServo.setPosition(leftWristServo.getPosition() - .05);
+            rightWristServo.setPosition(rightWristServo.getPosition() - .05);
         }
 
         if(gamepad2.x){
-            clawServo.setPosition(0);
+            // clawServo.setPosition(0);
         } else if(gamepad2.a){
-            clawServo.setPosition(.4);
+            // clawServo.setPosition(.4);
         }
         if(gamepad2.right_bumper){
-            clawServo.setPosition(0);
+            //clawServo.setPosition(0);
         } else if(gamepad2.left_bumper){
-            clawServo.setPosition(.4);
+            //clawServo.setPosition(.4);
         }
 
 
