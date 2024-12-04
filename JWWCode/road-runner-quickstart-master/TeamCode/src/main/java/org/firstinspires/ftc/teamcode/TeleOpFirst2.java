@@ -30,7 +30,6 @@ public class TeleOpFirst2 extends OpMode {
     // Constants for claw servo
 //    private final double CLAW_OPEN_POSITION = 0.52;
 //    private final double CLAW_CLOSE_POSITION = 0.65;
-    boolean extendinit = false;
 
     @Override
     public void init() {

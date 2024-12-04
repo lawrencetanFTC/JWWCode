@@ -27,22 +27,10 @@ public class NewAutoBasket extends LinearOpMode {
         Claw claw = new Claw(hardwareMap);
 
         waitForStart();
-
-        TrajectoryActionBuilder oneToTwo = drive.actionBuilder(new Pose2d(0, 0, Math.toRadians(0)));
-
-        Actions.runBlocking(
-                oneToTwo.splineToConstantHeading(new Vector2d(10, 10), Math.toRadians(90))
-                        .build());
-
-        TrajectoryActionBuilder twoToThree = drive.actionBuilder(new Pose2d(10, 10, Math.PI / 2));
-        Action twoToThreeAction = twoToThree.splineToConstantHeading(new Vector2d(0, 5), Math.toRadians(90)).build();
-        Actions.runBlocking(twoToThreeAction);
-
-        Actions.runBlocking(slide.moveToMid());
-        Actions.runBlocking(slide.hook());
+        Action action =  drive.actionBuilder(new Pose2d(0,0,0)).strafeTo(new Vector2d(0, 4)).build();
+        Actions.runBlocking(action);
         Actions.runBlocking(claw.open());
-        Actions.runBlocking(slide.moveToLow());
-        Actions.runBlocking(SpinTake.spin);
+
 
 
     }
@@ -70,13 +58,16 @@ public class NewAutoBasket extends LinearOpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 if (startTime == 0) {
-                    spinTakeLeft.setPower(.5);
+                    spinTakeLeft.setPower(-.5);
+                    spinTakeRight.setPower(.5);
                     spinTakeLeft.setDirection(direction);
+                    spinTakeRight.setDirection(direction);
                     startTime = System.currentTimeMillis();
                 }
                 boolean running = System.currentTimeMillis() - startTime < runMs;
                 if (!running) {
                     spinTakeLeft.setPower(0);
+                    spinTakeRight.setPower(0);
                 }
                 return running;
             }
@@ -248,8 +239,8 @@ public class NewAutoBasket extends LinearOpMode {
     public class Drop {
         Servo dropServo;
 
-        public Drop(Hardwaremap hardwaremap) {
-            dropServo = hardwaremap.get(Servo.class, "dropServo")
+        public Drop(HardwareMap hardwaremap) {
+            dropServo = hardwaremap.get(Servo.class, "dropServo");
         }
 
         public class OpenDrop implements Action {
@@ -261,14 +252,14 @@ public class NewAutoBasket extends LinearOpMode {
         }
         public Action dropSample() {return new OpenDrop();}
 
-        public class CloseDrop implements Action {
+        public class CloseLatch implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 dropServo.setPosition(0);
                 return false;
             }
         }
-        public Action closeDrop() {return new CloseDrop();}
+        public Action closeDrop() {return new CloseLatch();}
     }
 
 }
