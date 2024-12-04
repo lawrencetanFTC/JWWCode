@@ -8,6 +8,9 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.ParallelAction;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -27,10 +30,33 @@ public class NewAutoBasket extends LinearOpMode {
         Claw claw = new Claw(hardwareMap);
 
         waitForStart();
-        Action action =  drive.actionBuilder(new Pose2d(0,0,0)).strafeTo(new Vector2d(0, 4)).build();
+        Action action =  drive.actionBuilder(new Pose2d(0,0,0)).strafeTo(new Vector2d(24, 6)).build();
         Actions.runBlocking(action);
         Actions.runBlocking(claw.open());
 
+        TrajectoryActionBuilder goToRungs = drive.actionBuilder(new Pose2d(-24.68, -61.23, Math.toRadians(90.00)))
+                .splineToConstantHeading(new Vector2d(-1.24, -35.02), Math.toRadians(55.22));
+
+        TrajectoryActionBuilder goToSamples = drive.actionBuilder(new Pose2d(-1.24, -35.02, Math.toRadians(90.00)))
+                .splineToConstantHeading(new Vector2d(-10.99, -45.65), Math.toRadians(220.23))
+                .splineToConstantHeading(new Vector2d(-47.83, -38.80), Math.toRadians(173.50));
+
+
+        Actions.runBlocking(
+                new SequentialAction(
+                        claw.close(),
+                        slide.moveToTop(),
+                        goToRungs.build(),
+                        slide.hook(),
+                        claw.open()
+                )
+        );
+        Actions.runBlocking(
+                new ParallelAction(
+                        slide.moveToLow(),
+                        goToSamples.build()
+                )
+        );
 
 
     }
