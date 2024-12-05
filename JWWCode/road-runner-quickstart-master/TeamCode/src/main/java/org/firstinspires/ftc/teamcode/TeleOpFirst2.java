@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name = "ASTeleOp122345", group = "TeleOp")
+@TeleOp(name = "ASTeleOp12345", group = "TeleOp")
 public class TeleOpFirst2 extends OpMode {
     // Define motors for driving
     private DcMotor frontLeft;
@@ -14,7 +14,7 @@ public class TeleOpFirst2 extends OpMode {
     private DcMotor backLeft;
     private DcMotor backRight;
 
-    // Servos and mechanisms
+    // Servos and mechanisms defined
     private Servo clawServo;
     private CRServo spinTakeLeft;
     private CRServo spinTakeRight;
@@ -26,10 +26,21 @@ public class TeleOpFirst2 extends OpMode {
     private Servo rightArmServo;
     private Servo leftWristServo;
     private Servo rightWristServo;
+    private Servo latchServo;
 
-    // Constants for claw servo
-//    private final double CLAW_OPEN_POSITION = 0.52;
-//    private final double CLAW_CLOSE_POSITION = 0.65;
+    private final double CLAW_OPEN_POSITION = 0.52;
+    private final double CLAW_CLOSE_POSITION = 0.65;
+
+    private final double ARM_ORIGINAL_POSITION = 0;
+    private final double ARM_POSITION_BASKET = 0;
+    private final double ARM_POSITION_SPECIMENT = 0;
+    private final double ARM_POSITION_HANG = 0;
+    private final double ARM_POSITION_SPECIMENT_OBSERV = 0;
+
+    private final double ARM_EXTEND_RETRACTED = 0;
+    private final double ARM_EXTEND_EXTENDED = 0;
+
+    private double LATCH_OPEN_POSITION;
 
     @Override
     public void init() {
@@ -43,8 +54,9 @@ public class TeleOpFirst2 extends OpMode {
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        // clawServo = hardwareMap.get(Servo.class, "clawServo");
+        clawServo = hardwareMap.get(Servo.class, "clawServo");
 
+        // left and right slide motors initialized
         leftSlideMotor = hardwareMap.get(DcMotor.class, "leftSlideMotor");
         rightSlideMotor = hardwareMap.get(DcMotor.class, "rightSlideMotor");
         // Reset encoders for the slide motors
@@ -57,15 +69,19 @@ public class TeleOpFirst2 extends OpMode {
         // Servos and side motors
         spinTakeLeft = hardwareMap.get(CRServo.class, "spinTakeLeft");
         spinTakeRight = hardwareMap.get(CRServo.class, "spinTakeRight");
-        // // extend arm servos
+        // extend arm servos
         leftExtendServo = hardwareMap.get(Servo.class, "leftExtendServo");
         rightExtendServo = hardwareMap.get(Servo.class, "rightExtendServo");
-        // arm turning servos
-        // leftArmServo = hardwareMap.get(Servo.class, "leftArmServo");
-        // rightArmServo = hardwareMap.get(Servo.class, "rightArmServo");
-        // wriste turn thing servos :)
+        // turning arm servos
+        leftArmServo = hardwareMap.get(Servo.class, "leftArmServo");
+        rightArmServo = hardwareMap.get(Servo.class, "rightArmServo");
+        // wrist servos
         leftWristServo = hardwareMap.get(Servo.class, "leftWristServo");
         rightWristServo = hardwareMap.get(Servo.class, "rightWristServo");
+        // LATCH servo
+        latchServo = hardwareMap.get(Servo.class, "latchServo");
+
+        LATCH_OPEN_POSITION = latchServo.getPosition();
     }
 
     @Override
@@ -74,33 +90,18 @@ public class TeleOpFirst2 extends OpMode {
         double y = -gamepad1.left_stick_y; // Forward/backward
         double x = gamepad1.left_stick_x; // Strafing
         double turn = gamepad1.right_stick_x; // Rotation
-
         // Use original formulas for mecanum drive
         double frontLeftPower = (y + x + turn) * .85;
         double frontRightPower = (y - x - turn) * .85;
         double backLeftPower = (y - x + turn) * .85;
         double backRightPower = (y + x - turn) * .85;
-
         // Apply power directly
         frontLeft.setPower(frontLeftPower);
         frontRight.setPower(frontRightPower);
         backLeft.setPower(backLeftPower);
         backRight.setPower(backRightPower);
 
-        // if (gamepad1.a) {
-        //     spinTake.setPower(1);
-        // } else if (gamepad1.b) {
-        //     spinTake.setPower(-1);
-        // } else {
-        //     spinTake.setPower(0);
-        // }
-
-        // if (gamepad2.left_bumper) {
-        //     clawServo.setPosition(CLAW_OPEN_POSITION);
-        // } else if (gamepad2.right_bumper) {
-        //     clawServo.setPosition(CLAW_CLOSE_POSITION);
-        // }
-
+        // ------- Wrist CODE -------
         // SPIN TAKE servo code
         if (gamepad1.a) {
             spinTakeLeft.setPower(1);
@@ -108,27 +109,52 @@ public class TeleOpFirst2 extends OpMode {
         } else if (gamepad1.b) {
             spinTakeLeft.setPower(-1);
             spinTakeRight.setPower(1);
-        }
-        else {
+        } else {
             spinTakeLeft.setPower(0);
             spinTakeRight.setPower(0);
         }
-
-        // ARM servos
-        if (gamepad2.left_bumper) {
-            leftWristServo.setPosition(.3);
-            // rightWristServo.setPosition(-.1);
-        } else if (gamepad2.right_bumper) {
-            leftWristServo.setPosition(-.3);
-            // rightWristServo.setPosition(.1);
+        // CLAW servo
+        if(gamepad2.right_bumper){
+            clawServo.setPosition(0);
+        } else if(gamepad2.left_bumper){
+            clawServo.setPosition(.4);
+        }
+        // WRIST servo code
+        if(gamepad2.dpad_left){
+            leftWristServo.setPosition(leftWristServo.getPosition() - .005);
+            rightWristServo.setPosition(rightWristServo.getPosition() + .005);
+        }else if(gamepad2.dpad_right){
+            leftWristServo.setPosition(leftWristServo.getPosition() + .005);
+            rightWristServo.setPosition(rightWristServo.getPosition() - .005);
         }
 
-        if (gamepad2.left_trigger > 0) {
-            // leftArmServo.setPosition(leftArmServo.getPosition() + .1);
-            // rightArmServo.setPosition(rightArmServo.getPosition() + -.1);
-        } else if (gamepad2.right_trigger > 0) {
-            // leftArmServo.setPosition(leftArmServo.getPosition() + -.1);
-            // rightArmServo.setPosition(rightArmServo.getPosition() + .1);
+        // -------ARM Code------
+        // ARM EXTEND Code
+        if(gamepad2.dpad_up){
+            leftExtendServo.setPosition(leftExtendServo.getPosition() - .005);
+            rightExtendServo.setPosition(Math.min(rightExtendServo.getPosition() + .005,Math.abs(1 - leftExtendServo.getPosition() )));
+        }else if(gamepad2.dpad_down) {
+            leftExtendServo.setPosition(leftExtendServo.getPosition() + .005);
+            rightExtendServo.setPosition(Math.max(rightExtendServo.getPosition() - .005, Math.abs(1 - leftExtendServo.getPosition())));
+        }
+        // ARM servo code with constrains
+        if (leftSlideMotor.getCurrentPosition() > 0 || rightSlideMotor.getCurrentPosition() > 0) {
+            // Extend servos to original position
+//            leftExtendServo.setPosition(0); // Example original position (has to be tuned)
+//            rightExtendServo.setPosition(0);
+            // Arm servos to original position
+            leftArmServo.setPosition(ARM_POSITION_BASKET);
+            rightArmServo.setPosition(ARM_POSITION_BASKET);
+        } else { // if the slides are at 0 position meaning not extended
+            if (gamepad2.right_trigger > .0) {
+                // Increment arm servo positions
+                leftArmServo.setPosition(leftArmServo.getPosition() - 0.02);
+                rightArmServo.setPosition(rightArmServo.getPosition() + 0.02);
+            } else if (gamepad2.left_trigger > .0) {
+                // Decrement arm servo positions
+                leftArmServo.setPosition(leftArmServo.getPosition() + 0.02);
+                rightArmServo.setPosition(rightArmServo.getPosition() - 0.02);
+            }
         }
 
         // SLIDES movement code
@@ -142,42 +168,17 @@ public class TeleOpFirst2 extends OpMode {
             rightSlideMotor.setPower(0);
             leftSlideMotor.setPower(0);
         }
-
+        // Debugging COMMENT LATER ON
         if (gamepad2.y) {
             rightSlideMotor.setPower(-gamepad2.left_stick_y * -0.7);
             leftSlideMotor.setPower(-gamepad2.left_stick_y * 0.7);
         }
-        if(gamepad2.dpad_up){
 
-            leftExtendServo.setPosition(leftExtendServo.getPosition() - .005);
-            rightExtendServo.setPosition(Math.min(rightExtendServo.getPosition() + .005,Math.abs(1 - leftExtendServo.getPosition() )));
-
-        }else if(gamepad2.dpad_down) {
-            leftExtendServo.setPosition(leftExtendServo.getPosition() + .005);
-            rightExtendServo.setPosition(Math.max(rightExtendServo.getPosition() - .005, Math.abs(1 - leftExtendServo.getPosition())));
-
+        if (gamepad1.x) {
+            latchServo.setPosition(LATCH_OPEN_POSITION + .0001);
+        } else if(gamepad1.y) {
+            latchServo.setPosition(LATCH_OPEN_POSITION);
         }
-
-        if(gamepad2.dpad_left){
-            leftWristServo.setPosition(leftWristServo.getPosition() - .05);
-            rightWristServo.setPosition(rightWristServo.getPosition() + .05);
-        }else if(gamepad2.dpad_right){
-            leftWristServo.setPosition(leftWristServo.getPosition() + .05);
-            rightWristServo.setPosition(rightWristServo.getPosition() - .05);
-        }
-
-        if(gamepad2.x){
-            // clawServo.setPosition(0);
-        } else if(gamepad2.a){
-            // clawServo.setPosition(.4);
-        }
-        if(gamepad2.right_bumper){
-            //clawServo.setPosition(0);
-        } else if(gamepad2.left_bumper){
-            //clawServo.setPosition(.4);
-        }
-
-
 
     }
 }
