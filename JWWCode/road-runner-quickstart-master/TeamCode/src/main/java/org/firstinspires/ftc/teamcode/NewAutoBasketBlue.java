@@ -4,13 +4,12 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
-import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.ParallelAction;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -19,8 +18,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "NewAutoBasket")
-public class NewAutoBasket extends LinearOpMode {
+@Autonomous(name = "NewAutoBasketBlue")
+public class NewAutoBasketBlue extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -35,11 +34,11 @@ public class NewAutoBasket extends LinearOpMode {
         Actions.runBlocking(claw.open());
 
         TrajectoryActionBuilder goToRungs = drive.actionBuilder(new Pose2d(-24.68, -61.23, Math.toRadians(90.00)))
-                .splineToConstantHeading(new Vector2d(-1.24, -35.02), Math.toRadians(55.22));
+                .splineToConstantHeading(new Vector2d(-1.24, -35.02), Math.toRadians(90.00));
 
         TrajectoryActionBuilder goToSamples = drive.actionBuilder(new Pose2d(-1.24, -35.02, Math.toRadians(90.00)))
-                .splineToConstantHeading(new Vector2d(-10.99, -45.65), Math.toRadians(220.23))
-                .splineToConstantHeading(new Vector2d(-47.83, -38.80), Math.toRadians(173.50));
+                .splineToConstantHeading(new Vector2d(-10.99, -45.65), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(-47.83, -38.80), Math.toRadians(90.00));
 
 
         Actions.runBlocking(

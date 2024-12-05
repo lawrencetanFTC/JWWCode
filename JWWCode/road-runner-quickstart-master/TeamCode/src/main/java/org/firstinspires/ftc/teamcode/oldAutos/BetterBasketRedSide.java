@@ -1,7 +1,7 @@
 
 // May be useless remember to delete
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.oldAutos;
 
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
