@@ -18,8 +18,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "NewAutoBasketBlue")
-public class NewAutoBasketBlue extends LinearOpMode {
+@Autonomous(name = "NewAutoDeck", group = "Auto")
+public class NewAutoDeckRed extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -40,12 +40,14 @@ public class NewAutoBasketBlue extends LinearOpMode {
         Actions.runBlocking(action);
         Actions.runBlocking(claw.open());
 
-        TrajectoryActionBuilder goToRungs = drive.actionBuilder(new Pose2d(-24.68, -61.23, Math.toRadians(90.00)))
-                .splineToConstantHeading(new Vector2d(-1.24, -35.02), Math.toRadians(90.00));
+        TrajectoryActionBuilder goToRungs = drive.actionBuilder(new Pose2d(15.36, -63.26, Math.toRadians(90.00)))
+                .splineToConstantHeading(new Vector2d(3.71, -33.85), Math.toRadians(90.00));
 
-        TrajectoryActionBuilder goToSamples = drive.actionBuilder(new Pose2d(-1.24, -35.02, Math.toRadians(90.00)))
-                .splineToConstantHeading(new Vector2d(-10.99, -45.65), Math.toRadians(90.00))
-                .splineToConstantHeading(new Vector2d(-47.83, -38.80), Math.toRadians(90.00));
+
+        TrajectoryActionBuilder goToSamples = drive.actionBuilder(new Pose2d(3.71, -33.85, Math.toRadians(90.00)))
+                .splineToConstantHeading(new Vector2d(12.30, -46.23), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(59.48, -38.37), Math.toRadians(90.00));
+
 
 
         Actions.runBlocking(
