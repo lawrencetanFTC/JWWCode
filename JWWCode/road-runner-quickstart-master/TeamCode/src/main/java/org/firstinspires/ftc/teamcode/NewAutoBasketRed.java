@@ -30,17 +30,17 @@ public class NewAutoBasketRed extends LinearOpMode {
         Claw claw = new Claw(hardwareMap);
 
         waitForStart();
-        Action action =  drive.actionBuilder(new Pose2d(0,0,0)).strafeTo(new Vector2d(24, 6)).build();
+        Action action =  drive.actionBuilder(new Pose2d(0,0,0)).strafeTo(new Vector2d(24, 6))
         Actions.runBlocking(action);
         Actions.runBlocking(claw.open());
 
+        /* Old code (10 point auto)
         TrajectoryActionBuilder goToRungs = drive.actionBuilder(new Pose2d(-24.68, -61.23, Math.toRadians(90.00)))
                 .splineToConstantHeading(new Vector2d(-1.24, -35.02), Math.toRadians(90.00));
 
         TrajectoryActionBuilder goToSamples = drive.actionBuilder(new Pose2d(-1.24, -35.02, Math.toRadians(90.00)))
                 .splineToConstantHeading(new Vector2d(-10.99, -45.65), Math.toRadians(90.00))
                 .splineToConstantHeading(new Vector2d(-47.83, -38.80), Math.toRadians(90.00));
-
 
         Actions.runBlocking(
                 new SequentialAction(
@@ -56,8 +56,42 @@ public class NewAutoBasketRed extends LinearOpMode {
                         slide.moveToLow(),
                         goToSamples.build()
                 )
-        );
+        );*/
 
+        TrajectoryActionBuilder goToRungs = drive.actionBuilder(new Pose2d(-15.00, -63.00, Math.toRadians(90.00)))
+                .splineToConstantHeading(new Vector2d(-6.00, -40.00), Math.toRadians(71.02));
+
+        TrajectoryActionBuilder goToSamples = drive.actionBuilder(new Pose2d(-6.00, -40.00, Math.toRadians(90.00)))
+                .lineToConstantHeading(new Vector2d(-49.00, -40.00));
+
+        TrajectoryActionBuilder goToBasket = drive.actionBuilder(new Pose2d(-49.00, -40.00, Math.toRadians(90.00)))
+                .splineToLinearHeading(new Pose2d(-48.00, -48.00, Math.toRadians(-135.00)), Math.toRadians(-135.00));
+
+        TrajectoryActionBuilder goBackToSamples = drive.actionBuilder(new Pose2d(-48.00, -48.00, Math.toRadians(-135.00)))
+                .splineToLinearHeading(new Pose2d(-59.60, -40.00, Math.toRadians(90.00)), Math.toRadians(90.00));
+
+        Actions.runBlocking(
+                new SequentialAction(
+                        claw.close(),
+                        slide.moveToTop(),
+                        goToRungs.build(),
+                        slide.hook(),
+                        claw.open(),
+
+                )
+        );
+        Actions.runBlocking(
+                new ParallelAction(
+                        slide.moveToLow(),
+                        goToSamples.build()
+                )
+        );
+        Actions.runBlocking(
+                new ParallelAction(
+                        spinTake.spinIn(500),
+                        Extend.NudgeExtend()
+                )
+        );
 
     }
 
@@ -313,6 +347,46 @@ public class NewAutoBasketRed extends LinearOpMode {
             }
         }
         public Action closeDrop() {return new CloseLatch();}
+    }
+
+    public class Extend {
+        Servo leftExtendServo;
+        Servo rightExtendServo;
+
+        public Extend(Hardwaremap hardwaremap) {
+            leftExtendServo = hardwaremap.get(Servo.class, "leftExtendServo");
+            rightExtendServo = hardwaremap.get(Servo.class, "rightExtendServo");
+        }
+
+        public class ResetExtend implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                leftExtendServo.setPosition(0);
+                rightExtendServo.setPosition(0);
+                return false;
+            }
+        }
+        public Action reset() {return new ResetExtend();}
+
+        public class FullExtend implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                leftExtendServo.setPosition(0.1);
+                rightExtendServo.setPosition(0.1);
+                return false;
+            }
+        }
+        public Action full() {return new FullExtend();}
+
+        public class NudgeExtend implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                leftExtendServo.setPosition(leftExtendServo.getPosition() + 0.01);
+                rightExtendServo.setPosition(rightExtendServo.getPosition() + 0.01);
+                return false;
+            }
+        }
+        public Action nudge() {return new NudgeExtend();}
     }
 
     // Hi lawrence
