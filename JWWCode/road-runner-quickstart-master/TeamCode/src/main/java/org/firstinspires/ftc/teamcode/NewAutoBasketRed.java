@@ -29,9 +29,10 @@ public class NewAutoBasketRed extends LinearOpMode {
         SpinTake spinTake = new SpinTake(hardwareMap);
         Slide slide = new Slide(hardwareMap);
         Claw claw = new Claw(hardwareMap);
+        Extend extend = new Extend(hardwareMap);
 
         waitForStart();
-        Action action =  drive.actionBuilder(new Pose2d(0,0,0)).strafeTo(new Vector2d(24, 6))
+        Action action =  drive.actionBuilder(new Pose2d(0,0,0)).strafeTo(new Vector2d(24, 6)).build();
         Actions.runBlocking(action);
         Actions.runBlocking(claw.open());
 
@@ -64,7 +65,7 @@ public class NewAutoBasketRed extends LinearOpMode {
                 .splineToConstantHeading(new Vector2d(-6.00, -40.00), Math.toRadians(71.02));
 
         TrajectoryActionBuilder goToSamples = drive.actionBuilder(new Pose2d(-6.00, -40.00, Math.toRadians(90.00)))
-                .lineToConstantHeading(new Vector2d(-49.00, -40.00));
+                .strafeToConstantHeading(new Vector2d(-49.00, -40.00));
 
         TrajectoryActionBuilder goToBasket = drive.actionBuilder(new Pose2d(-49.00, -40.00, Math.toRadians(90.00)))
                 .splineToLinearHeading(new Pose2d(-48.00, -48.00, Math.toRadians(-135.00)), Math.toRadians(-135.00));
@@ -78,7 +79,7 @@ public class NewAutoBasketRed extends LinearOpMode {
                         slide.moveToTop(),
                         goToRungs.build(),
                         slide.hook(),
-                        claw.open(),
+                        claw.open()
 
                 )
         );
@@ -91,7 +92,7 @@ public class NewAutoBasketRed extends LinearOpMode {
         Actions.runBlocking(
                 new ParallelAction(
                         spinTake.spinIn(500),
-                        Extend.NudgeExtend()
+                        extend.nudge()
                 )
         );
 
@@ -355,7 +356,7 @@ public class NewAutoBasketRed extends LinearOpMode {
         Servo leftExtendServo;
         Servo rightExtendServo;
 
-        public Extend(Hardwaremap hardwaremap) {
+        public Extend(HardwareMap hardwaremap) {
             leftExtendServo = hardwaremap.get(Servo.class, "leftExtendServo");
             rightExtendServo = hardwaremap.get(Servo.class, "rightExtendServo");
         }
