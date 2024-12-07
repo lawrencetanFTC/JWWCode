@@ -23,6 +23,13 @@ public class NewAutoBasketBlue extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
+        // 180 degree rotates the path so that it will work for blue side
+        new TrajectoryBuilder(beginPose, eps, beginEndVel,
+                baseVelConstraint, baseAccelConstraint,
+                dispResolution, angResolution,
+                pose -> new Pose2dDual<>(
+                        pose.position.x.unaryMinus(), pose.position.y.unaryMinus(), pose.heading.inverse()));
+
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, Math.toRadians(0)));
         SpinTake spinTake = new SpinTake(hardwareMap);
         Slide slide = new Slide(hardwareMap);
