@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+
 import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -46,6 +47,7 @@ public class NewAutoBasketRed extends LinearOpMode {
                 new SequentialAction(
                         claw.close(),
                         slide.moveToTop(),
+
                         goToRungs.build(),
                         slide.hook(),
                         claw.open()
