@@ -5,8 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
+// import com.qualcomm.robotcore.util.Telemetry;
 
-@TeleOp(name = "ASTeleOp12345", group = "TeleOp")
+@TeleOp(name = "ASTeleOp8y8y8", group = "TeleOp")
 public class TeleOpFirst2 extends OpMode {
     // Define motors for driving
     private DcMotor frontLeft;
@@ -31,14 +32,7 @@ public class TeleOpFirst2 extends OpMode {
     private final double CLAW_OPEN_POSITION = 0.52;
     private final double CLAW_CLOSE_POSITION = 0.65;
 
-    private final double ARM_ORIGINAL_POSITION = 0;
     private final double ARM_POSITION_BASKET = 0;
-    private final double ARM_POSITION_SPECIMENT = 0;
-    private final double ARM_POSITION_HANG = 0;
-    private final double ARM_POSITION_SPECIMENT_OBSERV = 0;
-
-    private final double ARM_EXTEND_RETRACTED = 0;
-    private final double ARM_EXTEND_EXTENDED = 0;
 
     private double LATCH_OPEN_POSITION;
 
@@ -115,9 +109,9 @@ public class TeleOpFirst2 extends OpMode {
         }
         // CLAW servo
         if(gamepad2.right_bumper){
-            clawServo.setPosition(0);
+            clawServo.setPosition(clawServo.getPosition() + 0.005);
         } else if(gamepad2.left_bumper){
-            clawServo.setPosition(.4);
+            clawServo.setPosition(clawServo.getPosition() - 0.005);
         }
         // WRIST servo code
         if(gamepad2.dpad_left){
@@ -130,13 +124,19 @@ public class TeleOpFirst2 extends OpMode {
 
         // -------ARM Code------
         // ARM EXTEND Code
-        if(gamepad2.dpad_up){
+        if(gamepad1.right_trigger > 0){
+            // leftExtendServo.setPower(1);
+            // rightExtendServo.setPower(-1);
             leftExtendServo.setPosition(leftExtendServo.getPosition() - .005);
             rightExtendServo.setPosition(Math.min(rightExtendServo.getPosition() + .005,Math.abs(1 - leftExtendServo.getPosition() )));
-        }else if(gamepad2.dpad_down) {
+        } else if(gamepad1.left_trigger > 0) {
+            // leftExtendServo.setPower(-1);
+            // rightExtendServo.setPower(1);
             leftExtendServo.setPosition(leftExtendServo.getPosition() + .005);
             rightExtendServo.setPosition(Math.max(rightExtendServo.getPosition() - .005, Math.abs(1 - leftExtendServo.getPosition())));
         }
+        // telementry.addData("Left extend servo: ", leftExtendServo.setPosition());
+        // telementry.addData("Right extend servo: ", rightExtendServo.setPosition());
         // ARM servo code with constrains
         if (leftSlideMotor.getCurrentPosition() > 0 || rightSlideMotor.getCurrentPosition() > 0) {
             // Extend servos to original position
@@ -148,14 +148,16 @@ public class TeleOpFirst2 extends OpMode {
         } else { // if the slides are at 0 position meaning not extended
             if (gamepad2.right_trigger > .0) {
                 // Increment arm servo positions
-                leftArmServo.setPosition(leftArmServo.getPosition() - 0.02);
-                rightArmServo.setPosition(rightArmServo.getPosition() + 0.02);
+                leftArmServo.setPosition(leftArmServo.getPosition() - 0.005);
+                rightArmServo.setPosition(rightArmServo.getPosition() + 0.005);
             } else if (gamepad2.left_trigger > .0) {
                 // Decrement arm servo positions
-                leftArmServo.setPosition(leftArmServo.getPosition() + 0.02);
-                rightArmServo.setPosition(rightArmServo.getPosition() - 0.02);
+                leftArmServo.setPosition(leftArmServo.getPosition() + 0.005);
+                rightArmServo.setPosition(rightArmServo.getPosition() - 0.005);
             }
         }
+        // telementry.addData("Left servo: ", leftArmServo.setPosition());
+        // telementry.addData("Right servo: ", rightArmServo.setPosition());
 
         // SLIDES movement code
         if (gamepad2.left_stick_y < 0 && leftSlideMotor.getCurrentPosition() < 8100 && rightSlideMotor.getCurrentPosition() > -8100) {
@@ -174,10 +176,11 @@ public class TeleOpFirst2 extends OpMode {
             leftSlideMotor.setPower(-gamepad2.left_stick_y * 0.7);
         }
 
+        telemetry.addData("Latch Position", latchServo.getPosition());
         if (gamepad1.x) {
-            latchServo.setPosition(LATCH_OPEN_POSITION + .0001);
+            latchServo.setPosition(latchServo.getPosition() + .003);
         } else if(gamepad1.y) {
-            latchServo.setPosition(LATCH_OPEN_POSITION);
+            latchServo.setPosition(latchServo.getPosition() - .003);
         }
 
     }
