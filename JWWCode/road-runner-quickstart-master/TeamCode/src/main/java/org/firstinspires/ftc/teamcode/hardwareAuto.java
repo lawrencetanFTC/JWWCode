@@ -4,71 +4,13 @@ import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.ParallelAction;
-import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
-import com.acmerobotics.roadrunner.Vector2d;
-import com.acmerobotics.roadrunner.ftc.Actions;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "NewAutoDeck", group = "Auto")
-public class NewAutoDeckBlue extends LinearOpMode {
-    @Override
-    public void runOpMode() throws InterruptedException {
-
-        // 180 degree rotates the path so that it will work for blue side
-//        new TrajectoryBuilder(beginPose, eps, beginEndVel,
-//                baseVelConstraint, baseAccelConstraint,
-//                dispResolution, angResolution,
-//                pose -> new Pose2dDual<>(
-//                        pose.position.x.unaryMinus(), pose.position.y.unaryMinus(), pose.heading.inverse()));
-
-        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, Math.toRadians(0)));
-        SpinTake spinTake = new SpinTake(hardwareMap);
-        Slide slide = new Slide(hardwareMap);
-        Claw claw = new Claw(hardwareMap);
-
-        waitForStart();
-        Action action =  drive.actionBuilder(new Pose2d(0,0,0)).strafeTo(new Vector2d(24, 6)).build();
-        Actions.runBlocking(action);
-        Actions.runBlocking(claw.open());
-
-        TrajectoryActionBuilder goToRungs = drive.actionBuilder(new Pose2d(15.36, -63.26, Math.toRadians(90.00)))
-                .splineToConstantHeading(new Vector2d(3.71, -33.85), Math.toRadians(90.00));
-
-
-        TrajectoryActionBuilder goToSamples = drive.actionBuilder(new Pose2d(3.71, -33.85, Math.toRadians(90.00)))
-                .splineToConstantHeading(new Vector2d(12.30, -46.23), Math.toRadians(90.00))
-                .splineToConstantHeading(new Vector2d(59.48, -38.37), Math.toRadians(90.00));
-
-
-
-        Actions.runBlocking(
-                new SequentialAction(
-                        claw.close(),
-                        slide.moveToTop(),
-                        goToRungs.build(),
-                        slide.hook(),
-                        claw.open()
-                )
-        );
-        Actions.runBlocking(
-                new ParallelAction(
-                        slide.moveToLow(),
-                        goToSamples.build()
-                )
-        );
-
-
-    }
-
+public class hardwareAuto {
     public class SpinTake {
         CRServo spinTakeLeft;
         CRServo spinTakeRight;
@@ -108,7 +50,7 @@ public class NewAutoDeckBlue extends LinearOpMode {
         }
 
         public Action spinIn(long runMs) {
-            return new SpinAction(runMs, DcMotorSimple.Direction.FORWARD);
+            return new  SpinTake.SpinAction(runMs, DcMotorSimple.Direction.FORWARD);
         }
     }
 
@@ -136,7 +78,7 @@ public class NewAutoDeckBlue extends LinearOpMode {
             }
         }
         public Action armUp() {
-            return new ArmVertical();
+            return new  ArmServos.ArmVertical();
         }
 
         public class ArmHorizontal implements Action {
@@ -148,7 +90,7 @@ public class NewAutoDeckBlue extends LinearOpMode {
             }
         }
         public Action armDown() {
-            return new ArmHorizontal();
+            return new  ArmServos.ArmHorizontal();
         }
         // End of arnav code
 
@@ -208,19 +150,19 @@ public class NewAutoDeckBlue extends LinearOpMode {
         }
 
         public Action moveToTop() {
-            return new SetSlidePosition(HIGH_POS);
+            return new  Slide.SetSlidePosition(HIGH_POS);
         }
 
         public Action moveToMid() {
-            return new SetSlidePosition(MID_POS);
+            return new  Slide.SetSlidePosition(MID_POS);
         }
 
         public Action moveToLow() {
-            return new SetSlidePosition(LOW_POS);
+            return new  Slide.SetSlidePosition(LOW_POS);
         }
 
         public Action hook() {
-            return new SetSlidePosition(rightSlideMotor.getCurrentPosition() - HOOK_DELTA);
+            return new  Slide.SetSlidePosition(rightSlideMotor.getCurrentPosition() - HOOK_DELTA);
         }
     }
 
@@ -253,11 +195,11 @@ public class NewAutoDeckBlue extends LinearOpMode {
             }
         }
         public Action open(){
-            return new SetClawPos(OPEN_POS);
+            return new  Claw.SetClawPos(OPEN_POS);
         }
 
         public Action close(){
-            return new SetClawPos(CLOSE_POS);
+            return new  Claw.SetClawPos(CLOSE_POS);
         }
     }
 
@@ -280,7 +222,7 @@ public class NewAutoDeckBlue extends LinearOpMode {
             }
         }
         public Action wristUp() {
-            return new WristVertical();
+            return new  Wrist.WristVertical();
         }
 
         public class WristHorizontal implements Action {
@@ -292,7 +234,7 @@ public class NewAutoDeckBlue extends LinearOpMode {
             }
         }
         public Action wristDown() {
-            return new WristHorizontal();
+            return new  Wrist.WristHorizontal();
         }
 
     }
@@ -311,7 +253,7 @@ public class NewAutoDeckBlue extends LinearOpMode {
                 return false;
             }
         }
-        public Action dropSample() {return new OpenDrop();}
+        public Action dropSample() {return new  Drop.OpenDrop();}
 
         public class CloseLatch implements Action {
             @Override
@@ -320,12 +262,46 @@ public class NewAutoDeckBlue extends LinearOpMode {
                 return false;
             }
         }
-        public Action closeDrop() {return new CloseLatch();}
+        public Action closeDrop() {return new Drop.CloseLatch();}
     }
 
-    // Hi lawrence
+    public class Extend {
+        Servo leftExtendServo;
+        Servo rightExtendServo;
+
+        public Extend(HardwareMap hardwaremap) {
+            leftExtendServo = hardwaremap.get(Servo.class, "leftExtendServo");
+            rightExtendServo = hardwaremap.get(Servo.class, "rightExtendServo");
+        }
+
+        public class ResetExtend implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                leftExtendServo.setPosition(0);
+                rightExtendServo.setPosition(0);
+                return false;
+            }
+        }
+        public Action reset() {return new Extend.ResetExtend();}
+
+        public class FullExtend implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                leftExtendServo.setPosition(0.1);
+                rightExtendServo.setPosition(0.1);
+                return false;
+            }
+        }
+        public Action full() {return new Extend.FullExtend();}
+
+        public class NudgeExtend implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                leftExtendServo.setPosition(leftExtendServo.getPosition() + 0.01);
+                rightExtendServo.setPosition(rightExtendServo.getPosition() + 0.01);
+                return false;
+            }
+        }
+        public Action nudge() {return new Extend.NudgeExtend();}
+    }
 }
-
-
-
-
