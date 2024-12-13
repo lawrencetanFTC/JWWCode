@@ -137,9 +137,6 @@ public class AcutalFinalAutoDeck extends LinearOpMode {
     public class Claw {
         Private Servo claw;
 
-
-
-
         public Claw(HardwareMap hardwareMap) {
             claw = hardwareMap.get(Servo.class, “clawServo”);
         }
@@ -158,7 +155,7 @@ public class AcutalFinalAutoDeck extends LinearOpMode {
         public class OpenClaw implements Action {
             @Override
             Public boolean run(@NonNull TelemetryPacket packet) {
-                claw.setPosition(0.5);
+                claw.setPosition(0.1);
             }
         }
 
@@ -193,11 +190,28 @@ public class AcutalFinalAutoDeck extends LinearOpMode {
 
          TrajectoryActionBuilder goToDeck = drive.actionBuilder(new Pose2d(63.24, -26.73, Math.toRadians(0.00)))
                 .lineToSplineHeading(new Pose2d(57.10, -56.72, Math.toRadians(-90.00)))
+
+
         
 
         if (isStopRequested()) return;
 
+        // Action Test
         Actions.runBlocking(
+                new SequntialAction(
+                        claw.open(),
+                        claw.close(),
+                        arm.up(),
+                        arm.down(),
+                        slides.moveToTop(),
+                        slides.moveToMid(),
+                        slides.hook(),
+                        slides.moveToLow(),
+                        goToRungs()
+                )
+        )
+
+        /*Actions.runBlocking(
                 new SequentialAction(
                         claw.close(),
                         slides.moveToMid(),
@@ -212,7 +226,7 @@ public class AcutalFinalAutoDeck extends LinearOpMode {
                         goToDeck.build(),
                         claw.open()
                 )
-        );
+        );*/
     }
 
 
