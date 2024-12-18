@@ -96,7 +96,7 @@ public class hardwareAuto {
 
     }
 
-    public class Slide {
+    public static class Slide {
         DcMotor leftSlideMotor;
         DcMotor rightSlideMotor;
 

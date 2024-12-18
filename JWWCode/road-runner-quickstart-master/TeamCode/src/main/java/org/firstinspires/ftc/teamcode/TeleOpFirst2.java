@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 // import com.qualcomm.robotcore.util.Telemetry;
 
@@ -78,8 +78,12 @@ public class TeleOpFirst2 extends OpMode {
         LATCH_OPEN_POSITION = latchServo.getPosition();
     }
 
+    double lastRuntime = 0;
+
     @Override
     public void loop() {
+        waitUntilIntervalReached(0.05);
+
         // ---- Drivetrain Control ----
         double y = -gamepad1.left_stick_y; // Forward/backward
         double x = gamepad1.left_stick_x; // Strafing
@@ -108,28 +112,28 @@ public class TeleOpFirst2 extends OpMode {
             spinTakeRight.setPower(0);
         }
         // CLAW servo
-        if(gamepad2.right_bumper){
+        if (gamepad2.right_bumper) {
             clawServo.setPosition(clawServo.getPosition() + 0.005);
-        } else if(gamepad2.left_bumper){
+        } else if (gamepad2.left_bumper) {
             clawServo.setPosition(clawServo.getPosition() - 0.005);
         }
         // WRIST servo code
-        if(gamepad2.dpad_left){
+        if (gamepad2.dpad_left) {
             leftWristServo.setPosition(leftWristServo.getPosition() - .005);
             rightWristServo.setPosition(rightWristServo.getPosition() + .005);
-        }else if(gamepad2.dpad_right){
+        } else if (gamepad2.dpad_right) {
             leftWristServo.setPosition(leftWristServo.getPosition() + .005);
             rightWristServo.setPosition(rightWristServo.getPosition() - .005);
         }
 
         // -------ARM Code------
         // ARM EXTEND Code
-        if(gamepad1.right_trigger > 0){
+        if (gamepad1.right_trigger > 0) {
             // leftExtendServo.setPower(1);
             // rightExtendServo.setPower(-1);
             leftExtendServo.setPosition(leftExtendServo.getPosition() - .005);
-            rightExtendServo.setPosition(Math.min(rightExtendServo.getPosition() + .005,Math.abs(1 - leftExtendServo.getPosition() )));
-        } else if(gamepad1.left_trigger > 0) {
+            rightExtendServo.setPosition(Math.min(rightExtendServo.getPosition() + .005, Math.abs(1 - leftExtendServo.getPosition())));
+        } else if (gamepad1.left_trigger > 0) {
             // leftExtendServo.setPower(-1);
             // rightExtendServo.setPower(1);
             leftExtendServo.setPosition(leftExtendServo.getPosition() + .005);
@@ -179,9 +183,25 @@ public class TeleOpFirst2 extends OpMode {
         telemetry.addData("Latch Position", latchServo.getPosition());
         if (gamepad1.x) {
             latchServo.setPosition(latchServo.getPosition() + .003);
-        } else if(gamepad1.y) {
+        } else if (gamepad1.y) {
             latchServo.setPosition(latchServo.getPosition() - .003);
         }
 
+
+    }
+
+    private void waitUntilIntervalReached(double interval) {
+        double rt = this.getRuntime();
+        if (lastRuntime != 0) {
+            double diff = rt - lastRuntime;
+            if (diff < interval) {
+                try {
+                    Thread.sleep((int) (interval - diff) * 1000);
+                } catch (InterruptedException e) {
+                    // ignore
+                }
+            }
+        }
+        lastRuntime = rt;
     }
 }
