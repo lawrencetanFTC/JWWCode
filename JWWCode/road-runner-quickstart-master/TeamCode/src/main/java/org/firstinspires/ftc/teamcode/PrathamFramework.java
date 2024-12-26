@@ -51,17 +51,17 @@ public class Drive {
 }
 
 public class ServoControl {
-    public Action setPosition(p) {
+    public Action setPosition(double p) {
         return ServoControl.setPosition(p);
     }
     
-    public Action setPower(p2) {
+    public Action setPower(double p2) {
         return ServoControl.setPower(p2);
     }
 }
 
 public class MotorControl {
-    public Action setPower(p) {
+    public Action setPower(double p) {
         return MotorControl.setPower(p);
     }
 }
