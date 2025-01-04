@@ -191,9 +191,78 @@ public class AcutalFinalAutoDeck extends LinearOpMode {
         TrajectoryActionBuilder goToDeck = drive.actionBuilder(new Pose2d(63.24, -26.73, Math.toRadians(0.00)))
                 .lineToSplineHeading(new Pose2d(57.10, -56.72, Math.toRadians(-90.00)))
 
+		/* 
+		Hello, this is a short guide for robot positions.
+		Just copy and paste the sequence provided below 
+		for each major position and adjust as needed.
+		This should work assuming Autonomous is all good. 
+		In the near future, when I have the time availible 
+		and neccesary, I will write it as an action as the 
+		doc is a little unclear on whether I can put it as
+		'raw code' before running the OpMode or like how I
+		wrote this. - Sohan
 
+		P.S - there's probably a lot of spelling errors.
 
+		Starting Position - Run once Auton starts to put
+		the robot into a "neutral" state.
 
+		new ParallelAction(
+			extend.retract(),
+			wrist.up(),
+			spintake.neutral(),
+			slides.moveToMid(),
+			arm.down(),
+			claw.close()
+		)
+
+		Spintake Position - Run for floor to claw.
+
+		new sequentialAction( //Best to leave it a seq until latter.
+			wrist.down(),
+			extend.exten(),
+			spintake.intake(), //Time
+			spintake.neutral(),
+			extend.retract(),
+			wrist.up(),
+			claw.open(),
+			arm.down(),
+			slides.moveToLow(),
+			spintake.outtake(),
+			claw.close(),
+			arm.up(),
+			slides.moveToHigh()
+		)			
+
+		Specimens - for hanging specimens, first is from wall, second is from ground.
+
+		new sequentialAction(
+			claw.close(), //Move to the rungs then continue
+			arm.up(),
+			slides.moveToMid(),
+			slides.hook(),
+			claw.open()
+		)
+
+		new sequentialAction(
+			wrist.down(),
+			extend.exten(),
+			spintake.intake(), //Time
+			spintake.neutral(),
+			extend.retract(),
+			wrist.up(),
+			claw.open(),
+			arm.down(),
+			slides.moveToLow(),
+			spintake.outtake(), //Time
+			claw.close(),
+			arm.up(),
+			slides.moveToMid(), //Wait until finished with traq
+			slides.hook(),
+			claw.open()
+		)
+
+		*/
         if (isStopRequested()) return;
 
         // Action Test
