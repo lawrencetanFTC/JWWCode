@@ -1191,7 +1191,6 @@ public class TeleOpFirst extends OpMode {
     private DcMotor backLeft;
     private DcMotor backRight;
 
-
     // motors for slides
     private DcMotor leftSlideMotor;
     private DcMotor rightSlideMotor;
@@ -1324,18 +1323,19 @@ public class TeleOpFirst extends OpMode {
 
         if (gamepad2.dpad_left) { // retract extend
             try {
-                // Step 1
-                elbowLeft.setPosition(.9183);
-                elbowRight.setPosition(.2667);
+                // elbow goes up
+//                elbowLeft.setPosition(.9183);
+//                elbowRight.setPosition(.2667);
+
+                // retracts extend
                 extendLeft.setPosition(1);
                 extendRight.setPosition(0);
-                Thread.sleep(200); // 200 milliseconds delay
+                Thread.sleep(2000); // 200 milliseconds delay
 
-                // Step 2
+                // elbow down
                 elbowLeft.setPosition(9756);
                 elbowRight.setPosition(.2844);
                 Thread.sleep(200); // 200 milliseconds delay
-
                 // Uncomment if you want small incremental changes with delay
                 // changeServoPositionBy(extendLeft, .001);
                 // changeServoPositionBy(extendRight, -.001);
@@ -1348,15 +1348,9 @@ public class TeleOpFirst extends OpMode {
             // changeServoPositionBy(extenRight, .001);
             extendLeft.setPosition(.3944);
             extendRight.setPosition(.6028);
-            extenLeft.setPosition(1);
-            extenRight.setPosition(0);
+
             // changeServoPositionBy(extenLeft, .001);
             // changeServoPositionBy(extenRight, -.001);
-        } else if (gamepad2.dpad_right) { // extend extend servos
-            // changeServoPositionBy(extenLeft, -.001);
-            // changeServoPositionBy(extenRight, .001);
-            extenLeft.setPosition(.3944);
-            extenRight.setPosition(.6028);
         }
 
         if (gamepad1.right_bumper) { // intake
@@ -1415,16 +1409,16 @@ public class TeleOpFirst extends OpMode {
         double rx = gamepad1.right_stick_x;  // Rotation
 
         // Calculate motor powers
-        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-        double frontLeftPower = (y + x + rx) / denominator;
-        double backLeftPower = (y - x + rx) / denominator;
-        double frontRightPower = (y - x - rx) / denominator;
-        double backRightPower = (y + x - rx) / denominator;
+//        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+//        double frontLeftPower = (y + x + rx) / denominator;
+//        double backLeftPower = (y - x + rx) / denominator;
+//        double frontRightPower = (y - x - rx) / denominator;
+//        double backRightPower = (y + x - rx) / denominator;
         // different drive train
-//        double frontLeftPower = (y + x + rx) * .9;
-//        double frontRightPower = (y - x - rx) * .9;
-//        double backLeftPower = (y - x + rx) * .9;
-//        double backRightPower = (y + x - rx) * .9;
+        double frontLeftPower = (y + x + rx) * 1;
+        double frontRightPower = (y - x - rx) * 1;
+        double backLeftPower = (y - x + rx) * 1;
+        double backRightPower = (y + x - rx) * 1;
 
         backLeft.setPower(backLeftPower);
         backRight.setPower(backRightPower);
