@@ -1,7 +1,7 @@
 // All code is written by me except when mentioned otherwise.
 //Copied that same way it is written in the rr.brott.dev website.
 
-package org.firstinspires.ftc.teamcode.Sohan;
+package org.firstinspires.ftc.teamcode;
 
 import androidx.annotation.NonNull;
 
@@ -19,8 +19,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-
-import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 @Autonomous(name = "AutonSkeleton", group = "Autonomous")
 // @Disabled
