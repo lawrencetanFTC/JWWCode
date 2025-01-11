@@ -11,6 +11,7 @@ import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
+import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -102,9 +103,16 @@ public class _0AutonSkeleton extends LinearOpMode {
             spinTakeRight = hardwareMap.get(CRServo.class, "spinTakeRight");
         }
 
-        public class Intake implements Action {
+        public class SpinAction implements Action {
+            private DcMotorSimple.Direction direction;
+
+            SpinAction(DcMotorSimple.Direction direction){
+                this.direction = direction;
+            }
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
+                spinTakeLeft.setDirection(direction);
+                spinTakeRight.setDirection(direction);
                 spinTakeLeft.setPower(-1);
                 spinTakeRight.setPower(1);
                 return false;
@@ -112,19 +120,11 @@ public class _0AutonSkeleton extends LinearOpMode {
         }
 
         public Action intake() {
-            return new Intake();
+            return new SpinAction(DcMotorSimple.Direction.FORWARD);
         }
 
-        public class Outtake implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                spinTakeLeft.setPower(1);
-                spinTakeRight.setPower(-1);
-                return false;
-            }
-        }
         public Action outtake() {
-            return new Outtake();
+            return new SpinAction(DcMotorSimple.Direction.REVERSE);
         }
 
         public class Neutral implements Action {
@@ -161,10 +161,14 @@ public class _0AutonSkeleton extends LinearOpMode {
             leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         }
 
-        public class BasketPos implements Action {
+        public class MoveSlide implements Action {
             private boolean init = false;
             private int slideBasketPos = 90;
             private double motorPower = 0.3;
+
+            MoveSlide(int pos){
+                this.slideBasketPos = pos;
+            }
 
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
@@ -185,89 +189,22 @@ public class _0AutonSkeleton extends LinearOpMode {
             }
         }
         public Action basketPos() {
-            return new BasketPos();
+            return new MoveSlide(90);
         }
 
-        public class RungPos implements Action {
-            private boolean init = false;
-            private int slideBasketPos = 50;
-            private double motorPower = 0.3;
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                if (!init) {
-                    leftSlideMotor.setPower(motorPower);
-                    leftSlideMotor.setTargetPosition(-slideBasketPos);
-                    rightSlideMotor.setPower(motorPower);
-                    rightSlideMotor.setTargetPosition(slideBasketPos);
-                    init = true;
-                }
-
-                boolean running = leftSlideMotor.getCurrentPosition() != -slideBasketPos;
-                if (!running) {
-                    leftSlideMotor.setPower(0);
-                    rightSlideMotor.setPower(0);
-                }
-                return running;
-            }
-        }
         public Action rungPos() {
-            return new RungPos();
+            return new MoveSlide(50);
         }
 
-        public class LowPos implements Action {
-            private boolean init = false;
-            private int slideBasketPos = 10;
-            private double motorPower = 0.3;
 
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                if (!init) {
-                    leftSlideMotor.setPower(motorPower);
-                    leftSlideMotor.setTargetPosition(-slideBasketPos);
-                    rightSlideMotor.setPower(motorPower);
-                    rightSlideMotor.setTargetPosition(slideBasketPos);
-                    init = true;
-                }
-
-                boolean running = leftSlideMotor.getCurrentPosition() != -slideBasketPos;
-                if (!running) {
-                    leftSlideMotor.setPower(0);
-                    rightSlideMotor.setPower(0);
-                }
-                return running;
-            }
-        }
         public Action lowPos() {
-            return new LowPos();
+            return new MoveSlide(10);
         }
+        private int hookDelta = 5;
 
-        public class Hook implements Action {
-            private boolean init = false;
-            private int slideBasketPos = 90;
-            private int hookDelta = 5;
-            private double motorPower = 0.3;
 
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                if (!init) {
-                    leftSlideMotor.setPower(motorPower);
-                    leftSlideMotor.setTargetPosition(-(leftSlideMotor.getCurrentPosition() - hookDelta));
-                    rightSlideMotor.setPower(motorPower);
-                    rightSlideMotor.setTargetPosition(rightSlideMotor.getCurrentPosition() - hookDelta);
-                    init = true;
-                }
-
-                boolean running = leftSlideMotor.getCurrentPosition() != -(slideBasketPos - hookDelta);
-                if (!running) {
-                    leftSlideMotor.setPower(0);
-                    rightSlideMotor.setPower(0);
-                }
-                return running;
-            }
-        }
         public Action hook() {
-            return new Hook();
+            return new MoveSlide(rightSlideMotor.getCurrentPosition() - hookDelta);
         }
 
     }
@@ -347,7 +284,48 @@ public class _0AutonSkeleton extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        Boolean testing = false;
+        boolean testing = false;
+        boolean testing2 = false;
+
+        if(testing2){
+
+            Pose2d initialPose = new Pose2d(0, -60, Math.toRadians(0)); //WHAT IS THIS?
+            MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
+
+            Extend extend = new Extend(hardwareMap);
+            Wrist wrist = new Wrist(hardwareMap);
+            Spintake spintake = new Spintake(hardwareMap);
+            Slides slides = new Slides(hardwareMap);
+            Arm arm = new Arm(hardwareMap);
+            Claw claw = new Claw(hardwareMap);
+
+            TrajectoryActionBuilder goToRungs = drive.actionBuilder(new Pose2d(16.00, -63.00, Math.toRadians(90.00)))
+                    .splineToConstantHeading(new Vector2d(6.00, -34.00), Math.toRadians(90.00));
+
+            TrajectoryActionBuilder pushSamples = drive.actionBuilder(new Pose2d(7.17, -34.00, Math.toRadians(90.00)))
+                    .strafeToConstantHeading(new Vector2d(37.00, -34.00))
+                    .splineToConstantHeading(new Vector2d(37.72, -18.91), Math.toRadians(64.50))
+                    .splineToConstantHeading(new Vector2d(48.16, -11.27), Math.toRadians(78.26))
+                    .strafeToConstantHeading(new Vector2d(48.00, -56.00))
+                    .splineToConstantHeading(new Vector2d(48.90, -21.52), Math.toRadians(75.57))
+                    .splineToConstantHeading(new Vector2d(58.21, -5.12), Math.toRadians(78.65))
+                    .strafeToConstantHeading(new Vector2d(58.40, -56.54))
+                    .splineToSplineHeading(new Pose2d(63.24, -26.73, Math.toRadians(0.00)), Math.toRadians(72.99));
+
+            TrajectoryActionBuilder goToDeck = drive.actionBuilder(new Pose2d(63.24, -26.73, Math.toRadians(0.00)))
+                    .strafeToLinearHeading(new Vector2d(57.10, -56.72), Math.toRadians(-90.00));
+
+
+            Actions.runBlocking(new SequentialAction(goToRungs.build(),
+                    slides.rungPos(),
+                    slides.hook(),
+                    slides.lowPos(),
+                    pushSamples.build(),
+                    goToDeck.build()
+                    ));
+
+
+        }
         if (!testing) {
             Pose2d initialPose = new Pose2d(0, -60, Math.toRadians(0)); //WHAT IS THIS?
             MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
