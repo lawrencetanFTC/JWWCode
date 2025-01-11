@@ -20,7 +20,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "ActualFinalAutoDeck", group = "Autonomous")
-public class AcutalFinalAutoDeck extends LinearOpMode {
+public class ActualFinalAutoDeck extends LinearOpMode {
 
     public class Arm {
         Servo lArmServo;
@@ -46,7 +46,7 @@ public class AcutalFinalAutoDeck extends LinearOpMode {
             }
         }
         public Action up() {
-            return new  ArmServos.ArmVertical();
+            return new ArmVertical();
         }
 
         public class ArmHorizontal implements Action {
@@ -58,7 +58,7 @@ public class AcutalFinalAutoDeck extends LinearOpMode {
             }
         }
         public Action down() {
-            return new  ArmServos.ArmHorizontal();
+            return new  ArmHorizontal();
         }
         // End of arnav code
 
@@ -87,6 +87,8 @@ public class AcutalFinalAutoDeck extends LinearOpMode {
 
             leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         }
+
+
 
         public class SetSlidePosition implements Action {
 
@@ -118,34 +120,37 @@ public class AcutalFinalAutoDeck extends LinearOpMode {
         }
 
         public Action moveToTop() {
-            return new  Slide.SetSlidePosition(HIGH_POS);
+            return new SetSlidePosition(HIGH_POS);
         }
 
         public Action moveToMid() {
-            return new  Slide.SetSlidePosition(MID_POS);
+            return new SetSlidePosition(MID_POS);
         }
 
         public Action moveToLow() {
-            return new  Slide.SetSlidePosition(LOW_POS);
+            return new SetSlidePosition(LOW_POS);
         }
 
+
         public Action hook() {
-            return new  Slide.SetSlidePosition(rightSlideMotor.getCurrentPosition() - HOOK_DELTA);
+            return new  SetSlidePosition(rightSlideMotor.getCurrentPosition() - HOOK_DELTA);
         }
     }
 
 
     public class Claw {
-        Private Servo claw;
+        private Servo claw;
 
         public Claw(HardwareMap hardwareMap) {
-            claw = hardwareMap.get(Servo.class, “clawServo”);
+            claw = hardwareMap.get(Servo.class, "clawServo");
         }
 
         public class CloseClaw implements Action {
             @Override
-            Public boolean run(@NonNull TelemetryPacket packet) {
+            public boolean run(@NonNull TelemetryPacket packet) {
+
                 claw.setPosition(0);
+                return false;
             }
         }
 
@@ -155,9 +160,10 @@ public class AcutalFinalAutoDeck extends LinearOpMode {
 
         public class OpenClaw implements Action {
             @Override
-            Public boolean run(@NonNull TelemetryPacket packet) {
+            public boolean run(@NonNull TelemetryPacket packet) {
+
                 claw.setPosition(0.1);
-            }
+                return false;            }
         }
 
         public Action open() {
@@ -172,26 +178,27 @@ public class AcutalFinalAutoDeck extends LinearOpMode {
         Claw claw = new Claw(hardwareMap);
         Slides slides = new Slides(hardwareMap);
         Arm arm = new Arm(hardwareMap);
+        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0,0,Math.toRadians(0)));
 
 
         // Trajectoires go here
         // Gonna make these in RRPathgen later
 
         TrajectoryActionBuilder goToRungs = drive.actionBuilder(new Pose2d(16.00, -63.00, Math.toRadians(90.00)))
-                .splineToConstantHeading(new Vector2d(6.00, -34.00), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(6.00, -34.00), Math.toRadians(90.00));
 
         TrajectoryActionBuilder pushSamples = drive.actionBuilder(new Pose2d(7.17, -34.00, Math.toRadians(90.00)))
-                .lineToConstantHeading(new Vector2d(37.00, -34.00))
+                .strafeToConstantHeading(new Vector2d(37.00, -34.00))
                 .splineToConstantHeading(new Vector2d(37.72, -18.91), Math.toRadians(64.50))
                 .splineToConstantHeading(new Vector2d(48.16, -11.27), Math.toRadians(78.26))
-                .lineToConstantHeading(new Vector2d(48.00, -56.00))
+                .strafeToConstantHeading(new Vector2d(48.00, -56.00))
                 .splineToConstantHeading(new Vector2d(48.90, -21.52), Math.toRadians(75.57))
                 .splineToConstantHeading(new Vector2d(58.21, -5.12), Math.toRadians(78.65))
-                .lineToConstantHeading(new Vector2d(58.40, -56.54))
-                .splineToSplineHeading(new Pose2d(63.24, -26.73, Math.toRadians(0.00)), Math.toRadians(72.99))
+                .strafeToConstantHeading(new Vector2d(58.40, -56.54))
+                .splineToSplineHeading(new Pose2d(63.24, -26.73, Math.toRadians(0.00)), Math.toRadians(72.99));
 
         TrajectoryActionBuilder goToDeck = drive.actionBuilder(new Pose2d(63.24, -26.73, Math.toRadians(0.00)))
-                .lineToSplineHeading(new Pose2d(57.10, -56.72, Math.toRadians(-90.00)))
+                .strafeToLinearHeading(new Vector2d(57.10, -56.72), Math.toRadians(-90.00));
 
 		/* 
 		Hello, this is a short guide for robot positions.
@@ -269,7 +276,7 @@ public class AcutalFinalAutoDeck extends LinearOpMode {
 
         // Action Test
         Actions.runBlocking(
-                new SequntialAction(
+                new SequentialAction(
                         claw.open(),
                         claw.close(),
                         arm.up(),
@@ -278,9 +285,9 @@ public class AcutalFinalAutoDeck extends LinearOpMode {
                         slides.moveToMid(),
                         slides.hook(),
                         slides.moveToLow(),
-                        goToRungs()
+                        slides.moveToMid()
                 )
-        )
+        );
 
         /*Actions.runBlocking(
                 new SequentialAction(
