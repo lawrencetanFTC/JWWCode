@@ -10,8 +10,9 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -22,7 +23,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "AutonSkeleton", group = "Autonomous")
 // @Disabled
-public class AutonSkeleton extends LinearOpMode {
+public class _0AutonSkeleton extends LinearOpMode {
 
     public class Extend {
         private Servo extendLeft;
@@ -158,33 +159,6 @@ public class AutonSkeleton extends LinearOpMode {
             rightSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
             leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        }
-
-        public class Basket implements Action {
-            private boolean init = false;
-            private int slideBasketPos = 90;
-            private double motorPower = 0.3;
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                if (!init) {
-                    leftSlideMotor.setPower(motorPower);
-                    leftSlideMotor.setTargetPosition(-slideBasketPos);
-                    rightSlideMotor.setPower(motorPower);
-                    rightSlideMotor.setTargetPosition(slideBasketPos);
-                    init = true;
-                }
-
-                boolean running = leftSlideMotor.getCurrentPosition() != -slideBasketPos;
-                if (!running) {
-                    leftSlideMotor.setPower(0);
-                    rightSlideMotor.setPower(0);
-                }
-                return running;
-            }
-        }
-        public Action basket() {
-            return new Basket();
         }
 
         public class BasketPos implements Action {
@@ -373,27 +347,53 @@ public class AutonSkeleton extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        Pose2d initialPose = new(0,0, Math.toRadians(0)); //WHAT IS THIS?
-        MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
+        Boolean testing = false;
+        if (!testing) {
+            Pose2d initialPose = new Pose2d(0, -60, Math.toRadians(0)); //WHAT IS THIS?
+            MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
-        Extend extend = new Extend(hardwareMap);
-        Wrist wrist = new Wrist(hardwareMap);
-        Spintake spintake = new Spintake(hardwareMap);
-        Slides slides = new Slides(hardwareMap);
-        Arm arm = new Arm(hardwareMap);
-        Claw claw = new Claw(hardwareMap);
+            Extend extend = new Extend(hardwareMap);
+            Wrist wrist = new Wrist(hardwareMap);
+            Spintake spintake = new Spintake(hardwareMap);
+            Slides slides = new Slides(hardwareMap);
+            Arm arm = new Arm(hardwareMap);
+            Claw claw = new Claw(hardwareMap);
 
-        //Create Trajectories here
+            //Create Trajectories here
+            Action forward = drive.actionBuilder(initialPose)
+                    .strafeTo(new Vector2d(0, -35))
+                    .build();
+            //Init Actions here
 
-        //Init Actions here
+            if (isStopRequested()) return;
 
-        if(isStopRequested()) return;
-
-        Actions.runBlocking(
-                new SequentialAction(
-                        new ParallelAction(
-
+            Actions.runBlocking(
+                    new ParallelAction(
+                            forward,
+                            new SequentialAction(
+                                    new SleepAction(3),
+                                    extend.extendSt(),
+                                    extend.retractSt(),
+                                    extend.extendSt(),
+                                    wrist.wristUp(),
+                                    wrist.wristDown(),
+                                    spintake.intake(),
+                                    spintake.outtake(),
+                                    spintake.neutral(),
+                                    slides.basketPos(),
+                                    slides.lowPos(),
+                                    slides.rungPos(),
+                                    slides.hook(),
+                                    arm.armDown(),
+                                    arm.armUp(),
+                                    arm.armDown(),
+                                    claw.openClaw(),
+                                    claw.closeClaw()
                         )
-                )
-        );
+                    )
+            );
+        }
+
+    }
 }
+
