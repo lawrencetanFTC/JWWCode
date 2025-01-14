@@ -57,18 +57,50 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "ForwardAuto", group = "Autonomous")
-public class moveForward extends LinearOpMode {
+@Autonomous(name = "Lm3Auto", group = "Autonomous")
+@Disabled
+public class Lm3Auto extends LinearOpMode {
 
-    // Motors for driving
+    // Define motors for driving
     private DcMotor frontLeft;
     private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
 
+    // motors for slides
+    private DcMotor leftSlideMotor;
+    private DcMotor rightSlideMotor;
+
+    // Servos
+    private Servo shoulderLeft;
+    private Servo shoulderRight;
+    private Servo elbowLeft;
+    private Servo elbowRight;
+    private Servo clawServo;
+    private Servo extendLeft;
+    private Servo extendRight;
+    private Servo extenLeft;
+    private Servo extenRight;
+    private Servo wristLeft;
+    private Servo wristRight;
+    private CRServo spinTakeLeft;
+    private CRServo spinTakeRight;
+
+    //Math stuff
+    static final double HD_COUNTS_PER_REV = null;
+    static final double DRIVE_GEAR_REDUCTION = null;
+    static final double WHEEL_CIRCUMFERENCE_MM = null * Math.PI;
+    static final double DRIVE_COUNTS_PER_MM = (HD_COUNTS_PER_REV * DRIVE_GEAR_REDUCTION) / WHEEL_CIRCUMFERENCE_MM;
+    static final double DRIVE_COUNTS_PER_IN = DRIVE_COUNTS_PER_MM * 25.4;
+
+    private ElapsedTime runtime;
     @Override
     public void runOpMode() {
         // Initialize hardware

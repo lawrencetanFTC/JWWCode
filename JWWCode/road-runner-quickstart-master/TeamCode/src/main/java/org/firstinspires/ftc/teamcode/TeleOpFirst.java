@@ -1272,8 +1272,8 @@ public class TeleOpFirst extends OpMode {
 
 //        extendLeft.setPosition(1);
 //        extendRight.setPosition(0);
-        elbowLeft.setPosition(.9594);
-        elbowRight.setPosition(.3033);
+        elbowLeft.setPosition(.9822);
+        elbowRight.setPosition(.26);
 
 //        extenLeft.setPosition(1);
 //        extenRight.setPosition(0);
@@ -1291,11 +1291,11 @@ public class TeleOpFirst extends OpMode {
         controlSlides();
 
         if (gamepad2.y) {
-            changeServoPositionBy(elbowLeft, .0001);
-            changeServoPositionBy(elbowRight, -.0001);
+            changeServoPositionBy(elbowLeft, .0025);
+            changeServoPositionBy(elbowRight, -.0025);
         } else if (gamepad2.a) {
-            changeServoPositionBy(elbowLeft, -.0001);
-            changeServoPositionBy(elbowRight, .0001);
+            changeServoPositionBy(elbowLeft, -.0025);
+            changeServoPositionBy(elbowRight, .0025);
         }
 
         // if (gamepad2.left_bumper) {
@@ -1324,8 +1324,8 @@ public class TeleOpFirst extends OpMode {
         if (gamepad2.dpad_left) { // retract extend
             try {
                 // elbow goes up
-//                elbowLeft.setPosition(.9183);
-//                elbowRight.setPosition(.2667);
+                elbowLeft.setPosition(.9822);
+                elbowRight.setPosition(.26);
 
                 // retracts extend
                 extendLeft.setPosition(1);
@@ -1372,10 +1372,12 @@ public class TeleOpFirst extends OpMode {
         } else if (gamepad2.b) {
             shoulderLeft.setPosition(0);
             shoulderRight.setPosition(1);
-            elbowLeft.setPosition(.9944);
-            elbowRight.setPosition(.2667);
-            elbowLeft.setPosition(.9594);
-            elbowRight.setPosition(.3033);
+            elbowLeft.setPosition(.9822);
+            elbowRight.setPosition(.26);
+//            elbowLeft.setPosition(.9944);
+//            elbowRight.setPosition(.2667);
+//            elbowLeft.setPosition(.9594);
+//            elbowRight.setPosition(.3033);
         }
 
         updateAllTelemetry();
@@ -1429,30 +1431,30 @@ public class TeleOpFirst extends OpMode {
 
     private void controlSlides() {
         // SLIDES movement code
-        // if (gamepad2.left_stick_y < 0 && leftSlideMotor.getCurrentPosition() < 8100 && rightSlideMotor.getCurrentPosition() > -8100) {
-        //     rightSlideMotor.setPower(-gamepad2.left_stick_y * -.8);
-        //     leftSlideMotor.setPower(-gamepad2.left_stick_y * .8);
-        // } else if (gamepad2.left_stick_y > 0 && leftSlideMotor.getCurrentPosition() > 0 && rightSlideMotor.getCurrentPosition() < 0) {
-        //     rightSlideMotor.setPower(-gamepad2.left_stick_y * -.8);
-        //     leftSlideMotor.setPower(-gamepad2.left_stick_y * .8);
-        // } else {
-        //     rightSlideMotor.setPower(0);
-        //     leftSlideMotor.setPower(0);
-        // }
+//         if (gamepad2.left_stick_y < 0 && leftSlideMotor.getCurrentPosition() < 8100 && rightSlideMotor.getCurrentPosition() > -8100) {
+//             rightSlideMotor.setPower(-gamepad2.left_stick_y * -.8);
+//             leftSlideMotor.setPower(-gamepad2.left_stick_y * .8);
+//         } else if (gamepad2.left_stick_y > 0 && leftSlideMotor.getCurrentPosition() > 0 && rightSlideMotor.getCurrentPosition() < 0) {
+//             rightSlideMotor.setPower(-gamepad2.left_stick_y * -.8);
+//             leftSlideMotor.setPower(-gamepad2.left_stick_y * .8);
+//         } else {
+//             rightSlideMotor.setPower(0);
+//             leftSlideMotor.setPower(0);
+//         }
         // Debugging COMMENT LATER ON
         rightSlideMotor.setPower(-gamepad2.right_stick_y * -.8);
         leftSlideMotor.setPower(-gamepad2.right_stick_y * .8);
 
-        if (gamepad2.left_stick_y < 0 && leftSlideMotor.getCurrentPosition() < 8100 && rightSlideMotor.getCurrentPosition() > -8100) {
-            rightSlideMotor.setPower(-gamepad2.left_stick_y * -.8);
-            leftSlideMotor.setPower(-gamepad2.left_stick_y * .8);
-        } else if (gamepad2.left_stick_y > 0 && leftSlideMotor.getCurrentPosition() > 0 && rightSlideMotor.getCurrentPosition() < 0) {
-            rightSlideMotor.setPower(-gamepad2.left_stick_y * -.8);
-            leftSlideMotor.setPower(-gamepad2.left_stick_y * .8);
-        } else {
-            rightSlideMotor.setPower(0);
-            leftSlideMotor.setPower(0);
-        }
+//        if (gamepad2.left_stick_y < 0 && leftSlideMotor.getCurrentPosition() < 8100 && rightSlideMotor.getCurrentPosition() > -8100) {
+//            rightSlideMotor.setPower(-gamepad2.left_stick_y * -.8);
+//            leftSlideMotor.setPower(-gamepad2.left_stick_y * .8);
+//        } else if (gamepad2.left_stick_y > 0 && leftSlideMotor.getCurrentPosition() > 0 && rightSlideMotor.getCurrentPosition() < 0) {
+//            rightSlideMotor.setPower(-gamepad2.left_stick_y * -.8);
+//            leftSlideMotor.setPower(-gamepad2.left_stick_y * .8);
+//        } else {
+//            rightSlideMotor.setPower(0);
+//            leftSlideMotor.setPower(0);
+//        }
         // Debugging COMMENT LATER ON
         // rightSlideMotor.setPower(-gamepad2.right_stick_y * -1);
         // leftSlideMotor.setPower(-gamepad2.right_stick_y * 1);
