@@ -141,7 +141,7 @@ public class _0AutonSkeleton extends LinearOpMode {
     }
 
     //Major testing below.
-    public class Slides { //This class is altered from Arnav's code in "ActualFinalAutoDeck.java"
+    public class Slides { //This class is altered from Arnav's code in "ActualFinalAutoDeckBlue.java"
         private DcMotor leftSlideMotor;
         private DcMotor rightSlideMotor;
 
@@ -285,47 +285,9 @@ public class _0AutonSkeleton extends LinearOpMode {
     @Override
     public void runOpMode() {
         boolean testing = false;
-        boolean testing2 = false;
-
-        if(testing2){
-
-            Pose2d initialPose = new Pose2d(0, -60, Math.toRadians(0)); //WHAT IS THIS?
-            MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
-
-            Extend extend = new Extend(hardwareMap);
-            Wrist wrist = new Wrist(hardwareMap);
-            Spintake spintake = new Spintake(hardwareMap);
-            Slides slides = new Slides(hardwareMap);
-            Arm arm = new Arm(hardwareMap);
-            Claw claw = new Claw(hardwareMap);
-
-            TrajectoryActionBuilder goToRungs = drive.actionBuilder(new Pose2d(16.00, -63.00, Math.toRadians(90.00)))
-                    .splineToConstantHeading(new Vector2d(6.00, -34.00), Math.toRadians(90.00));
-
-            TrajectoryActionBuilder pushSamples = drive.actionBuilder(new Pose2d(7.17, -34.00, Math.toRadians(90.00)))
-                    .strafeToConstantHeading(new Vector2d(37.00, -34.00))
-                    .splineToConstantHeading(new Vector2d(37.72, -18.91), Math.toRadians(64.50))
-                    .splineToConstantHeading(new Vector2d(48.16, -11.27), Math.toRadians(78.26))
-                    .strafeToConstantHeading(new Vector2d(48.00, -56.00))
-                    .splineToConstantHeading(new Vector2d(48.90, -21.52), Math.toRadians(75.57))
-                    .splineToConstantHeading(new Vector2d(58.21, -5.12), Math.toRadians(78.65))
-                    .strafeToConstantHeading(new Vector2d(58.40, -56.54))
-                    .splineToSplineHeading(new Pose2d(63.24, -26.73, Math.toRadians(0.00)), Math.toRadians(72.99));
-
-            TrajectoryActionBuilder goToDeck = drive.actionBuilder(new Pose2d(63.24, -26.73, Math.toRadians(0.00)))
-                    .strafeToLinearHeading(new Vector2d(57.10, -56.72), Math.toRadians(-90.00));
 
 
-            Actions.runBlocking(new SequentialAction(goToRungs.build(),
-                    slides.rungPos(),
-                    slides.hook(),
-                    slides.lowPos(),
-                    pushSamples.build(),
-                    goToDeck.build()
-                    ));
 
-
-        }
         if (!testing) {
             Pose2d initialPose = new Pose2d(0, -60, Math.toRadians(0)); //WHAT IS THIS?
             MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
