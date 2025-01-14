@@ -25,7 +25,7 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 @Disabled
 public class hardwareAuto extends LinearOpMode {
 
-    public class Extend {
+    public static class Extend {
         private Servo extendLeft;
         private Servo extendRight;
 
@@ -59,7 +59,7 @@ public class hardwareAuto extends LinearOpMode {
         }
     }
 
-    public class Wrist {
+    public static class Wrist {
         private Servo wristLeft;
         private Servo wristRight;
 
@@ -93,7 +93,7 @@ public class hardwareAuto extends LinearOpMode {
         }
     }
 
-    public class Spintake {
+    public static class Spintake {
         private CRServo spinTakeLeft;
         private CRServo spinTakeRight;
 
@@ -140,7 +140,7 @@ public class hardwareAuto extends LinearOpMode {
     }
 
     //Major testing below.
-    public class Slides { //This class is altered from Arnav's code in "ActualFinalAutoDeckBlue.java"
+    public static class Slides { //This class is altered from Arnav's code in "ActualFinalAutoDeckBlue.java"
         private DcMotor leftSlideMotor;
         private DcMotor rightSlideMotor;
 
@@ -208,7 +208,7 @@ public class hardwareAuto extends LinearOpMode {
 
     }
 
-    public class Arm {
+    public static class Arm {
         private Servo elbowLeft;
         private Servo elbowRight;
         private Servo shoulderLeft;
@@ -250,7 +250,7 @@ public class hardwareAuto extends LinearOpMode {
         }
     }
 
-    public class Claw {
+    public static class Claw {
         private Servo clawServo;
 
         public Claw(HardwareMap hardwareMap) {

@@ -1,5 +1,7 @@
 // All code is written by me except when mentioned otherwise.
 //Copied that same way it is written in the rr.brott.dev website.
+// According to Priyam, js take the trajectories and put them into different methods such as traj 1, traj 2, etc. depending on which trajectories you want to order in a sequence, which you can put in state
+// Then you can take these methods and use followTrajectoryAsync(traj1), this will allow for simultaneous robot movements along with drivetrain.
 
 package org.firstinspires.ftc.teamcode;
 
@@ -26,7 +28,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 // @Disabled
 public class _0AutonSkeleton extends LinearOpMode {
 
-    public class Extend {
+    public static class Extend {
         private Servo extendLeft;
         private Servo extendRight;
 
@@ -60,7 +62,7 @@ public class _0AutonSkeleton extends LinearOpMode {
         }
     }
 
-    public class Wrist {
+    public static class Wrist {
         private Servo wristLeft;
         private Servo wristRight;
 
@@ -94,7 +96,7 @@ public class _0AutonSkeleton extends LinearOpMode {
         }
     }
 
-    public class Spintake {
+    public static class Spintake {
         private CRServo spinTakeLeft;
         private CRServo spinTakeRight;
 
@@ -141,7 +143,7 @@ public class _0AutonSkeleton extends LinearOpMode {
     }
 
     //Major testing below.
-    public class Slides { //This class is altered from Arnav's code in "ActualFinalAutoDeckBlue.java"
+    public static class Slides { //This class is altered from Arnav's code in "ActualFinalAutoDeckBlue.java"
         private DcMotor leftSlideMotor;
         private DcMotor rightSlideMotor;
 
@@ -209,7 +211,7 @@ public class _0AutonSkeleton extends LinearOpMode {
 
     }
 
-    public class Arm {
+    public static class Arm {
         private Servo elbowLeft;
         private Servo elbowRight;
         private Servo shoulderLeft;
@@ -251,7 +253,7 @@ public class _0AutonSkeleton extends LinearOpMode {
         }
     }
 
-    public class Claw {
+    public static class Claw {
         private Servo clawServo;
 
         public Claw(HardwareMap hardwareMap) {
