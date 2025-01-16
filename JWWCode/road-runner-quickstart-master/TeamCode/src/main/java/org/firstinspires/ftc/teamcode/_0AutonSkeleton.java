@@ -1,5 +1,9 @@
-package org.firstinspires.ftc.teamcode;
+// All code is written by me except when mentioned otherwise.
+//Copied that same way it is written in the rr.brott.dev website.
+// According to Priyam, js take the trajectories and put them into different methods such as traj 1, traj 2, etc. depending on which trajectories you want to order in a sequence, which you can put in state
+// Then you can take these methods and use followTrajectoryAsync(traj1), this will allow for simultaneous robot movements along with drivetrain.
 
+package org.firstinspires.ftc.teamcode;
 
 import androidx.annotation.NonNull;
 
@@ -13,7 +17,6 @@ import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -21,9 +24,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.MecanumDrive;
-@Disabled
-public class hardwareAuto extends LinearOpMode {
+@Autonomous(name = "AutonSkeleton", group = "Autonomous")
+// @Disabled
+public class _0AutonSkeleton extends LinearOpMode {
 
     public static class Extend {
         private Servo extendLeft;
@@ -55,7 +58,7 @@ public class hardwareAuto extends LinearOpMode {
             }
         }
         public Action retractSt() {
-            return new Extend.RetractSt();
+            return new RetractSt();
         }
     }
 
@@ -77,7 +80,7 @@ public class hardwareAuto extends LinearOpMode {
             }
         }
         public Action wristUp() {
-            return new Wrist.WristUp();
+            return new WristUp();
         }
 
         public class WristDown implements Action {
@@ -89,7 +92,7 @@ public class hardwareAuto extends LinearOpMode {
             }
         }
         public Action wristDown() {
-            return new Wrist.WristDown();
+            return new WristDown();
         }
     }
 
@@ -119,11 +122,11 @@ public class hardwareAuto extends LinearOpMode {
         }
 
         public Action intake() {
-            return new Spintake.SpinAction(DcMotorSimple.Direction.FORWARD);
+            return new SpinAction(DcMotorSimple.Direction.FORWARD);
         }
 
         public Action outtake() {
-            return new Spintake.SpinAction(DcMotorSimple.Direction.REVERSE);
+            return new SpinAction(DcMotorSimple.Direction.REVERSE);
         }
 
         public class Neutral implements Action {
@@ -135,7 +138,7 @@ public class hardwareAuto extends LinearOpMode {
             }
         }
         public Action neutral() {
-            return new Spintake.Neutral();
+            return new Neutral();
         }
     }
 
@@ -188,22 +191,22 @@ public class hardwareAuto extends LinearOpMode {
             }
         }
         public Action basketPos() {
-            return new Slides.MoveSlide(90);
+            return new MoveSlide(90);
         }
 
         public Action rungPos() {
-            return new Slides.MoveSlide(50);
+            return new MoveSlide(50);
         }
 
 
         public Action lowPos() {
-            return new Slides.MoveSlide(10);
+            return new MoveSlide(10);
         }
         private int hookDelta = 5;
 
 
         public Action hook() {
-            return new Slides.MoveSlide(rightSlideMotor.getCurrentPosition() - hookDelta);
+            return new MoveSlide(rightSlideMotor.getCurrentPosition() - hookDelta);
         }
 
     }
@@ -232,7 +235,7 @@ public class hardwareAuto extends LinearOpMode {
             }
         }
         public Action armDown() {
-            return new Arm.ArmDown();
+            return new ArmDown();
         }
 
         public class ArmUp implements Action { //CHECK THIS!!!!!!!!!!!!!!!!!!!!!!
@@ -246,7 +249,7 @@ public class hardwareAuto extends LinearOpMode {
             }
         }
         public Action armUp() {
-            return new Arm.ArmUp();
+            return new ArmUp();
         }
     }
 
@@ -265,7 +268,7 @@ public class hardwareAuto extends LinearOpMode {
             }
         }
         public Action openClaw() {
-            return new Claw.OpenClaw();
+            return new OpenClaw();
         }
 
         public class CloseClaw implements Action {
@@ -276,7 +279,7 @@ public class hardwareAuto extends LinearOpMode {
             }
         }
         public Action closeClaw() {
-            return new Claw.CloseClaw();
+            return new CloseClaw();
         }
     }
 
@@ -328,10 +331,11 @@ public class hardwareAuto extends LinearOpMode {
                                     arm.armDown(),
                                     claw.openClaw(),
                                     claw.closeClaw()
-                            )
+                        )
                     )
             );
         }
 
     }
 }
+
