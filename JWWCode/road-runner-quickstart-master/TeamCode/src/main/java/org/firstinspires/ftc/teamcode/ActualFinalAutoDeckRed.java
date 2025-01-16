@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import androidx.annotation.NonNull;
-
+import org.firstinspires.ftc.teamcode._0AutonSkeleton.*;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -25,26 +25,20 @@ public class ActualFinalAutoDeckRed extends LinearOpMode {
         Slides slides = new Slides(hardwareMap);
         Arm arm = new Arm(hardwareMap);
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, Math.toRadians(0)));
+        Pose2d initialPose = new Pose2d(-24, 60, Math.toRadians(90));
 
 
         // Trajectoires go here
         // Gonna make these in RRPathgen later
 
-        TrajectoryActionBuilder goToRungs = drive.actionBuilder(new Pose2d(16.00, -63.00, Math.toRadians(90.00)))
-                .splineToConstantHeading(new Vector2d(6.00, -34.00), Math.toRadians(90.00));
+        Action goToRungs = drive.actionBuilder(initialPose)
+                .strafeToConstantHeading(new Vector2d(0, -37))
+                .build();
 
-        TrajectoryActionBuilder pushSamples = drive.actionBuilder(new Pose2d(7.17, -34.00, Math.toRadians(90.00)))
-                .strafeToConstantHeading(new Vector2d(37.00, -34.00))
-                .splineToConstantHeading(new Vector2d(37.72, -18.91), Math.toRadians(64.50))
-                .splineToConstantHeading(new Vector2d(48.16, -11.27), Math.toRadians(78.26))
-                .strafeToConstantHeading(new Vector2d(48.00, -56.00))
-                .splineToConstantHeading(new Vector2d(48.90, -21.52), Math.toRadians(75.57))
-                .splineToConstantHeading(new Vector2d(58.21, -5.12), Math.toRadians(78.65))
-                .strafeToConstantHeading(new Vector2d(58.40, -56.54))
-                .splineToSplineHeading(new Pose2d(63.24, -26.73, Math.toRadians(0.00)), Math.toRadians(72.99));
-
-        TrajectoryActionBuilder goToDeck = drive.actionBuilder(new Pose2d(63.24, -26.73, Math.toRadians(0.00)))
-                .strafeToLinearHeading(new Vector2d(57.10, -56.72), Math.toRadians(-90.00));
+        Action park = drive.actionBuilder(new Pose2d(0,-37,Math.toRadians(90)))
+                .strafeToConstantHeading(new Vector2d(0,-40))
+                .splineToLinearHeading(new Pose2d(44, -60, Math.toRadians(180)),Math.toRadians(180))
+                .build();
 
 		/*
 		Hello, this is a short guide for robot positions.
@@ -123,15 +117,15 @@ public class ActualFinalAutoDeckRed extends LinearOpMode {
         // Action Test
         Actions.runBlocking(
                 new SequentialAction(
-                        claw.open(),
-                        claw.close(),
-                        arm.up(),
-                        arm.down(),
-                        slides.moveToTop(),
-                        slides.moveToMid(),
+                        claw.openClaw(),
+                        claw.closeClaw(),
+                        arm.armUp(),
+                        arm.armDown(),
+                        slides.basketPos(),
+                        slides.rungPos(),
                         slides.hook(),
-                        slides.moveToLow(),
-                        slides.moveToMid()
+                        slides.lowPos(),
+                        slides.rungPos()
                 )
         );
 
@@ -151,157 +145,157 @@ public class ActualFinalAutoDeckRed extends LinearOpMode {
                         claw.open()
                 )
         );*/
-    }
+    }}
 
-    public static class Slides {
-        DcMotor leftSlideMotor;
-        DcMotor rightSlideMotor;
-
-        int LOW_POS = 10;  // TO TUNE
-        int MID_POS = 50;
-        int HIGH_POS = 90;
-        int HOOK_DELTA = 5; // move down 5 ticks to hook specimen
-
-        Slides(HardwareMap hardwareMap) {
-            leftSlideMotor = hardwareMap.get(DcMotor.class, "leftSlideMotor");
-            rightSlideMotor = hardwareMap.get(DcMotor.class, "rightSlideMotor");
-
-            leftSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            leftSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            leftSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            rightSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            rightSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            rightSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        }
-
-        public Action moveToTop() {
-            return new SetSlidePosition(HIGH_POS);
-        }
-
-        public Action moveToMid() {
-            return new SetSlidePosition(MID_POS);
-        }
-
-        public Action moveToLow() {
-            return new SetSlidePosition(LOW_POS);
-        }
-
-        public Action hook() {
-            return new SetSlidePosition(rightSlideMotor.getCurrentPosition() - HOOK_DELTA);
-        }
-
-        public class SetSlidePosition implements Action {
-
-            private final int position;
-            boolean init = false;
-
-            SetSlidePosition(int position) {
-                this.position = position;
-            }
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                if (!init) {
-                    leftSlideMotor.setPower(.3);
-                    leftSlideMotor.setTargetPosition(-position);
-                    rightSlideMotor.setPower(.3);
-                    rightSlideMotor.setTargetPosition(position);
-                    init = true;
-                }
-
-                boolean running = leftSlideMotor.getCurrentPosition() != -position;
-                if (!running) {
-                    leftSlideMotor.setPower(0);
-                    rightSlideMotor.setPower(0);
-                }
-
-                return running;
-            }
-        }
-    }
-
-    public class Arm {
-        Servo lArmServo;
-        Servo rArmServo;
-
-        Arm(HardwareMap hardwareMap) {
-            lArmServo = hardwareMap.get(Servo.class, "leftArmServo");
-            rArmServo = hardwareMap.get(Servo.class, "rightArmServo");
-        }
-
-
-        // Actions Go here.
-        // NUMBERS IN ARNAV CODE ARE PURPOSFULLY LOW
-        // THESE NUMBERES WILL BE TUNED LATER
-
-        public Action up() {
-            return new ArmVertical();
-        }
-
-        public Action down() {
-            return new ArmHorizontal();
-        }
-
-        //Actions added by arnav
-        public class ArmVertical implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                lArmServo.setPosition(0.5);
-                rArmServo.setPosition(-0.5);
-                return false;
-            }
-        }
-
-        public class ArmHorizontal implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                lArmServo.setPosition(0);
-                rArmServo.setPosition(0);
-                return false;
-            }
-        }
-        // End of arnav code
-
-    }
-
-// Paste slides and arms actioned code here
-
-    public class Claw {
-        private final Servo claw;
-
-        public Claw(HardwareMap hardwareMap) {
-            claw = hardwareMap.get(Servo.class, "clawServo");
-        }
-
-        public Action close() {
-            return new CloseClaw();
-        }
-
-        public Action open() {
-            return new OpenClaw();
-        }
-
-        public class CloseClaw implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-
-                claw.setPosition(0);
-                return false;
-            }
-        }
-
-        public class OpenClaw implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-
-                claw.setPosition(0.1);
-                return false;
-            }
-        }
-    }
-
-
-}
+//    public static class Slides {
+//        DcMotor leftSlideMotor;
+//        DcMotor rightSlideMotor;
+//
+//        int LOW_POS = 10;  // TO TUNE
+//        int MID_POS = 50;
+//        int HIGH_POS = 90;
+//        int HOOK_DELTA = 5; // move down 5 ticks to hook specimen
+//
+//        Slides(HardwareMap hardwareMap) {
+//            leftSlideMotor = hardwareMap.get(DcMotor.class, "leftSlideMotor");
+//            rightSlideMotor = hardwareMap.get(DcMotor.class, "rightSlideMotor");
+//
+//            leftSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//            leftSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            leftSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//
+//            rightSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//            rightSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            rightSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//
+//            leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+//        }
+//
+//        public Action moveToTop() {
+//            return new SetSlidePosition(HIGH_POS);
+//        }
+//
+//        public Action moveToMid() {
+//            return new SetSlidePosition(MID_POS);
+//        }
+//
+//        public Action moveToLow() {
+//            return new SetSlidePosition(LOW_POS);
+//        }
+//
+//        public Action hook() {
+//            return new SetSlidePosition(rightSlideMotor.getCurrentPosition() - HOOK_DELTA);
+//        }
+//
+//        public class SetSlidePosition implements Action {
+//
+//            private final int position;
+//            boolean init = false;
+//
+//            SetSlidePosition(int position) {
+//                this.position = position;
+//            }
+//
+//            @Override
+//            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+//                if (!init) {
+//                    leftSlideMotor.setPower(.3);
+//                    leftSlideMotor.setTargetPosition(-position);
+//                    rightSlideMotor.setPower(.3);
+//                    rightSlideMotor.setTargetPosition(position);
+//                    init = true;
+//                }
+//
+//                boolean running = leftSlideMotor.getCurrentPosition() != -position;
+//                if (!running) {
+//                    leftSlideMotor.setPower(0);
+//                    rightSlideMotor.setPower(0);
+//                }
+//
+//                return running;
+//            }
+//        }
+//    }
+//
+//    public class Arm {
+//        Servo lArmServo;
+//        Servo rArmServo;
+//
+//        Arm(HardwareMap hardwareMap) {
+//            lArmServo = hardwareMap.get(Servo.class, "leftArmServo");
+//            rArmServo = hardwareMap.get(Servo.class, "rightArmServo");
+//        }
+//
+//
+//        // Actions Go here.
+//        // NUMBERS IN ARNAV CODE ARE PURPOSFULLY LOW
+//        // THESE NUMBERES WILL BE TUNED LATER
+//
+//        public Action up() {
+//            return new ArmVertical();
+//        }
+//
+//        public Action down() {
+//            return new ArmHorizontal();
+//        }
+//
+//        //Actions added by arnav
+//        public class ArmVertical implements Action {
+//            @Override
+//            public boolean run(@NonNull TelemetryPacket packet) {
+//                lArmServo.setPosition(0.5);
+//                rArmServo.setPosition(-0.5);
+//                return false;
+//            }
+//        }
+//
+//        public class ArmHorizontal implements Action {
+//            @Override
+//            public boolean run(@NonNull TelemetryPacket packet) {
+//                lArmServo.setPosition(0);
+//                rArmServo.setPosition(0);
+//                return false;
+//            }
+//        }
+//        // End of arnav code
+//
+//    }
+//
+//// Paste slides and arms actioned code here
+//
+//    public class Claw {
+//        private final Servo claw;
+//
+//        public Claw(HardwareMap hardwareMap) {
+//            claw = hardwareMap.get(Servo.class, "clawServo");
+//        }
+//
+//        public Action close() {
+//            return new CloseClaw();
+//        }
+//
+//        public Action open() {
+//            return new OpenClaw();
+//        }
+//
+//        public class CloseClaw implements Action {
+//            @Override
+//            public boolean run(@NonNull TelemetryPacket packet) {
+//
+//                claw.setPosition(0);
+//                return false;
+//            }
+//        }
+//
+//        public class OpenClaw implements Action {
+//            @Override
+//            public boolean run(@NonNull TelemetryPacket packet) {
+//
+//                claw.setPosition(0.1);
+//                return false;
+//            }
+//        }
+//    }
+//
+//
+//}
