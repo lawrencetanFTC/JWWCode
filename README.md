@@ -291,15 +291,15 @@ If you encounter other issues, please open a [GitHub Issue](https://github.com/y
 - OpenCV: [OpenCV Official Site](https://opencv.org)
 
 Special thanks to all the team members who contributed to this project!
-- **Programming Team Members for meet 1**:
-  - Lawrence (Lead Programmer)
-  - Shreyansh 
+- **Programming Team Members**:
+  - Lawrence (Former Lead Programmer)
+  - Shreyansh (Lead Programmer)
   - Arnav
-  - Sohan(Also outreach)
-  - Likith(Also engineering)
+  - Sohan
   - Samvarth(Also engineering)
-  - **Programming Team Members on reserve**
-  - Omar
   - Pratham
+  **Former Team Members**
+  - Omar
+  - Likith
 
 
