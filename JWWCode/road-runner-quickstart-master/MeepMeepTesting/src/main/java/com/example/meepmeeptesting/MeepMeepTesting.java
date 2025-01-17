@@ -6,6 +6,7 @@ import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
+
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
@@ -31,16 +32,18 @@ public class MeepMeepTesting {
 
 
 
-        myBot2.runAction(myBot2.getDrive().actionBuilder(new Pose2d(-24,-60, Math.toRadians(90.00)))
-                .strafeToConstantHeading(new Vector2d(0, -37))
-                .strafeToConstantHeading(new Vector2d(0,-40))
-                .splineToLinearHeading(new Pose2d(44, -60, Math.toRadians(180)),Math.toRadians(180))
-
-
+        myBot2.runAction(myBot2.getDrive().actionBuilder(new Pose2d(-34,-60, Math.toRadians(-90.00)))
+                .strafeToSplineHeading(new Vector2d(52,-40), Math.toRadians(90))
+//                .strafeToSplineHeading(new Vector2d(-50,-50), Math.toRadians(-135))
+//                .strafeToSplineHeading(new Vector2d(-50,-42), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(48,-50), Math.toRadians(-90))
+                .strafeToSplineHeading(new Vector2d(0,-37), Math.toRadians(90))
+                .strafeToSplineHeading(new Vector2d(48,-50), Math.toRadians(90))
                 .build());
 
 
-        meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
+
+                meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot2)
