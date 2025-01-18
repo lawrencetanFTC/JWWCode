@@ -32,15 +32,13 @@ public class MeepMeepTesting {
 
 
 
-        myBot2.runAction(myBot2.getDrive().actionBuilder(new Pose2d(58,48, Math.toRadians(-90.00)))
-                .splineTo(new Vector2d(53.00, 53.00), Math.toRadians(45))
-                .turn(Math.toRadians(-135))
-                .splineToLinearHeading(new Pose2d(45,27, Math.toRadians(0)), Math.toRadians(0))
-                .strafeTo(new Vector2d(47, 27))
-                .splineTo(new Vector2d(53.00, 53.00), Math.toRadians(45))
-                .splineTo(new Vector2d(52.00, 45.00), Math.toRadians(238.03))
-                .splineToLinearHeading(new Pose2d(25.00, 13.00, Math.toRadians(180.00)), Math.toRadians(180.00))
-
+        myBot2.runAction(myBot2.getDrive().actionBuilder(new Pose2d(0,37, Math.toRadians(-90.00)))
+                .strafeTo(new Vector2d(-31, 37))
+                .turn(Math.toRadians(180))
+                .strafeTo(new Vector2d(-31,10))
+                .strafeTo(new Vector2d(-48, 10))
+                .strafeTo(new Vector2d(-48,54))
+                .strafeTo(new Vector2d(-48,50))
                 .build());
 
 

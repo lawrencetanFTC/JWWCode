@@ -16,7 +16,7 @@ public class ActualFinalDeckBlue extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        Pose2d initialPose = new Pose2d(-24, -60, Math.toRadians(-90));
+        Pose2d initialPose = new Pose2d(-33, 53, Math.toRadians(-90));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
         Extend extend = new Extend(hardwareMap);
@@ -30,28 +30,23 @@ public class ActualFinalDeckBlue extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(0, 37))
                 .build();
 
-        Action park = drive.actionBuilder(new Pose2d(0,37,Math.toRadians(-90)))
-                .strafeToConstantHeading(new Vector2d(0,40))
-                .splineToLinearHeading(new Pose2d(-54, 61, Math.toRadians(0)),Math.toRadians(0))
+        Action pushSample1 = drive.actionBuilder(new Pose2d(0, 37, Math.toRadians(-90)))
+                .strafeTo(new Vector2d(-31, 37))
+                .strafeTo(new Vector2d(-31,10))
+                .strafeTo(new Vector2d(-50, 10))
+                .strafeTo(new Vector2d(-50,54))
+                .strafeTo(new Vector2d(-50,50))
                 .build();
+
+        Action PickUpSample
+
+
 
         waitForStart();
 
         if(isStopRequested()) return;
 
 
-        Actions.runBlocking(
-                new SequentialAction(
-                    new ParallelAction(
-                            goToRungs,
-                            new SequentialAction(
-                                slides.rungPos(),
-                                arm.armUp()
-                            )
-                    ),
-                    park
-
-                    ));
 
 
 
