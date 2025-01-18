@@ -292,13 +292,13 @@ If you encounter other issues, please open a [GitHub Issue](https://github.com/y
 
 Special thanks to all the team members who contributed to this project!
 - **Programming Team Members**:
-  - Lawrence (Former Lead Programmer)
   - Shreyansh (Lead Programmer)
+  - Lawrence (Former Lead Programmer)
   - Arnav
   - Sohan
   - Samvarth(Also engineering)
   - Pratham
-  **Former Team Members**
+- **Former Team Members**
   - Omar
   - Likith
 
