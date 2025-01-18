@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name = "AutonPark", group = "Autonomous")
-@Disabled
 public class AutonPark extends LinearOpMode {
 
     // Define motors for driving
@@ -35,7 +34,7 @@ public class AutonPark extends LinearOpMode {
 
         if (opModeIsActive()) {
             // Strafe right
-            strafeRight(0.5, 5000); // Power: 0.5, Duration: 1000 ms
+            strafeRight(0.5, 4000); // Power: 0.5, Duration: 1000 ms
             // Stop motors
             stopMotors();
         }

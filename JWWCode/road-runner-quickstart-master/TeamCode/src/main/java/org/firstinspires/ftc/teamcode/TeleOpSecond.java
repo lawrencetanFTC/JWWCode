@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
-@TeleOp(name = "ASTeleOpFinal1234", group = "TeleOp")
-public class TeleOpFirst extends OpMode {
+@TeleOp(name = "ASTeleOpPID", group = "TeleOp")
+public class TeleOpSecond extends OpMode {
     // Define motors for driving
     private DcMotor frontLeft;
     private DcMotor frontRight;
@@ -31,6 +31,19 @@ public class TeleOpFirst extends OpMode {
     private Servo wristRight;
     private CRServo spinTakeLeft;
     private CRServo spinTakeRight;
+
+    // Add the PID constants and variables for the slides
+    private final double Kp = 0.01; // Proportional gain
+    private final double Ki = 0.0;  // Integral gain
+    private final double Kd = 0.001; // Derivative gain
+
+    private double targetPosition = 0; // Desired encoder position
+    private double integralSum = 0;
+    private double lastError = 0;
+
+    // Slide boundaries
+    private final int MAX_POSITION = 8100; // Maximum encoder ticks (full extension)
+    private final int MIN_POSITION = 0;
 
 
     @Override
@@ -98,7 +111,8 @@ public class TeleOpFirst extends OpMode {
     @Override
     public void loop() {
         controlDrivetrain();
-        controlSlides();
+//        controlSlides();
+        controlSlidesWithPID();
         if (gamepad2.dpad_up) {
             changeServoPositionBy(extendLeft, -.001);
             changeServoPositionBy(extendRight, .001);
@@ -122,13 +136,13 @@ public class TeleOpFirst extends OpMode {
             changeServoPositionBy(elbowRight, .0025);
         }
 
-         if (gamepad1.y) {
-             changeServoPositionBy(shoulderLeft, .0025);
-             changeServoPositionBy(shoulderRight, -.0025);
-         } else if (gamepad1.a) {
-             changeServoPositionBy(shoulderLeft, -.0025);
-             changeServoPositionBy(shoulderRight, .0025);
-         }
+        if (gamepad1.y) {
+            changeServoPositionBy(shoulderLeft, .0025);
+            changeServoPositionBy(shoulderRight, -.0025);
+        } else if (gamepad1.a) {
+            changeServoPositionBy(shoulderLeft, -.0025);
+            changeServoPositionBy(shoulderRight, .0025);
+        }
 
         if (gamepad2.left_bumper) { // close claw
             // changeServoPositionBy(clawServo, .0025);
@@ -243,6 +257,42 @@ public class TeleOpFirst extends OpMode {
         backRight.setPower(backRightPower);
         frontLeft.setPower(frontLeftPower);
         frontRight.setPower(frontRightPower);
+    }
+
+    private void controlSlidesWithPID() {
+        // Adjust target position using D-Pad
+        if (gamepad1.dpad_up) {
+            targetPosition += 5; // Increment target position
+        } else if (gamepad1.dpad_down) {
+            targetPosition -= 5; // Decrement target position
+        }
+
+        // Clamp target position within boundaries
+        targetPosition = Math.max(MIN_POSITION, Math.min(MAX_POSITION, targetPosition));
+
+        // Current encoder position (average of both motors)
+        double currentPosition = (leftSlideMotor.getCurrentPosition() + rightSlideMotor.getCurrentPosition()) / 2.0;
+
+        // Calculate PID terms
+        double error = targetPosition - currentPosition;
+        integralSum += error; // Accumulate error for integral term
+        double derivative = error - lastError; // Change in error for derivative term
+
+        // Compute motor power using PID
+        double power = (Kp * error) + (Ki * integralSum) + (Kd * derivative);
+
+        // Apply power to both motors
+        leftSlideMotor.setPower(power);
+        rightSlideMotor.setPower(power);
+
+        // Update last error
+        lastError = error;
+
+        // Telemetry for PID debugging
+        telemetry.addData("Slide Target", targetPosition);
+        telemetry.addData("Slide Current", currentPosition);
+        telemetry.addData("Slide Power", power);
+        telemetry.addData("PID Error", error);
     }
 
 
