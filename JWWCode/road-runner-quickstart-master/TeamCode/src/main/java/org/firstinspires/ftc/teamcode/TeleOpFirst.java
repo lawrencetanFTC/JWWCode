@@ -148,13 +148,15 @@ public class TeleOpFirst extends OpMode {
         if (gamepad2.dpad_left) { // retract extend
             try {
                 // elbow goes up
-                elbowLeft.setPosition(.9822);
-                elbowRight.setPosition(.26);
+//                elbowLeft.setPosition(.9822);
+//                elbowRight.setPosition(.26);
+                elbowLeft.setPosition(.8867);
+                elbowRight.setPosition(.2211);
 
                 // retracts extend
                 extendLeft.setPosition(1);
                 extendRight.setPosition(0);
-                Thread.sleep(2000); // 200 milliseconds delay
+                Thread.sleep(1000); // 200 milliseconds delay
 
                 // elbow down
                 elbowLeft.setPosition(9756);
@@ -193,8 +195,8 @@ public class TeleOpFirst extends OpMode {
             shoulderRight.setPosition(1);
             elbowLeft.setPosition(.9822);
             elbowRight.setPosition(.26);
-//            elbowLeft.setPosition(.9944);
-//            elbowRight.setPosition(.2667);
+//            elbowLeft.setPosition(.8867);
+//            elbowRight.setPosition(.2211);
 //            elbowLeft.setPosition(.9594);
 //            elbowRight.setPosition(.3033);
         }
