@@ -32,18 +32,20 @@ public class MeepMeepTesting {
 
 
 
-        myBot2.runAction(myBot2.getDrive().actionBuilder(new Pose2d(-34,-60, Math.toRadians(-90.00)))
-                .strafeToSplineHeading(new Vector2d(52,-40), Math.toRadians(90))
-//                .strafeToSplineHeading(new Vector2d(-50,-50), Math.toRadians(-135))
-//                .strafeToSplineHeading(new Vector2d(-50,-42), Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(48,-50), Math.toRadians(-90))
-                .strafeToSplineHeading(new Vector2d(0,-37), Math.toRadians(90))
-                .strafeToSplineHeading(new Vector2d(48,-50), Math.toRadians(90))
+        myBot2.runAction(myBot2.getDrive().actionBuilder(new Pose2d(58,48, Math.toRadians(-90.00)))
+                .splineTo(new Vector2d(53.00, 53.00), Math.toRadians(45))
+                .turn(Math.toRadians(-135))
+                .splineToLinearHeading(new Pose2d(45,27, Math.toRadians(0)), Math.toRadians(0))
+                .strafeTo(new Vector2d(47, 27))
+                .splineTo(new Vector2d(53.00, 53.00), Math.toRadians(45))
+                .splineTo(new Vector2d(52.00, 45.00), Math.toRadians(238.03))
+                .splineToLinearHeading(new Pose2d(25.00, 13.00, Math.toRadians(180.00)), Math.toRadians(180.00))
+
                 .build());
 
 
 
-                meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
+        meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
                 .addEntity(myBot2)
