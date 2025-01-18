@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -76,17 +77,21 @@ public class AutonPath extends LinearOpMode{
                 // Will Run in Sequence of Operation given
                 new SequentialAction(
                 pathCreator.turn(angle),
-                /* Will Run at the same time;
+                */
+/* Will Run at the same time;
                 therefore, turns can happen at the same time as movement...
                 Benefits: Increases Robot Speed & Accuracy, but has to be timed well.
-                */
+                *//*
+
                 new SequentialAction(
                         new SequentialAction(
-                            /*
+                            */
+/*
                              Movement 1 to 2, can use any condensed form of...
                              splineToPoint, strafeToPoint, etc.
                              Ex: pathCreator.splineToPoint(P1, P2, P3);
-                            */
+                            *//*
+
                                 new ParallelAction(
 
                                 ) // Motors & Servos, while driving in specific orders
@@ -96,3 +101,4 @@ public class AutonPath extends LinearOpMode{
         );
     }
 } // Create instances of each class for specific motors, servos, etc.
+*/
