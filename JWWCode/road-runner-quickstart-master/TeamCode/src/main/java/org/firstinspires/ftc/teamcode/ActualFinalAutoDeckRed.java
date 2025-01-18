@@ -6,30 +6,29 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
+
 
 @Autonomous(name = "ActualFinalAutoDeck", group = "Autonomous")
 public class ActualFinalAutoDeckRed extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        Claw claw = new Claw(hardwareMap);
+
+        Extend extend = new Extend(hardwareMap);
+        Wrist wrist = new Wrist(hardwareMap);
+        Spintake spintake = new Spintake(hardwareMap);
         Slides slides = new Slides(hardwareMap);
         Arm arm = new Arm(hardwareMap);
+        Claw claw = new Claw(hardwareMap);
+
+
         MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, Math.toRadians(0)));
         Pose2d initialPose = new Pose2d(-24, 60, Math.toRadians(90));
 
-
-        // Trajectoires go here
-        // Gonna make these in RRPathgen later
 
         Action goToRungs = drive.actionBuilder(initialPose)
                 .strafeToConstantHeading(new Vector2d(0, -37))
@@ -45,7 +44,7 @@ public class ActualFinalAutoDeckRed extends LinearOpMode {
 		Just copy and paste the sequence provided below
 		for each major position and adjust as needed.
 		This should work assuming Autonomous is all good.
-		In the near future, when I have the time availible
+		In the near future, when I have the time avaigit lable
 		and neccesary, I will write it as an action as the
 		doc is a little unclear on whether I can put it as
 		'raw code' before running the OpMode or like how I
@@ -114,7 +113,6 @@ public class ActualFinalAutoDeckRed extends LinearOpMode {
 		*/
         if (isStopRequested()) return;
 
-        // Action Test
         Actions.runBlocking(
                 new SequentialAction(
                         claw.openClaw(),
