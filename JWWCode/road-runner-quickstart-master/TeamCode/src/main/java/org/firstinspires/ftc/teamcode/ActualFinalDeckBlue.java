@@ -1,5 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+<<<<<<< HEAD
+=======
+import org.firstinspires.ftc.teamcode._0AutonSkeleton.*;
+import org.opencv.core.Mat;
+
+>>>>>>> 2773edbc72909e3eb61fbd6ef4534a93990b31cf
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
@@ -33,15 +39,33 @@ public class ActualFinalDeckBlue extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(0, 37))
                 .build();
 
-        Action pushSample1 = drive.actionBuilder(new Pose2d(0, 37, Math.toRadians(-90)))
+        Action pushSamples = drive.actionBuilder(new Pose2d(0, 37, Math.toRadians(-90)))
                 .strafeTo(new Vector2d(-31, 37))
+                .turn(Math.toRadians(90))
                 .strafeTo(new Vector2d(-31,10))
-                .strafeTo(new Vector2d(-50, 10))
-                .strafeTo(new Vector2d(-50,54))
-                .strafeTo(new Vector2d(-50,50))
+                .strafeTo(new Vector2d(-41, 10))
+                .strafeTo(new Vector2d(-41,54))
+                .strafeTo(new Vector2d(-41,10))
+                .strafeTo(new Vector2d(-53,10))
+                .strafeTo(new Vector2d(-53, 54))
                 .build();
 
+<<<<<<< HEAD
 //        Action PickUpSample
+=======
+        Action ScoreSpecimen = drive.actionBuilder(new Pose2d(-53,54, Math.toRadians(90)))
+                .strafeTo(new Vector2d(-53,45))
+                .splineTo(new Vector2d(-40.09, 46.26), Math.toRadians(-30.94))
+                .splineToLinearHeading(new Pose2d(-23.00, 59.03, Math.toRadians(180.00)), Math.toRadians(180.00))
+                .splineTo(new Vector2d(-41.17, 47.09), Math.toRadians(7.31))
+                .splineTo(new Vector2d(-30.19, 46.87), Math.toRadians(2.10))
+                .splineTo(new Vector2d(-1.69, 47.51), Math.toRadians(45.00))
+                .splineToLinearHeading(new Pose2d(0.00, 37.00, Math.toRadians(-90.00)), Math.toRadians(-90.00))
+                .build();
+
+
+
+>>>>>>> 2773edbc72909e3eb61fbd6ef4534a93990b31cf
 
 
 
