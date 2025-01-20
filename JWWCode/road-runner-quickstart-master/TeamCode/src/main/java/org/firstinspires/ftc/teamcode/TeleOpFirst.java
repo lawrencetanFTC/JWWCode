@@ -290,7 +290,7 @@ public class TeleOpFirst extends OpMode {
 
     private void controlSlides() {
         // SLIDES movement code
-        if (gamepad2.left_stick_y < 0 && leftSlideMotor.getCurrentPosition() < 3090 && rightSlideMotor.getCurrentPosition() > -3147) {
+        /*if (gamepad2.left_stick_y < 0 && leftSlideMotor.getCurrentPosition() < 3090 && rightSlideMotor.getCurrentPosition() > -3147) {
             rightSlideMotor.setPower(-gamepad2.left_stick_y * -1);
             leftSlideMotor.setPower(-gamepad2.left_stick_y * 1);
         } else if (gamepad2.left_stick_y > 0 && leftSlideMotor.getCurrentPosition() > 0 && rightSlideMotor.getCurrentPosition() < 0) {
@@ -299,9 +299,9 @@ public class TeleOpFirst extends OpMode {
         } else {
             rightSlideMotor.setPower(0);
             leftSlideMotor.setPower(0);
-        }
-//        rightSlideMotor.setPower(-gamepad2.left_stick_y * -1);
-//        leftSlideMotor.setPower(-gamepad2.left_stick_y * 1);
+        }*/
+        rightSlideMotor.setPower(-gamepad2.left_stick_y * -1);
+        leftSlideMotor.setPower(-gamepad2.left_stick_y * 1);
     }
 }
 //
