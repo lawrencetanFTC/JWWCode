@@ -1,11 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
-<<<<<<< HEAD
-=======
-import org.firstinspires.ftc.teamcode._0AutonSkeleton.*;
 import org.opencv.core.Mat;
 
->>>>>>> 2773edbc72909e3eb61fbd6ef4534a93990b31cf
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Vector2d;
