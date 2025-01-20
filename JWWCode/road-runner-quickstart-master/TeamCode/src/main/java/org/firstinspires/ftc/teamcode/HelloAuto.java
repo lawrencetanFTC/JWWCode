@@ -26,7 +26,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "AutonSkeleton", group = "Autonomous")
 // @Disabled
-public class _0AutonSkeleton extends LinearOpMode {
+public class HelloAuto extends LinearOpMode {
 
     public static class Extend {
         private Servo extendLeft;
@@ -286,56 +286,62 @@ public class _0AutonSkeleton extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        boolean testing = false;
 
-
-
-        if (!testing) {
-            Pose2d initialPose = new Pose2d(0, -60, Math.toRadians(0)); //WHAT IS THIS?
+            Pose2d initialPose = new Pose2d(24, -60, Math.toRadians(90)); //WHAT IS THIS?
             MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
-            Extend extend = new Extend(hardwareMap);
-            Wrist wrist = new Wrist(hardwareMap);
-            Spintake spintake = new Spintake(hardwareMap);
-            Slides slides = new Slides(hardwareMap);
-            Arm arm = new Arm(hardwareMap);
-            Claw claw = new Claw(hardwareMap);
+//            Extend extend = new Extend(hardwareMap);
+//            Wrist wrist = new Wrist(hardwareMap);
+//            Spintake spintake = new Spintake(hardwareMap);
+//            Slides slides = new Slides(hardwareMap);
+//            Arm arm = new Arm(hardwareMap);
+//            Claw claw = new Claw(hardwareMap);
 
             //Create Trajectories here
-            Action forward = drive.actionBuilder(initialPose)
-                    .strafeTo(new Vector2d(0, -35))
+            Action magic = drive.actionBuilder(initialPose)
+                    .strafeToConstantHeading(new Vector2d(0,-37))
+                    .strafeToConstantHeading(new Vector2d(35,-37))
+                    .strafeToConstantHeading(new Vector2d(35,-13))
+                    .splineToLinearHeading(new Pose2d(45, -13, Math.toRadians(0)), Math.toRadians(-90))
+                    .strafeTo(new Vector2d(45,-45))
+                    .strafeTo(new Vector2d(45,-13))
+                    .strafeToConstantHeading(new Vector2d(55, -13))
+                    .strafeTo(new Vector2d(55,-45))
+                    .strafeToLinearHeading(new Vector2d(48, -45), Math.toRadians(45))
+                    .turn(Math.toRadians(-90))
+                    .strafeToLinearHeading(new Vector2d(10, -60), Math.toRadians(0))
+                    .strafeToLinearHeading(new Vector2d(0, -37), Math.toRadians(90))
+                    .strafeToLinearHeading(new Vector2d(10, -60), Math.toRadians(0))
+                    .strafeToLinearHeading(new Vector2d(0, -37), Math.toRadians(90))
+                    .strafeToLinearHeading(new Vector2d(10, -60), Math.toRadians(0))
+                    .strafeToLinearHeading(new Vector2d(0, -37), Math.toRadians(90))
                     .build();
             //Init Actions here
 
             if (isStopRequested()) return;
 
-            Actions.runBlocking(
-                    new ParallelAction(
-                            forward,
-                            new SequentialAction(
-                                    new SleepAction(3),
-                                    extend.extendSt(),
-                                    extend.retractSt(),
-                                    extend.extendSt(),
-                                    wrist.wristUp(),
-                                    wrist.wristDown(),
-                                    spintake.intake(),
-                                    spintake.outtake(),
-                                    spintake.neutral(),
-                                    slides.basketPos(),
-                                    slides.lowPos(),
-                                    slides.rungPos(),
-                                    slides.hook(),
-                                    arm.armDown(),
-                                    arm.armUp(),
-                                    arm.armDown(),
-                                    claw.openClaw(),
-                                    claw.closeClaw()
-                        )
-                    )
-            );
+            Actions.runBlocking(magic);
+//                            new SequentialAction(
+//                                    new SleepAction(3),
+//                                    extend.extendSt(),
+//                                    extend.retractSt(),
+//                                    extend.extendSt(),
+//                                    wrist.wristUp(),
+//                                    wrist.wristDown(),
+//                                    spintake.intake(),
+//                                    spintake.outtake(),
+//                                    spintake.neutral(),
+//                                    slides.basketPos(),
+//                                    slides.lowPos(),
+//                                    slides.rungPos(),
+//                                    slides.hook(),
+//                                    arm.armDown(),
+//                                    arm.armUp(),
+//                                    arm.armDown(),
+//                                    claw.openClaw(),
+//                                    claw.closeClaw()
+//                            )
+//                    )
         }
-
-    }
 }
 
