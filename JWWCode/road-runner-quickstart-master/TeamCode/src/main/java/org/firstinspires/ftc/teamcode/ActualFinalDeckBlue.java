@@ -1,14 +1,17 @@
 package org.firstinspires.ftc.teamcode;
 
-import org.firstinspires.ftc.teamcode._0AutonSkeleton.*;
 import com.acmerobotics.roadrunner.Action;
-import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.Vector2d;
-import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+import org.firstinspires.ftc.teamcode._0AutonSkeleton.Arm;
+import org.firstinspires.ftc.teamcode._0AutonSkeleton.Claw;
+import org.firstinspires.ftc.teamcode._0AutonSkeleton.Extend;
+import org.firstinspires.ftc.teamcode._0AutonSkeleton.Slides;
+import org.firstinspires.ftc.teamcode._0AutonSkeleton.Spintake;
+import org.firstinspires.ftc.teamcode._0AutonSkeleton.Wrist;
 
 @Autonomous
 public class ActualFinalDeckBlue extends LinearOpMode {
@@ -38,7 +41,7 @@ public class ActualFinalDeckBlue extends LinearOpMode {
                 .strafeTo(new Vector2d(-50,50))
                 .build();
 
-        Action PickUpSample
+//        Action PickUpSample
 
 
 
