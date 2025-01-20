@@ -8,12 +8,12 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode._0AutonSkeleton.Arm;
-import org.firstinspires.ftc.teamcode._0AutonSkeleton.Claw;
-import org.firstinspires.ftc.teamcode._0AutonSkeleton.Extend;
-import org.firstinspires.ftc.teamcode._0AutonSkeleton.Slides;
-import org.firstinspires.ftc.teamcode._0AutonSkeleton.Spintake;
-import org.firstinspires.ftc.teamcode._0AutonSkeleton.Wrist;
+import org.firstinspires.ftc.teamcode.HelloAuto.Arm;
+import org.firstinspires.ftc.teamcode.HelloAuto.Claw;
+import org.firstinspires.ftc.teamcode.HelloAuto.Extend;
+import org.firstinspires.ftc.teamcode.HelloAuto.Slides;
+import org.firstinspires.ftc.teamcode.HelloAuto.Spintake;
+import org.firstinspires.ftc.teamcode.HelloAuto.Wrist;
 
 @Autonomous
 public class ActualFinalDeckBlue extends LinearOpMode {

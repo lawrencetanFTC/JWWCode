@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 
 
-import org.firstinspires.ftc.teamcode._0AutonSkeleton.*;
+import org.firstinspires.ftc.teamcode.HelloAuto.*;
 
 import androidx.annotation.NonNull;
 

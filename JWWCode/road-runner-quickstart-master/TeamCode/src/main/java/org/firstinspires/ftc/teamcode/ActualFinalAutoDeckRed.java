@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import androidx.annotation.NonNull;
-import org.firstinspires.ftc.teamcode._0AutonSkeleton.*;
+import org.firstinspires.ftc.teamcode.HelloAuto.*;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
