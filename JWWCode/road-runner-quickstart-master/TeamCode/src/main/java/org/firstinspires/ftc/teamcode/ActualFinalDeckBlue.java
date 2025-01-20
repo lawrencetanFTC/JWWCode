@@ -50,9 +50,7 @@ public class ActualFinalDeckBlue extends LinearOpMode {
                 .strafeTo(new Vector2d(-53, 54))
                 .build();
 
-<<<<<<< HEAD
-//        Action PickUpSample
-=======
+
         Action ScoreSpecimen = drive.actionBuilder(new Pose2d(-53,54, Math.toRadians(90)))
                 .strafeTo(new Vector2d(-53,45))
                 .splineTo(new Vector2d(-40.09, 46.26), Math.toRadians(-30.94))
@@ -64,8 +62,6 @@ public class ActualFinalDeckBlue extends LinearOpMode {
                 .build();
 
 
-
->>>>>>> 2773edbc72909e3eb61fbd6ef4534a93990b31cf
 
 
 
