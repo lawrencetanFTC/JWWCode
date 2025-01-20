@@ -149,7 +149,7 @@ public class TeleOpFirst extends OpMode {
         }
 
         if (gamepad1.x) retract();
-
+        if (gamepad1.y) armSpecimenGrab();
         updateAllTelemetry();
     }
 
@@ -250,6 +250,13 @@ public class TeleOpFirst extends OpMode {
         elbowRight.setPosition(.8672);
     }
 
+    private void armSpecimenGrab() {
+        shoulderLeft.setPosition(0);
+        shoulderRight.setPosition(1);
+        elbowLeft.setPosition(.4761);
+        elbowRight.setPosition(.7462);
+    }
+
     private void fineTuningControls() {
         if (gamepad2.dpad_up) {
 //            changeServoPositionBy(extendLeft, -.0002);
@@ -265,13 +272,13 @@ public class TeleOpFirst extends OpMode {
             changeServoPositionBy(elbowLeft, -.0025);
             changeServoPositionBy(elbowRight, .0025);
         }
-        if (gamepad1.y) {
-            changeServoPositionBy(shoulderLeft, .0025);
-            changeServoPositionBy(shoulderRight, -.0025);
-        } else if (gamepad1.a) {
-            changeServoPositionBy(shoulderLeft, -.0025);
-            changeServoPositionBy(shoulderRight, .0025);
-        }
+//        if (gamepad1.y) {
+//            changeServoPositionBy(shoulderLeft, .0025);
+//            changeServoPositionBy(shoulderRight, -.0025);
+//        } else if (gamepad1.a) {
+//            changeServoPositionBy(shoulderLeft, -.0025);
+//            changeServoPositionBy(shoulderRight, .0025);
+//        }
     }
 
     private void SetDrivetrainMotorPowers(double frontLeftPower, double frontRightPower, double backLeftPower, double backRightPower) {
@@ -283,18 +290,18 @@ public class TeleOpFirst extends OpMode {
 
     private void controlSlides() {
         // SLIDES movement code
-//         if (gamepad2.left_stick_y < 0 && leftSlideMotor.getCurrentPosition() < 8100 && rightSlideMotor.getCurrentPosition() > -8100) {
-//             rightSlideMotor.setPower(-gamepad2.left_stick_y * -.8);
-//             leftSlideMotor.setPower(-gamepad2.left_stick_y * .8);
-//         } else if (gamepad2.left_stick_y > 0 && leftSlideMotor.getCurrentPosition() > 0 && rightSlideMotor.getCurrentPosition() < 0) {
-//             rightSlideMotor.setPower(-gamepad2.left_stick_y * -.8);
-//             leftSlideMotor.setPower(-gamepad2.left_stick_y * .8);
-//         } else {
-//             rightSlideMotor.setPower(0);
-//             leftSlideMotor.setPower(0);
-//         }
-        rightSlideMotor.setPower(-gamepad2.left_stick_y * -1);
-        leftSlideMotor.setPower(-gamepad2.left_stick_y * 1);
+        if (gamepad2.left_stick_y < 0 && leftSlideMotor.getCurrentPosition() < 3090 && rightSlideMotor.getCurrentPosition() > -3147) {
+            rightSlideMotor.setPower(-gamepad2.left_stick_y * -1);
+            leftSlideMotor.setPower(-gamepad2.left_stick_y * 1);
+        } else if (gamepad2.left_stick_y > 0 && leftSlideMotor.getCurrentPosition() > 0 && rightSlideMotor.getCurrentPosition() < 0) {
+            rightSlideMotor.setPower(-gamepad2.left_stick_y * -1);
+            leftSlideMotor.setPower(-gamepad2.left_stick_y * 1);
+        } else {
+            rightSlideMotor.setPower(0);
+            leftSlideMotor.setPower(0);
+        }
+//        rightSlideMotor.setPower(-gamepad2.left_stick_y * -1);
+//        leftSlideMotor.setPower(-gamepad2.left_stick_y * 1);
     }
 }
 //
