@@ -47,9 +47,21 @@ public class MeepMeepTesting {
                 .build());
 
 
-        myBot2.runAction(myBot2.getDrive().actionBuilder(new Pose2d(0,37, Math.toRadians(-90.00)))
-                
-                .build());
+        myBot2.runAction(myBot2.getDrive().actionBuilder(new Pose2d(15.5,-63, Math.toRadians(90.00)))
+                        .splineToConstantHeading(new Vector2d(2.00, -41.00), Math.toRadians(114.89))
+                        .splineToConstantHeading(new Vector2d(30.00, -34.00), Math.toRadians(20.81))
+                        .splineToConstantHeading(new Vector2d(47.00, -10.00), Math.toRadians(34.88))
+                        .strafeToConstantHeading(new Vector2d(47.00, -53.00))
+                        .splineToConstantHeading(new Vector2d(48.00, -20.00), Math.toRadians(78.65))
+                        .splineToConstantHeading(new Vector2d(56.50, -12.00), Math.toRadians(27.55))
+                        .strafeToConstantHeading(new Vector2d(56.50, -53.00))
+                        .splineToConstantHeading(new Vector2d(42.90, -44.03), Math.toRadians(196.93))
+                        .splineToLinearHeading(new Pose2d(27.00, -58.00, Math.toRadians(0.00)), Math.toRadians(173.67))
+                        .strafeToConstantHeading(new Vector2d(32.00, -58.00))
+                        .splineToLinearHeading(new Pose2d(1.60, -35.95, Math.toRadians(90.00)), Math.toRadians(144.05))
+                        .splineToConstantHeading(new Vector2d(3.66, -46.65), Math.toRadians(-67.14))
+                        .splineToLinearHeading(new Pose2d(26.94, -57.92, Math.toRadians(0.00)), Math.toRadians(224.46))
+                        .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
                 .setDarkMode(true)
