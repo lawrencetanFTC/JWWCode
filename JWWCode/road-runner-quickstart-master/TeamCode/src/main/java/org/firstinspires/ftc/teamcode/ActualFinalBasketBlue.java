@@ -37,43 +37,38 @@ public class ActualFinalBasketBlue extends LinearOpMode {
 
         MecanumDrive drive = new  MecanumDrive(hardwareMap, initialPose);
 
+
+
         Action MoveToBasket = drive.actionBuilder(initialPose)
-                .splineTo(new Vector2d(53.00, 53.00), Math.toRadians(45))
+                .splineToSplineHeading(new Pose2d(52, 52, Math.toRadians(45.00)), Math.toRadians(45.00))
                 .build();
 
         Action MoveToSample1 = drive.actionBuilder(new Pose2d(53,53,Math.toRadians(45)))
-                .turn(Math.toRadians(-135))
-                .strafeTo(new Vector2d(48, 51))
+                .strafeToLinearHeading(new Vector2d(48,52), Math.toRadians(-90))
                 .build();
 
-        Action PickUpandScore1 = drive.actionBuilder(new Pose2d(48,51, Math.toRadians(-90)))
-                .strafeTo(new Vector2d(48, 48))
-                .splineTo(new Vector2d(53.00, 53.00), Math.toRadians(45))
+        Action Score1 = drive.actionBuilder(new Pose2d(48,51, Math.toRadians(-90)))
+                .strafeToLinearHeading(new Vector2d(52,52), Math.toRadians(45.00))
                 .build();
 
         Action MoveToSample2 = drive.actionBuilder(new Pose2d(53,53, Math.toRadians(45)))
-                .turn(-135)
-                .strafeTo(new Vector2d(58,51))
+                .strafeToLinearHeading(new Vector2d(58,45), Math.toRadians(-90))
                 .build();
 
-        Action PickUpandScore2 = drive.actionBuilder(new Pose2d(52,51, Math.toRadians(-90)))
-                .strafeTo(new Vector2d(58, 48))
-                .splineTo(new Vector2d(53.00, 53.00), Math.toRadians(45))
+        Action Score2 = drive.actionBuilder(new Pose2d(52,51, Math.toRadians(-90)))
+                .strafeToLinearHeading(new Vector2d(52,52), Math.toRadians(45.00))
                 .build();
 
         Action MoveToSample3 = drive.actionBuilder(new Pose2d(53,53, Math.toRadians(45)))
-                .turn(-135)
-                .splineToLinearHeading(new Pose2d(47,27, Math.toRadians(0)), Math.toRadians(0))
+                .strafeToLinearHeading(new Vector2d(48, 27), Math.toRadians(0))
                 .build();
 
-        Action PickUpandScore3 = drive.actionBuilder(new Pose2d(47,27, Math.toRadians(0)))
-                .strafeTo(new Vector2d(48, 27))
-                .splineTo(new Vector2d(53.00, 53.00), Math.toRadians(45))
+        Action Score3 = drive.actionBuilder(new Pose2d(47,27, Math.toRadians(0)))
+                .strafeToLinearHeading(new Vector2d(53.00, 53.00), Math.toRadians(45))
                 .build();
 
         Action MoveToSubmersible = drive.actionBuilder(new Pose2d(53,53, Math.toRadians(45)))
-                .splineTo(new Vector2d(52.00, 45.00), Math.toRadians(238.03))
-                .splineToLinearHeading(new Pose2d(25.00, 13.00, Math.toRadians(180.00)), Math.toRadians(180.00))
+                .splineToLinearHeading(new Pose2d(25.00, 5, Math.toRadians(180.00)), Math.toRadians(150.00))
                 .build();
 
         waitForStart();
@@ -103,7 +98,7 @@ public class ActualFinalBasketBlue extends LinearOpMode {
 
         Actions.runBlocking(
                 new ParallelAction(
-                        PickUpandScore1,
+                        Score1,
                         spintake.neutral(),
                         extend.retractSt(),
                         new SequentialAction(
