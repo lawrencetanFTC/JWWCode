@@ -287,7 +287,7 @@ public class HelloAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-            Pose2d initialPose = new Pose2d(24, -60, Math.toRadians(90)); //WHAT IS THIS?
+            Pose2d initialPose = new Pose2d(15.5,-63, Math.toRadians(90.00)); //WHAT IS THIS?
             MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
 //            Extend extend = new Extend(hardwareMap);
@@ -300,12 +300,16 @@ public class HelloAuto extends LinearOpMode {
             //Create Trajectories here
             Action magic = drive.actionBuilder(initialPose)
                     .splineToConstantHeading(new Vector2d(2.00, -41.00), Math.toRadians(114.89))
-                    .splineToConstantHeading(new Vector2d(30.00, -34.00), Math.toRadians(20.81))
+                    .build();
+
+            Action magic2 = drive.actionBuilder(new Pose2d(2, -41, Math.toRadians(90)))
+                    .strafeToConstantHeading(new Vector2d(2, -45))
+                    .splineToConstantHeading(new Vector2d(27.00, -37.00), Math.toRadians(20.81))
                     .splineToConstantHeading(new Vector2d(47.00, -10.00), Math.toRadians(34.88))
-                    .strafeToConstantHeading(new Vector2d(47.00, -53.00))
-                    .splineToConstantHeading(new Vector2d(48.00, -20.00), Math.toRadians(78.65))
+                    .strafeToConstantHeading(new Vector2d(47.00, -45.00))
+                    .splineToConstantHeading(new Vector2d(47.00, -20.00), Math.toRadians(78.65))
                     .splineToConstantHeading(new Vector2d(56.50, -12.00), Math.toRadians(27.55))
-                    .strafeToConstantHeading(new Vector2d(56.50, -53.00))
+                    .strafeToConstantHeading(new Vector2d(56.50, -45.00))
                     .splineToConstantHeading(new Vector2d(42.90, -44.03), Math.toRadians(196.93))
                     .splineToLinearHeading(new Pose2d(27.00, -58.00, Math.toRadians(0.00)), Math.toRadians(173.67))
                     .strafeToConstantHeading(new Vector2d(32.00, -58.00))
@@ -317,7 +321,13 @@ public class HelloAuto extends LinearOpMode {
 
             if (isStopRequested()) return;
 
-            Actions.runBlocking(magic);
+            Actions.runBlocking(
+                    new SequentialAction(
+                            magic,
+                            new SleepAction(0.1),
+                            magic2
+                    )
+            );
 //                            new SequentialAction(
 //                                    new SleepAction(3),
 //                                    extend.extendSt(),
