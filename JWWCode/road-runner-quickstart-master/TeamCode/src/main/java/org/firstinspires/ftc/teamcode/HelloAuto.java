@@ -287,7 +287,7 @@ public class HelloAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-            Pose2d initialPose = new Pose2d(15,63.5, Math.toRadians(-90.00)); //WHAT IS THIS?
+            Pose2d initialPose = new Pose2d(15,-63.5, Math.toRadians(90.00)); //WHAT IS THIS?
             MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
 //            Extend extend = new Extend(hardwareMap);
@@ -299,24 +299,27 @@ public class HelloAuto extends LinearOpMode {
 
             //Create Trajectories here
             Action magic = drive.actionBuilder(initialPose)
-                    .splineToConstantHeading(new Vector2d(2.00, -41.00), Math.toRadians(114.89))
-                    .build();
+                .splineToConstantHeading(new Vector2d(0, -35), Math.toRadians(116.89))
+                .strafeToConstantHeading(new Vector2d(0, -40))
+                .splineToConstantHeading(new Vector2d(35.5, -40.5), Math.toRadians(1.90))
+                .splineToConstantHeading(new Vector2d(37.5, -19), Math.toRadians(56.92))
+                .splineToConstantHeading(new Vector2d(43.5, -12.5), Math.toRadians(35.34))
+                .splineToConstantHeading(new Vector2d(43.5, -55.5), Math.toRadians(-89.00))
+                .splineToConstantHeading(new Vector2d(47.41, -15.18), Math.toRadians(66.34))
+                .splineToConstantHeading(new Vector2d(59.33, -12.95), Math.toRadians(78.12))
+                .splineToConstantHeading(new Vector2d(60.45, -55.42), Math.toRadians(-88.19))
+                .splineTo(new Vector2d(41.45, -44.80), Math.toRadians(187.57))
+                .splineToLinearHeading(new Pose2d(27.29, -58.96, Math.toRadians(0.00)), Math.toRadians(-17.94))
+                .splineToConstantHeading(new Vector2d(31.76, -59.15), Math.toRadians(-2.39))
+                .splineToLinearHeading(new Pose2d(3.45, -33.81, Math.toRadians(90.00)), Math.toRadians(150.36))
+                .splineToConstantHeading(new Vector2d(5.12, -40.14), Math.toRadians(-69.00))
+                .splineToLinearHeading(new Pose2d(27.10, -59.15, Math.toRadians(0.00)), Math.toRadians(248.96))
+                .splineToConstantHeading(new Vector2d(31.95, -59.52), Math.toRadians(-52.96))
+                .build();
 
-            Action magic2 = drive.actionBuilder(new Pose2d(2, -41, Math.toRadians(90)))
-                    .strafeToConstantHeading(new Vector2d(2, -45))
-                    .splineToConstantHeading(new Vector2d(27.00, -37.00), Math.toRadians(20.81))
-                    .splineToConstantHeading(new Vector2d(47.00, -10.00), Math.toRadians(34.88))
-                    .strafeToConstantHeading(new Vector2d(47.00, -45.00))
-                    .splineToConstantHeading(new Vector2d(47.00, -20.00), Math.toRadians(78.65))
-                    .splineToConstantHeading(new Vector2d(56.50, -12.00), Math.toRadians(27.55))
-                    .strafeToConstantHeading(new Vector2d(56.50, -45.00))
-                    .splineToConstantHeading(new Vector2d(42.90, -44.03), Math.toRadians(196.93))
-                    .splineToLinearHeading(new Pose2d(27.00, -58.00, Math.toRadians(0.00)), Math.toRadians(173.67))
-                    .strafeToConstantHeading(new Vector2d(32.00, -58.00))
-                    .splineToLinearHeading(new Pose2d(1.60, -35.95, Math.toRadians(90.00)), Math.toRadians(144.05))
-                    .splineToConstantHeading(new Vector2d(3.66, -46.65), Math.toRadians(-67.14))
-                    .splineToLinearHeading(new Pose2d(26.94, -57.92, Math.toRadians(0.00)), Math.toRadians(224.46))
-                    .build();
+            /*Action magic2 = drive.actionBuilder(new Pose2d(2, -41, Math.toRadians(90)))
+                    h.toRadians(224.46))
+                    .build();*/
             //Init Actions here
 
         Action MoveToBasket = drive.actionBuilder(initialPose)
