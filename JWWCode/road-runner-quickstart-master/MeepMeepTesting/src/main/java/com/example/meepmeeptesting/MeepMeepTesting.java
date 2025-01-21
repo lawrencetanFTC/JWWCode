@@ -20,7 +20,7 @@ public class MeepMeepTesting {
                 .setDimensions(17.5, 17)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(26.35, 58.5 , Math.toRadians(0))) //TODO Fix starting Pos
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(15, 62.5 , Math.toRadians(-90))) //TODO Fix starting Pos
                 .splineToSplineHeading(new Pose2d(52, 52, Math.toRadians(45.00)), Math.toRadians(45.00))
                 .strafeToLinearHeading(new Vector2d(48,52), Math.toRadians(-90))
                 .strafeToLinearHeading(new Vector2d(52,52), Math.toRadians(45.00))
@@ -41,21 +41,36 @@ public class MeepMeepTesting {
 
                 .strafeToLinearHeading(new Vector2d(48, 27), Math.toRadians(0))
                 .strafeToLinearHeading(new Vector2d(53.00, 53.00), Math.toRadians(45))
+                //.splineTo(new Vector2d(52.00, 45.00), Math.toRadians(238.03))
+                .splineToLinearHeading(new Pose2d(25.00, 5, Math.toRadians(180.00)), Math.toRadians(150.00))
 
 //                .splineTo(new Vector2d(52.00, 45.00), Math.toRadians(238.03))
 //                .splineToLinearHeading(new Pose2d(25.00, 13.00, Math.toRadians(180.00)), Math.toRadians(180.00))
                 .build());
 
 
-        myBot2.runAction(myBot2.getDrive().actionBuilder(new Pose2d(0,37, Math.toRadians(-90.00)))
-                
+        myBot2.runAction(myBot2.getDrive().actionBuilder(new Pose2d(15,62.5, Math.toRadians(-90.00)))
+                .splineTo(new Vector2d(53.00, 53.00), Math.toRadians(45))
+                .turn(Math.toRadians(-135))
+                .strafeTo(new Vector2d(48, 51))
+                .strafeTo(new Vector2d(48, 48))
+                .splineTo(new Vector2d(53.00, 53.00), Math.toRadians(45))
+                .turn(Math.toRadians(-135))
+                .strafeTo(new Vector2d(58,51))
+                .strafeTo(new Vector2d(58, 48))
+                .splineTo(new Vector2d(53.00, 53.00), Math.toRadians(45))
+                .splineToLinearHeading(new Pose2d(47,27, Math.toRadians(0)), Math.toRadians(0))
+                .strafeTo(new Vector2d(48, 27))
+                .splineTo(new Vector2d(53.00, 53.00), Math.toRadians(45))
+                .splineTo(new Vector2d(52.00, 45.00), Math.toRadians(238.03))
+                .splineToLinearHeading(new Pose2d(25.00, 13.00, Math.toRadians(180.00)), Math.toRadians(180.00))
                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
+
                 .addEntity(myBot)
-                .addEntity(myBot2)
                 .start();
     }
 }
