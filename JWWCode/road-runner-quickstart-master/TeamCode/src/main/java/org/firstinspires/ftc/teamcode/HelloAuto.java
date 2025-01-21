@@ -287,7 +287,7 @@ public class HelloAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-            Pose2d initialPose = new Pose2d(15.5,-63, Math.toRadians(90.00)); //WHAT IS THIS?
+            Pose2d initialPose = new Pose2d(15,63.5, Math.toRadians(-90.00)); //WHAT IS THIS?
             MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
 //            Extend extend = new Extend(hardwareMap);
@@ -334,7 +334,7 @@ public class HelloAuto extends LinearOpMode {
                 .build();
 
         Action MoveToSample2 = drive.actionBuilder(new Pose2d(53,53, Math.toRadians(45)))
-                .turn(-135)
+                .turn(Math.toRadians(-135))
                 .strafeTo(new Vector2d(58,51))
                 .build();
 
@@ -344,7 +344,7 @@ public class HelloAuto extends LinearOpMode {
                 .build();
 
         Action MoveToSample3 = drive.actionBuilder(new Pose2d(53,53, Math.toRadians(45)))
-                .turn(-135)
+                .turn(Math.toRadians(-135))
                 .splineToLinearHeading(new Pose2d(47,27, Math.toRadians(0)), Math.toRadians(0))
                 .build();
 
@@ -362,9 +362,17 @@ public class HelloAuto extends LinearOpMode {
 
             Actions.runBlocking(
                     new SequentialAction(
-                            magic,
+                            /*magic,
                             new SleepAction(0.1),
-                            magic2
+                            magic2*/
+                            MoveToBasket,
+                            MoveToSample1,
+                            PickUpandScore1,
+                            MoveToSample2,
+                            PickUpandScore2,
+                            MoveToSample3,
+                            PickUpandScore3,
+                            MoveToSubmersible
                     )
             );
 
