@@ -358,9 +358,7 @@ public class HelloAuto extends LinearOpMode {
 
             Actions.runBlocking(
                     new SequentialAction(
-                            magic,
-                            new SleepAction(0.1),
-                            magic2
+                            magic
                     )
             );
 
