@@ -4,25 +4,18 @@ package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.teamcode.HelloAuto.*;
 
-import androidx.annotation.NonNull;
-
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
-import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.teamcode.TwoDeadWheelLocalizer;
-import org.opencv.core.Mat;
-
-import com.qualcomm.robotcore.hardware.IMU;
 
 @Autonomous
-public class ActualFinalBasketBlue extends LinearOpMode {
+public class ActualFinalAuto_Basket extends LinearOpMode {
     public void runOpMode() {
 
         Pose2d initialPose = new Pose2d(-15, 48 , Math.toRadians(90));
