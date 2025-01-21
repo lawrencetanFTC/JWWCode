@@ -27,7 +27,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 public class ActualFinalAutoBasketRed extends LinearOpMode {
     public void runOpMode() {
 
-        Pose2d initialPose = new Pose2d(-24, 60 , Math.toRadians(-90));
+        Pose2d initialPose = new Pose2d(-15, 60 , Math.toRadians(-90));
         waitForStart();
 
 
@@ -53,8 +53,6 @@ public class ActualFinalAutoBasketRed extends LinearOpMode {
                 claw.closeClaw(),
                 arm.armDown(),
                 slide.lowPos()
-
-
                 ));
 
 
