@@ -1,7 +1,3 @@
-// All code is written by me except when mentioned otherwise.
-//Copied that same way it is written in the rr.brott.dev website.
-// According to Priyam, js take the trajectories and put them into different methods such as traj 1, traj 2, etc. depending on which trajectories you want to order in a sequence, which you can put in state
-// Then you can take these methods and use followTrajectoryAsync(traj1), this will allow for simultaneous robot movements along with drivetrain.
 
 package org.firstinspires.ftc.teamcode;
 
@@ -24,7 +20,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "DeckAuto", group = "Autonomous")
+@Autonomous(name = "AutonSkeleton", group = "Autonomous")
 // @Disabled
 public class ActualFinalAuto_Deck extends LinearOpMode {
 
@@ -297,7 +293,6 @@ public class ActualFinalAuto_Deck extends LinearOpMode {
         Arm arm = new Arm(hardwareMap);
         Claw claw = new Claw(hardwareMap);
 
-        //Create Trajectories here
         Action magic = drive.actionBuilder(initialPose)
                 .splineToConstantHeading(new Vector2d(0, -35), Math.toRadians(116.89))
                 .strafeToConstantHeading(new Vector2d(0, -40))
@@ -324,7 +319,7 @@ public class ActualFinalAuto_Deck extends LinearOpMode {
                 .splineToConstantHeading(new Vector2d(40, -59), Math.toRadians(248.96))
                 .build();
 
-        Action goToRung = drive.actionBuilder(initialPose)
+        Action goToRung1 = drive.actionBuilder(initialPose)
                 .splineToConstantHeading(new Vector2d(0, -35), Math.toRadians(116.89))
                 .build();
 
@@ -344,17 +339,17 @@ public class ActualFinalAuto_Deck extends LinearOpMode {
                 .splineToLinearHeading(new Pose2d(27, -59, Math.toRadians(0.00)), Math.toRadians(-17.94))
                 .build();
 
-        Action yoinkSpecimen = drive.actionBuilder(initialPose)
+        Action yoinkSpecimen = drive.actionBuilder(new Pose2d(27, -59, 0))
                 .strafeToConstantHeading(new Vector2d(32, -59))
                 .build();
 
-        Action hangSpecimenReturn = drive.actionBuilder(initialPose)
+        Action hangSpecimenReturn = drive.actionBuilder(new Pose2d(32, -59, 0))
                 .splineToLinearHeading(new Pose2d(3, -35, Math.toRadians(90.00)), Math.toRadians(150.36))
                 .strafeToConstantHeading(new Vector2d(3, -40))
                 .splineToLinearHeading(new Pose2d(27, -59, Math.toRadians(0.00)), Math.toRadians(248.96))
                 .build();
 
-        Action hangSpecimenPark = drive.actionBuilder(initialPose)
+        Action hangSpecimenPark = drive.actionBuilder(new Pose2d(32, -59, 0))
                 .splineToLinearHeading(new Pose2d(3, -35, Math.toRadians(90.00)), Math.toRadians(150.36))
                 .strafeToConstantHeading(new Vector2d(3, -40))
                 .splineToConstantHeading(new Vector2d(40, -59), Math.toRadians(248.96))
@@ -362,9 +357,10 @@ public class ActualFinalAuto_Deck extends LinearOpMode {
 
         if (isStopRequested()) return;
 
+        // Path test
         Actions.runBlocking(
                 new SequentialAction(
-                        goToRung,
+                        goToRung1,
                         back,
                         pushSamples,
                         yoinkSpecimen,
@@ -376,8 +372,6 @@ public class ActualFinalAuto_Deck extends LinearOpMode {
                 )
         );
 
-    }
-
-    }
+}}
 
 
