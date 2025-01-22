@@ -32,7 +32,6 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
         MecanumDrive drive = new  MecanumDrive(hardwareMap, initialPose);
 
 
-
         Action MoveToBasket = drive.actionBuilder(initialPose)
                 .splineToSplineHeading(new Pose2d(52, 52, Math.toRadians(45.00)), Math.toRadians(45.00))
                 .build();
@@ -80,8 +79,8 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
         );
 
         Actions.runBlocking(
-                new ParallelAction(
-                        new SequentialAction(
+                new SequentialAction(
+                        new ParallelAction(
                             slides.lowPos(),
                             arm.armDown()
                         ),
@@ -89,7 +88,8 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
                         new ParallelAction(
                             MoveToSample1,
                             extend.extendSt(),
-                            spintake.intake()
+                            spintake.intake(),
+                            wrist.wristDown()
 
                         )
                 )
@@ -183,6 +183,8 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
                 slides.rungPos(),
                 slides.lowPos()
         ));
+
+        if(isStopRequested()) return;
 
 
 
