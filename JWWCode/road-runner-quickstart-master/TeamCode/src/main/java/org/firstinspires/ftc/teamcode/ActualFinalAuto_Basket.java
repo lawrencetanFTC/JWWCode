@@ -4,24 +4,18 @@ package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.teamcode.HelloAuto.*;
 
-import androidx.annotation.NonNull;
-
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import org.firstinspires.ftc.teamcode.TwoDeadWheelLocalizer;
-import org.opencv.core.Mat;
-
-import com.qualcomm.robotcore.hardware.IMU;
 
 @Autonomous
-public class ActualFinalBasketBlue extends LinearOpMode {
+public class ActualFinalAuto_Basket extends LinearOpMode {
     public void runOpMode() {
 
         Pose2d initialPose = new Pose2d(-15, 48 , Math.toRadians(90));
@@ -78,7 +72,9 @@ public class ActualFinalBasketBlue extends LinearOpMode {
                         MoveToBasket,
                             new SequentialAction(
                                     slides.basketPos(),
-                                    arm.armUp()
+                                    arm.armUp(),
+                                    claw.openClaw()
+
                             )
                 )
         );
@@ -89,9 +85,13 @@ public class ActualFinalBasketBlue extends LinearOpMode {
                             slides.lowPos(),
                             arm.armDown()
                         ),
-                        MoveToSample1,
-                        extend.extendSt(),
-                        spintake.intake()
+
+                        new ParallelAction(
+                            MoveToSample1,
+                            extend.extendSt(),
+                            spintake.intake()
+
+                        )
                 )
 
         );
@@ -101,21 +101,88 @@ public class ActualFinalBasketBlue extends LinearOpMode {
                         Score1,
                         spintake.neutral(),
                         extend.retractSt(),
+                        wrist.wristUp(),
                         new SequentialAction(
-                            claw.openClaw(),
+                            new SleepAction(.2),
                             claw.closeClaw(),
                             slides.basketPos(),
                             arm.armUp(),
                             claw.openClaw(),
-                            claw.closeClaw(),
                             arm.armDown(),
                             slides.lowPos()
                         )
 
 
                 )
-
         );
+
+        Actions.runBlocking(
+                new ParallelAction(
+                        MoveToSample2,
+                        extend.extendSt(),
+                        wrist.wristDown(),
+                        spintake.intake()
+
+                )
+        );
+
+        Actions.runBlocking(
+                new ParallelAction(
+                        Score2,
+                        spintake.neutral(),
+                        extend.retractSt(),
+                        wrist.wristUp(),
+                        new SequentialAction(
+                                new SleepAction(.2),
+                                claw.closeClaw(),
+                                slides.basketPos(),
+                                arm.armUp(),
+                                claw.openClaw(),
+                                arm.armDown(),
+                                slides.lowPos()
+                        )
+
+
+                )
+        );
+
+        Actions.runBlocking(
+                new ParallelAction(
+                        MoveToSample3,
+                        extend.extendSt(),
+                        spintake.intake(),
+                        wrist.wristDown()
+
+                )
+        );
+
+
+        Actions.runBlocking(
+                new ParallelAction(
+                        Score3,
+                        spintake.neutral(),
+                        extend.retractSt(),
+                        wrist.wristUp(),
+                        new SequentialAction(
+                                new SleepAction(.2),
+                                claw.closeClaw(),
+                                slides.basketPos(),
+                                arm.armUp(),
+                                claw.openClaw(),
+                                arm.armDown(),
+                                slides.lowPos()
+                        )
+
+
+                )
+        );
+
+
+        Actions.runBlocking(new SequentialAction(
+                MoveToSubmersible,
+                slides.rungPos(),
+                slides.lowPos()
+        ));
 
 
 

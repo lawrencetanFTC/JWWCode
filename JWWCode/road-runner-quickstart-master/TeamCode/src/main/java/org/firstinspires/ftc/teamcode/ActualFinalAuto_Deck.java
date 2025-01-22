@@ -24,9 +24,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "AutonSkeleton", group = "Autonomous")
+@Autonomous(name = "DeckAuto", group = "Autonomous")
 // @Disabled
-public class HelloAuto extends LinearOpMode {
+public class ActualFinalAuto_Deck extends LinearOpMode {
 
     public static class Extend {
         private Servo extendLeft;
@@ -287,18 +287,18 @@ public class HelloAuto extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-            Pose2d initialPose = new Pose2d(15,-63.5, Math.toRadians(90.00)); //WHAT IS THIS?
-            MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
+        Pose2d initialPose = new Pose2d(15,-63.5, Math.toRadians(90.00)); //WHAT IS THIS?
+        MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
-            Extend extend = new Extend(hardwareMap);
-            Wrist wrist = new Wrist(hardwareMap);
-            Spintake spintake = new Spintake(hardwareMap);
-            Slides slides = new Slides(hardwareMap);
-            Arm arm = new Arm(hardwareMap);
-            Claw claw = new Claw(hardwareMap);
+        Extend extend = new Extend(hardwareMap);
+        Wrist wrist = new Wrist(hardwareMap);
+        Spintake spintake = new Spintake(hardwareMap);
+        Slides slides = new Slides(hardwareMap);
+        Arm arm = new Arm(hardwareMap);
+        Claw claw = new Claw(hardwareMap);
 
-            //Create Trajectories here
-            Action magic = drive.actionBuilder(initialPose)
+        //Create Trajectories here
+        Action magic = drive.actionBuilder(initialPose)
                 .splineToConstantHeading(new Vector2d(0, -35), Math.toRadians(116.89))
                 .strafeToConstantHeading(new Vector2d(0, -40))
                 .splineToConstantHeading(new Vector2d(35.5, -40.5), Math.toRadians(1.90))
@@ -324,89 +324,60 @@ public class HelloAuto extends LinearOpMode {
                 .splineToConstantHeading(new Vector2d(40, -59), Math.toRadians(248.96))
                 .build();
 
-            /*Action magic2 = drive.actionBuilder(new Pose2d(2, -41, Math.toRadians(90)))
-                    h.toRadians(224.46))
-                    .build();*/
-            //Init Actions here
-
-        Action MoveToBasket = drive.actionBuilder(initialPose)
-                .splineToSplineHeading(new Pose2d(52, 52, Math.toRadians(45.00)), Math.toRadians(45.00))
+        Action goToRung = drive.actionBuilder(initialPose)
+                .splineToConstantHeading(new Vector2d(0, -35), Math.toRadians(116.89))
                 .build();
 
-        Action MoveToSample1 = drive.actionBuilder(new Pose2d(53,53,Math.toRadians(45)))
-                .strafeToLinearHeading(new Vector2d(48,52), Math.toRadians(-90))
+        Action back = drive.actionBuilder(new Pose2d(0, -35, 90))
+                .strafeToConstantHeading(new Vector2d(0, -40))
                 .build();
 
-        Action Score1 = drive.actionBuilder(new Pose2d(48,51, Math.toRadians(-90)))
-                .strafeToLinearHeading(new Vector2d(52,52), Math.toRadians(45.00))
+        Action pushSamples = drive.actionBuilder(new Pose2d(0, -40, 90))
+                .splineToConstantHeading(new Vector2d(35.5, -40.5), Math.toRadians(1.90))
+                .splineToConstantHeading(new Vector2d(37.5, -19), Math.toRadians(56.92))
+                .splineToConstantHeading(new Vector2d(43.5, -12.5), Math.toRadians(35.34))
+                .strafeToConstantHeading(new Vector2d(43.5, -55.5))
+                .splineToConstantHeading(new Vector2d(47.5, -15), Math.toRadians(66.34))
+                .splineToConstantHeading(new Vector2d(60, -13), Math.toRadians(78.12))
+                .strafeToConstantHeading(new Vector2d(60, -55.5))
+                .splineTo(new Vector2d(41.5, -45), Math.toRadians(187.57))
+                .splineToLinearHeading(new Pose2d(27, -59, Math.toRadians(0.00)), Math.toRadians(-17.94))
                 .build();
 
-        Action MoveToSample2 = drive.actionBuilder(new Pose2d(53,53, Math.toRadians(45)))
-                .strafeToLinearHeading(new Vector2d(58,45), Math.toRadians(-90))
+        Action yoinkSpecimen = drive.actionBuilder(initialPose)
+                .strafeToConstantHeading(new Vector2d(32, -59))
                 .build();
 
-        Action Score2 = drive.actionBuilder(new Pose2d(52,51, Math.toRadians(-90)))
-                .strafeToLinearHeading(new Vector2d(52,52), Math.toRadians(45.00))
+        Action hangSpecimenReturn = drive.actionBuilder(initialPose)
+                .splineToLinearHeading(new Pose2d(3, -35, Math.toRadians(90.00)), Math.toRadians(150.36))
+                .strafeToConstantHeading(new Vector2d(3, -40))
+                .splineToLinearHeading(new Pose2d(27, -59, Math.toRadians(0.00)), Math.toRadians(248.96))
                 .build();
 
-        Action MoveToSample3 = drive.actionBuilder(new Pose2d(53,53, Math.toRadians(45)))
-                .strafeToLinearHeading(new Vector2d(48, 27), Math.toRadians(0))
+        Action hangSpecimenPark = drive.actionBuilder(initialPose)
+                .splineToLinearHeading(new Pose2d(3, -35, Math.toRadians(90.00)), Math.toRadians(150.36))
+                .strafeToConstantHeading(new Vector2d(3, -40))
+                .splineToConstantHeading(new Vector2d(40, -59), Math.toRadians(248.96))
                 .build();
 
-        Action Score3 = drive.actionBuilder(new Pose2d(47,27, Math.toRadians(0)))
-                .strafeToLinearHeading(new Vector2d(53.00, 53.00), Math.toRadians(45))
-                .build();
+        if (isStopRequested()) return;
 
-        Action MoveToSubmersible = drive.actionBuilder(new Pose2d(53,53, Math.toRadians(45)))
-                .splineToLinearHeading(new Pose2d(25.00, 5, Math.toRadians(180.00)), Math.toRadians(150.00))
-                .build();
+        Actions.runBlocking(
+                new SequentialAction(
+                        goToRung,
+                        back,
+                        pushSamples,
+                        yoinkSpecimen,
+                        hangSpecimenReturn,
+                        yoinkSpecimen,
+                        hangSpecimenReturn,
+                        yoinkSpecimen,
+                        hangSpecimenPark
+                )
+        );
 
-            if (isStopRequested()) return;
+    }
 
-            Actions.runBlocking(
-                    new SequentialAction(
-                            magic
-                    )
-            );
+    }
 
-//
-//        Actions.runBlocking(new SequentialAction(
-//                new SequentialAction(
-//                        MoveToBasket,
-//                        MoveToSample1,
-//                        Score1,
-//                        MoveToSample2,
-//                        Score2,
-//                        MoveToSample3,
-//                        Score3,
-//                        MoveToSubmersible
-//                )
-//
-//
-//
-//
-//        ));
-//                            new SequentialAction(
-//                                    new SleepAction(3),
-//                                    extend.extendSt(),
-//                                    extend.retractSt(),
-//                                    extend.extendSt(),
-//                                    wrist.wristUp(),
-//                                    wrist.wristDown(),
-//                                    spintake.intake(),
-//                                    spintake.outtake(),
-//                                    spintake.neutral(),
-//                                    slides.basketPos(),
-//                                    slides.lowPos(),
-//                                    slides.rungPos(),
-//                                    slides.hook(),
-//                                    arm.armDown(),
-//                                    arm.armUp(),
-//                                    arm.armDown(),
-//                                    claw.openClaw(),
-//                                    claw.closeClaw()
-//                            )
-//                    )
-        }
-}
 
