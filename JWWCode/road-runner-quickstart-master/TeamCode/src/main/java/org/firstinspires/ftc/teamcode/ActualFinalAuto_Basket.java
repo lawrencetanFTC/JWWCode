@@ -14,7 +14,7 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous
+@Autonomous(name = "BasketAuto", group = "Autonomous")
 public class ActualFinalAuto_Basket extends LinearOpMode {
     public void runOpMode() {
 
