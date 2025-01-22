@@ -19,13 +19,16 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import org.firstinspires.ftc.teamcode.HelloAuto.Extend;
+import org.firstinspires.ftc.teamcode.HelloAuto.Wrist;
+import org.firstinspires.ftc.teamcode.HelloAuto.Spintake;
 
 
 
 @Autonomous(name = "ActualFinalAutoDeck", group = "Autonomous")
 public class ActualFinalAuto_Deck extends LinearOpMode {
 
-    public static class Slides {
+    public class Slides {
         DcMotor leftSlideMotor;
         DcMotor rightSlideMotor;
 
@@ -141,7 +144,7 @@ public class ActualFinalAuto_Deck extends LinearOpMode {
 
 // Paste slides and arms actioned code here
 
-    public class Claw {
+    class Claw {
         private final Servo claw;
 
         public Claw(HardwareMap hardwareMap) {
@@ -173,7 +176,7 @@ public class ActualFinalAuto_Deck extends LinearOpMode {
                 return false;
             }
         }
-    }
+
 
 }
 
@@ -196,18 +199,20 @@ public class ActualFinalAuto_Deck extends LinearOpMode {
 
         Actions.runBlocking(
                 new SequentialAction(
-                        claw.openClaw(),
-                        claw.closeClaw(),
-                        arm.armUp(),
-                        arm.armDown(),
-                        slides.basketPos(),
-                        slides.rungPos(),
+                        claw.open(),
+                        claw.close(),
+                        arm.up(),
+                        arm.down(),
+                        slides.moveToLow(),
+                        slides.moveToMid(),
                         slides.hook(),
-                        slides.lowPos(),
-                        slides.rungPos()
+                        slides.moveToTop(),
+                        slides.moveToMid()
                 )
         );
 
-    }}
+    }
+
+    }
 
 
