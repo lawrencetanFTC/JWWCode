@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class ActualFinalAuto_Basket extends LinearOpMode {
     public void runOpMode() {
 
-        Pose2d initialPose = new Pose2d(-15, 48 , Math.toRadians(90));
+        Pose2d initialPose = new Pose2d(-15, 48 , Math.toRadians(-90));
 
 
 
