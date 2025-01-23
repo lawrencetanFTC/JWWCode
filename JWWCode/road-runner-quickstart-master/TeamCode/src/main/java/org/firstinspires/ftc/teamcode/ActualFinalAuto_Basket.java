@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class ActualFinalAuto_Basket extends LinearOpMode {
     public void runOpMode() {
 
-        Pose2d initialPose = new Pose2d(-15, 48 , Math.toRadians(-90));
+        Pose2d initialPose = new Pose2d(33, 62.5, Math.toRadians(-90));
 
 
 
@@ -33,7 +33,7 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
 
 
         Action MoveToBasket = drive.actionBuilder(initialPose)
-                .splineToSplineHeading(new Pose2d(52, 52, Math.toRadians(45.00)), Math.toRadians(45.00))
+                .strafeToConstantHeading(new Vector2d(0, 37))
                 .build();
 
         Action MoveToSample1 = drive.actionBuilder(new Pose2d(53,53,Math.toRadians(45)))
