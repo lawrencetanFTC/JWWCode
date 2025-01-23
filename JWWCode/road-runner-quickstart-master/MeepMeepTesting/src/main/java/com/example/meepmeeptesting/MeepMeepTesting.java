@@ -21,26 +21,6 @@ public class MeepMeepTesting {
                 .build();
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(15.35, -63.5 , Math.toRadians(90))) //TODO Fix starting Pos
-//                .splineToSplineHeading(new Pose2d(52, 52, Math.toRadians(45.00)), Math.toRadians(45.00))
-//                .strafeToLinearHeading(new Vector2d(48,52), Math.toRadians(-90))
-//                .strafeToLinearHeading(new Vector2d(52,52), Math.toRadians(45.00))
-//                .strafeToLinearHeading(new Vector2d(58,45), Math.toRadians(-90))
-//                .strafeToLinearHeading(new Vector2d(52,52), Math.toRadians(45.00))
-                .strafeToConstantHeading(new Vector2d(2, -45))
-                .splineToConstantHeading(new Vector2d(27.00, -37.00), Math.toRadians(0))
-                .splineToConstantHeading(new Vector2d(47.00, -10.00), Math.toRadians(0))
-                .strafeToConstantHeading(new Vector2d(47.00, -45.00))
-                .splineToConstantHeading(new Vector2d(47.00, -20.00), Math.toRadians(78.65))
-                .splineToConstantHeading(new Vector2d(56.50, -12.00), Math.toRadians(27.55))
-                .strafeToConstantHeading(new Vector2d(56.50, -45.00))
-                .splineToConstantHeading(new Vector2d(42.90, -44.03), Math.toRadians(196.93))
-                .splineToLinearHeading(new Pose2d(27.00, -58.00, Math.toRadians(0.00)), Math.toRadians(173.67))
-                .strafeToConstantHeading(new Vector2d(32.00, -58.00))
-                .splineToLinearHeading(new Pose2d(1.60, -35.95, Math.toRadians(90.00)), Math.toRadians(144.05))
-                .splineToConstantHeading(new Vector2d(3.66, -46.65), Math.toRadians(-67.14))
-                .splineToLinearHeading(new Pose2d(26.94, -57.92, Math.toRadians(0.00)), Math.toRadians(224.46))
-                .splineToLinearHeading(new Pose2d(1.60, -35.95, Math.toRadians(90.00)), Math.toRadians(144.05))
-
 
 //                .strafeTo(new Vector2d(48, 48))
 //                .splineTo(new Vector2d(53.00, 53.00), Math.toRadians(45))
