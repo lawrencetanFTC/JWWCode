@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class ActualFinalAuto_Basket extends LinearOpMode {
     public void runOpMode() {
 
-        Pose2d initialPose = new Pose2d(-15, 48 , Math.toRadians(90));
+        Pose2d initialPose = new Pose2d(-32.5, -63.5, Math.toRadians(90));
 
 
 
@@ -31,158 +31,28 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
 
         MecanumDrive drive = new  MecanumDrive(hardwareMap, initialPose);
 
-
-        Action MoveToBasket = drive.actionBuilder(initialPose)
-                .splineToSplineHeading(new Pose2d(52, 52, Math.toRadians(45.00)), Math.toRadians(45.00))
+        Action basketPath = drive.actionBuilder(new Pose2d(-32.69, -63.24, Math.toRadians(90.00)))
+                .splineTo(new Vector2d(-2.70, -55.05), Math.toRadians(90.00))
+                .splineTo(new Vector2d(-48.90, -50.95), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(-48.34, -44.62), Math.toRadians(90.00))
+                .splineTo(new Vector2d(-41.45, -46.11), Math.toRadians(230.00))
                 .build();
 
-        Action MoveToSample1 = drive.actionBuilder(new Pose2d(53,53,Math.toRadians(45)))
-                .strafeToLinearHeading(new Vector2d(48,52), Math.toRadians(-90))
+        Action pushBasket = drive.actionBuilder(initialPose)
+                .splineToConstantHeading(new Vector2d(-47.04, -11.46), Math.toRadians(-100.00))
+                .splineToLinearHeading(new Pose2d(-47.22, -58.21, Math.toRadians(45.00)), Math.toRadians(263.98))
+                .splineToLinearHeading(new Pose2d(-58.59, -13.32, Math.toRadians(90.00)), Math.toRadians(180.00))
+                .splineToLinearHeading(new Pose2d(-52.63, -52.44, Math.toRadians(45.00)), Math.toRadians(264.81))
+                .splineToLinearHeading(new Pose2d(-32.32, 0.09, Math.toRadians(0.00)), Math.toRadians(0.00))
                 .build();
 
-        Action Score1 = drive.actionBuilder(new Pose2d(48,51, Math.toRadians(-90)))
-                .strafeToLinearHeading(new Vector2d(52,52), Math.toRadians(45.00))
-                .build();
 
-        Action MoveToSample2 = drive.actionBuilder(new Pose2d(53,53, Math.toRadians(45)))
-                .strafeToLinearHeading(new Vector2d(58,45), Math.toRadians(-90))
-                .build();
-
-        Action Score2 = drive.actionBuilder(new Pose2d(52,51, Math.toRadians(-90)))
-                .strafeToLinearHeading(new Vector2d(52,52), Math.toRadians(45.00))
-                .build();
-
-        Action MoveToSample3 = drive.actionBuilder(new Pose2d(53,53, Math.toRadians(45)))
-                .strafeToLinearHeading(new Vector2d(48, 27), Math.toRadians(0))
-                .build();
-
-        Action Score3 = drive.actionBuilder(new Pose2d(47,27, Math.toRadians(0)))
-                .strafeToLinearHeading(new Vector2d(53.00, 53.00), Math.toRadians(45))
-                .build();
-
-        Action MoveToSubmersible = drive.actionBuilder(new Pose2d(53,53, Math.toRadians(45)))
-                .splineToLinearHeading(new Pose2d(25.00, 5, Math.toRadians(180.00)), Math.toRadians(150.00))
-                .build();
-
-        waitForStart();
-
-        Actions.runBlocking(
-                new ParallelAction(
-                        MoveToBasket,
-                            new SequentialAction(
-                                    slides.basketPos(),
-                                    arm.armUp(),
-                                    claw.openClaw()
-
-                            )
-                )
-        );
-
+        //path test
         Actions.runBlocking(
                 new SequentialAction(
-                        new ParallelAction(
-                            slides.lowPos(),
-                            arm.armDown()
-                        ),
-
-                        new ParallelAction(
-                            MoveToSample1,
-                            extend.extendSt(),
-                            spintake.intake(),
-                            wrist.wristDown()
-
-                        )
-                )
-
-        );
-
-        Actions.runBlocking(
-                new ParallelAction(
-                        Score1,
-                        spintake.neutral(),
-                        extend.retractSt(),
-                        wrist.wristUp(),
-                        new SequentialAction(
-                            new SleepAction(.2),
-                            claw.closeClaw(),
-                            slides.basketPos(),
-                            arm.armUp(),
-                            claw.openClaw(),
-                            arm.armDown(),
-                            slides.lowPos()
-                        )
-
-
+                        pushBasket
                 )
         );
-
-        Actions.runBlocking(
-                new ParallelAction(
-                        MoveToSample2,
-                        extend.extendSt(),
-                        wrist.wristDown(),
-                        spintake.intake()
-
-                )
-        );
-
-        Actions.runBlocking(
-                new ParallelAction(
-                        Score2,
-                        spintake.neutral(),
-                        extend.retractSt(),
-                        wrist.wristUp(),
-                        new SequentialAction(
-                                new SleepAction(.2),
-                                claw.closeClaw(),
-                                slides.basketPos(),
-                                arm.armUp(),
-                                claw.openClaw(),
-                                arm.armDown(),
-                                slides.lowPos()
-                        )
-
-
-                )
-        );
-
-        Actions.runBlocking(
-                new ParallelAction(
-                        MoveToSample3,
-                        extend.extendSt(),
-                        spintake.intake(),
-                        wrist.wristDown()
-
-                )
-        );
-
-
-        Actions.runBlocking(
-                new ParallelAction(
-                        Score3,
-                        spintake.neutral(),
-                        extend.retractSt(),
-                        wrist.wristUp(),
-                        new SequentialAction(
-                                new SleepAction(.2),
-                                claw.closeClaw(),
-                                slides.basketPos(),
-                                arm.armUp(),
-                                claw.openClaw(),
-                                arm.armDown(),
-                                slides.lowPos()
-                        )
-
-
-                )
-        );
-
-
-        Actions.runBlocking(new SequentialAction(
-                MoveToSubmersible,
-                slides.rungPos(),
-                slides.lowPos()
-        ));
 
         if(isStopRequested()) return;
 
