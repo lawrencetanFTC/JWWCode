@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class ActualFinalAuto_Basket extends LinearOpMode {
     public void runOpMode() {
 
-        Pose2d initialPose = new Pose2d(-32.5, -63.5, Math.toRadians(90));
+        Pose2d initialPose = new Pose2d(33, 61.5, Math.toRadians(-90));
 
 
 
@@ -31,28 +31,60 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
 
         MecanumDrive drive = new  MecanumDrive(hardwareMap, initialPose);
 
-        Action basketPath = drive.actionBuilder(new Pose2d(-32.69, -63.24, Math.toRadians(90.00)))
-                .splineTo(new Vector2d(-2.70, -55.05), Math.toRadians(90.00))
-                .splineTo(new Vector2d(-48.90, -50.95), Math.toRadians(90.00))
-                .splineToConstantHeading(new Vector2d(-48.34, -44.62), Math.toRadians(90.00))
-                .splineTo(new Vector2d(-41.45, -46.11), Math.toRadians(230.00))
+
+        Action MoveToSubmersible = drive.actionBuilder(initialPose)
+                .strafeToConstantHeading(new Vector2d(0, 47))
+
+                .build();
+        Action PushSamples = drive.actionBuilder(new Pose2d(0,47,Math.toRadians(-90)))
+                .strafeToConstantHeading(new Vector2d(5, 47))
+                .splineToConstantHeading(new Vector2d(36.50, 24.00), Math.toRadians(-90.00))
+                .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(0.00))
+                .strafeToConstantHeading(new Vector2d(48,52.5))
+                .splineToConstantHeading(new Vector2d(58,0), Math.toRadians(0.00))
+                .strafeToConstantHeading(new Vector2d(58,49))
                 .build();
 
-        Action pushBasket = drive.actionBuilder(initialPose)
-                .splineToConstantHeading(new Vector2d(-47.04, -11.46), Math.toRadians(-100.00))
-                .splineToLinearHeading(new Pose2d(-47.22, -58.21, Math.toRadians(45.00)), Math.toRadians(263.98))
-                .splineToLinearHeading(new Pose2d(-58.59, -13.32, Math.toRadians(90.00)), Math.toRadians(180.00))
-                .splineToLinearHeading(new Pose2d(-52.63, -52.44, Math.toRadians(45.00)), Math.toRadians(264.81))
-                .splineToLinearHeading(new Pose2d(-32.32, 0.09, Math.toRadians(0.00)), Math.toRadians(0.00))
-                .build();
 
 
-        //path test
+
+
+
+
+        waitForStart();
+
+
+
+
+
+        if(isStopRequested()) return;
+
+
         Actions.runBlocking(
-                new SequentialAction(
-                        pushBasket
+                new ParallelAction(
+                        MoveToSubmersible,
+                        slides.rungPos(),
+                        arm.armUp()
                 )
         );
+
+        Actions.runBlocking(
+                new SequentialAction(
+                        slides.hook(),
+                        claw.openClaw(),
+                        claw.closeClaw(),
+                        arm.armDown(),
+                        slides.lowPos(),
+                        PushSamples
+                )
+        );
+
+
+        Actions.runBlocking(new SequentialAction(
+                MoveToSubmersible,
+                slides.rungPos(),
+                slides.lowPos()
+        ));
 
         if(isStopRequested()) return;
 
