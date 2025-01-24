@@ -63,11 +63,13 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
 
 
         Actions.runBlocking(
+                new SequentialAction(
+                        new SleepAction(5),
                 new ParallelAction(
                         MoveToSubmersible,
                         slides.rungPos(),
                         arm.armUp()
-                )
+                ))
         );
 
         Actions.runBlocking(
