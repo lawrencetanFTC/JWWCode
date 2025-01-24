@@ -257,10 +257,10 @@ public class HelloAuto extends LinearOpMode {
         public class ArmChamberPos implements Action{
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                elbowLeft.setPosition(.9594);
-                elbowRight.setPosition(.3033);   // change these numbers
-                shoulderLeft.setPosition(0);
-                shoulderRight.setPosition(1);
+                shoulderLeft.setPosition(.7767);
+                shoulderRight.setPosition(.2217);
+                elbowLeft.setPosition(.3611);
+                elbowRight.setPosition(.8672);
                 return false;
             }
 
