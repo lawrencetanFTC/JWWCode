@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class ActualFinalAuto_Basket extends LinearOpMode {
     public void runOpMode() {
 
-        Pose2d initialPose = new Pose2d(33, 62.5, Math.toRadians(-90));
+        Pose2d initialPose = new Pose2d(33, 61.5, Math.toRadians(-90));
 
 
 
@@ -32,44 +32,25 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
         MecanumDrive drive = new  MecanumDrive(hardwareMap, initialPose);
 
 
-        Action MoveToBasket = drive.actionBuilder(initialPose)
-                .strafeToConstantHeading(new Vector2d(0, 37))
-                .splineToConstantHeading(new Vector2d(38.00, 24.00), Math.toRadians(-90.00))
+        Action MoveToSubmersible = drive.actionBuilder(initialPose)
+                .strafeToConstantHeading(new Vector2d(0, 47))
+                .strafeToConstantHeading(new Vector2d(5, 47))
+                .build();
+        Action PushSamples = drive.actionBuilder(new Pose2d(5,43,Math.toRadians(-90)))
+                .splineToConstantHeading(new Vector2d(36.50, 24.00), Math.toRadians(-90.00))
                 .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(0.00))
-                .strafeToConstantHeading(new Vector2d(48,60))
+                .strafeToConstantHeading(new Vector2d(48,52.5))
                 .splineToConstantHeading(new Vector2d(58,0), Math.toRadians(0.00))
-                .strafeToConstantHeading(new Vector2d(58,60))
-                .splineToConstantHeading(new Vector2d(58,0), Math.toRadians(0.00))
-                .strafeToConstantHeading(new Vector2d(58,60))
+                .strafeToConstantHeading(new Vector2d(58,49))
                 .build();
 
-//        Action MoveToSample1 = drive.actionBuilder(new Pose2d(53,53,Math.toRadians(45)))
-//                .strafeToLinearHeading(new Vector2d(48,52), Math.toRadians(-90))
-//                .build();
-//
-//        Action Score1 = drive.actionBuilder(new Pose2d(48,51, Math.toRadians(-90)))
-//                .strafeToLinearHeading(new Vector2d(52,52), Math.toRadians(45.00))
-//                .build();
-//
-//        Action MoveToSample2 = drive.actionBuilder(new Pose2d(53,53, Math.toRadians(45)))
-//                .strafeToLinearHeading(new Vector2d(58,45), Math.toRadians(-90))
-//                .build();
-//
-//        Action Score2 = drive.actionBuilder(new Pose2d(52,51, Math.toRadians(-90)))
-//                .strafeToLinearHeading(new Vector2d(52,52), Math.toRadians(45.00))
-//                .build();
-//
-//        Action MoveToSample3 = drive.actionBuilder(new Pose2d(53,53, Math.toRadians(45)))
-//                .strafeToLinearHeading(new Vector2d(48, 27), Math.toRadians(0))
-//                .build();
-//
-//        Action Score3 = drive.actionBuilder(new Pose2d(47,27, Math.toRadians(0)))
-//                .strafeToLinearHeading(new Vector2d(53.00, 53.00), Math.toRadians(45))
-//                .build();
-//
-//        Action MoveToSubmersible = drive.actionBuilder(new Pose2d(53,53, Math.toRadians(45)))
-//                .splineToLinearHeading(new Pose2d(25.00, 5, Math.toRadians(180.00)), Math.toRadians(150.00))
-//                .build();
+
+
+
+
+
+
+
 
         waitForStart();
 
