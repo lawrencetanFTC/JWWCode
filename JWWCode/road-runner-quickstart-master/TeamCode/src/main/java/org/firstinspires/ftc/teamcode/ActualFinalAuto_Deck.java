@@ -294,81 +294,48 @@ public class ActualFinalAuto_Deck extends LinearOpMode {
         Claw claw = new Claw(hardwareMap);
 
         Action magic = drive.actionBuilder(initialPose)
-                .splineToConstantHeading(new Vector2d(0, -35), Math.toRadians(116.89))
-                .strafeToConstantHeading(new Vector2d(0, -40))
-                .splineToConstantHeading(new Vector2d(35.5, -40.5), Math.toRadians(1.90))
-                .splineToConstantHeading(new Vector2d(37.5, -19), Math.toRadians(56.92))
-                .splineToConstantHeading(new Vector2d(43.5, -12.5), Math.toRadians(35.34))
-                .strafeToConstantHeading(new Vector2d(43.5, -55.5))
-                .splineToConstantHeading(new Vector2d(47.5, -15), Math.toRadians(66.34))
-                .splineToConstantHeading(new Vector2d(60, -13), Math.toRadians(78.12))
-                .strafeToConstantHeading(new Vector2d(60, -55.5))
-                .splineTo(new Vector2d(41.5, -45), Math.toRadians(187.57))
-                .splineToLinearHeading(new Pose2d(27, -59, Math.toRadians(0.00)), Math.toRadians(-17.94))
-                .strafeToConstantHeading(new Vector2d(32, -59))
-                .splineToLinearHeading(new Pose2d(3, -35, Math.toRadians(90.00)), Math.toRadians(150.36))
-                .strafeToConstantHeading(new Vector2d(3, -40))
-                .splineToLinearHeading(new Pose2d(27, -59, Math.toRadians(0.00)), Math.toRadians(248.96))
-                .strafeToConstantHeading(new Vector2d(32, -59))
-                .splineToLinearHeading(new Pose2d(3, -35, Math.toRadians(90.00)), Math.toRadians(150.36))
-                .strafeToConstantHeading(new Vector2d(3, -40))
-                .splineToLinearHeading(new Pose2d(27, -59, Math.toRadians(0.00)), Math.toRadians(248.96))
-                .strafeToConstantHeading(new Vector2d(32, -59))
-                .splineToLinearHeading(new Pose2d(3, -35, Math.toRadians(90.00)), Math.toRadians(150.36))
-                .strafeToConstantHeading(new Vector2d(3, -40))
-                .splineToConstantHeading(new Vector2d(40, -59), Math.toRadians(248.96))
+                .splineToConstantHeading(new Vector2d(7.17, -58.03), Math.toRadians(90.00))
+                .splineTo(new Vector2d(25.00, -59.00), Math.toRadians(0.00))
+                .splineToConstantHeading(new Vector2d(31.00, -59.00), Math.toRadians(0.00))
+                .splineToLinearHeading(new Pose2d(6.00, -63.00, Math.toRadians(90.00)), Math.toRadians(188.95))
+                .splineToConstantHeading(new Vector2d(5.00, -55.00), Math.toRadians(90.00))
                 .build();
 
-        Action goToRung1 = drive.actionBuilder(initialPose)
-                .splineToConstantHeading(new Vector2d(0, -35), Math.toRadians(116.89))
+        Action specimen = drive.actionBuilder(initialPose)
+                .splineToConstantHeading(new Vector2d(7, -58), Math.toRadians(90.00))
                 .build();
 
-        Action back = drive.actionBuilder(new Pose2d(0, -35, 90))
-                .strafeToConstantHeading(new Vector2d(0, -40))
+        Action getOtherSpecimen = drive.actionBuilder(new Pose2d(7, -58, 90))
+                .splineTo(new Vector2d(25.00, -59.00), Math.toRadians(0.00))
                 .build();
 
-        Action pushSamples = drive.actionBuilder(new Pose2d(0, -40, 90))
-                .splineToConstantHeading(new Vector2d(35.5, -40.5), Math.toRadians(1.90))
-                .splineToConstantHeading(new Vector2d(37.5, -19), Math.toRadians(56.92))
-                .splineToConstantHeading(new Vector2d(43.5, -12.5), Math.toRadians(35.34))
-                .strafeToConstantHeading(new Vector2d(43.5, -55.5))
-                .splineToConstantHeading(new Vector2d(47.5, -15), Math.toRadians(66.34))
-                .splineToConstantHeading(new Vector2d(60, -13), Math.toRadians(78.12))
-                .strafeToConstantHeading(new Vector2d(60, -55.5))
-                .splineTo(new Vector2d(41.5, -45), Math.toRadians(187.57))
-                .splineToLinearHeading(new Pose2d(27, -59, Math.toRadians(0.00)), Math.toRadians(-17.94))
+        Action forward = drive.actionBuilder(new Pose2d(25, -59, 0))
+                .splineToConstantHeading(new Vector2d(31.00, -59.00), Math.toRadians(0.00))
                 .build();
 
-        Action yoinkSpecimen = drive.actionBuilder(new Pose2d(27, -59, 0))
-                .strafeToConstantHeading(new Vector2d(32, -59))
+        Action backToRungs = drive.actionBuilder(new Pose2d(31, -59, 0))
+                .splineToLinearHeading(new Pose2d(6.00, -60.00, Math.toRadians(90.00)), Math.toRadians(188.95))
                 .build();
 
-        Action hangSpecimenReturn = drive.actionBuilder(new Pose2d(32, -59, 0))
-                .splineToLinearHeading(new Pose2d(3, -35, Math.toRadians(90.00)), Math.toRadians(150.36))
-                .strafeToConstantHeading(new Vector2d(3, -40))
-                .splineToLinearHeading(new Pose2d(27, -59, Math.toRadians(0.00)), Math.toRadians(248.96))
-                .build();
-
-        Action hangSpecimenPark = drive.actionBuilder(new Pose2d(32, -59, 0))
-                .splineToLinearHeading(new Pose2d(3, -35, Math.toRadians(90.00)), Math.toRadians(150.36))
-                .strafeToConstantHeading(new Vector2d(3, -40))
-                .splineToConstantHeading(new Vector2d(40, -59), Math.toRadians(248.96))
+        Action specimen2 = drive.actionBuilder(new Pose2d(6, -60, 90))
+                .strafeTo(new Vector2d(6.00, -55.00))
                 .build();
 
         if (isStopRequested()) return;
 
+        waitForStart();
         // Path test
         Actions.runBlocking(
                 new SequentialAction(
-                        goToRung1,
-                        back,
-                        pushSamples,
-                        yoinkSpecimen,
-                        hangSpecimenReturn,
-                        yoinkSpecimen,
-                        hangSpecimenReturn,
-                        yoinkSpecimen,
-                        hangSpecimenPark
+                        specimen,
+                        new SleepAction(0.1),
+                        getOtherSpecimen,
+                        new SleepAction(0.1),
+                        forward,
+                        new SleepAction(0.1),
+                        backToRungs,
+                        new SleepAction(0.1),
+                        specimen2
                 )
         );
 

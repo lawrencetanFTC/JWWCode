@@ -51,8 +51,6 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
 
 
 
-
-
         waitForStart();
 
 
@@ -82,6 +80,15 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
                         PushSamples
                 )
         );
+
+
+        Actions.runBlocking(new SequentialAction(
+                MoveToSubmersible,
+                slides.rungPos(),
+                slides.lowPos()
+        ));
+
+        if(isStopRequested()) return;
 
 
 
