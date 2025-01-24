@@ -56,125 +56,27 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
 
 
 
-//        Actions.runBlocking(
-//                new ParallelAction(
-//                        MoveToBasket,
-//                            new SequentialAction(
-//                                    slides.basketPos(),
-//                                    arm.armUp(),
-//                                    claw.openClaw()
-//
-//                            )
-//                )
-//        );
-//
-//        Actions.runBlocking(
-//                new SequentialAction(
-//                        new ParallelAction(
-//                            slides.lowPos(),
-//                            arm.armDown()
-//                        ),
-//
-//                        new ParallelAction(
-//                            MoveToSample1,
-//                            extend.extendSt(),
-//                            spintake.intake(),
-//                            wrist.wristDown()
-//
-//                        )
-//                )
-//
-//        );
-//
-//        Actions.runBlocking(
-//                new ParallelAction(
-//                        Score1,
-//                        spintake.neutral(),
-//                        extend.retractSt(),
-//                        wrist.wristUp(),
-//                        new SequentialAction(
-//                            new SleepAction(.2),
-//                            claw.closeClaw(),
-//                            slides.basketPos(),
-//                            arm.armUp(),
-//                            claw.openClaw(),
-//                            arm.armDown(),
-//                            slides.lowPos()
-//                        )
-//
-//
-//                )
-//        );
-//
-//        Actions.runBlocking(
-//                new ParallelAction(
-//                        MoveToSample2,
-//                        extend.extendSt(),
-//                        wrist.wristDown(),
-//                        spintake.intake()
-//
-//                )
-//        );
-//
-//        Actions.runBlocking(
-//                new ParallelAction(
-//                        Score2,
-//                        spintake.neutral(),
-//                        extend.retractSt(),
-//                        wrist.wristUp(),
-//                        new SequentialAction(
-//                                new SleepAction(.2),
-//                                claw.closeClaw(),
-//                                slides.basketPos(),
-//                                arm.armUp(),
-//                                claw.openClaw(),
-//                                arm.armDown(),
-//                                slides.lowPos()
-//                        )
-//
-//
-//                )
-//        );
-//
-//        Actions.runBlocking(
-//                new ParallelAction(
-//                        MoveToSample3,
-//                        extend.extendSt(),
-//                        spintake.intake(),
-//                        wrist.wristDown()
-//
-//                )
-//        );
-//
-//
-//        Actions.runBlocking(
-//                new ParallelAction(
-//                        Score3,
-//                        spintake.neutral(),
-//                        extend.retractSt(),
-//                        wrist.wristUp(),
-//                        new SequentialAction(
-//                                new SleepAction(.2),
-//                                claw.closeClaw(),
-//                                slides.basketPos(),
-//                                arm.armUp(),
-//                                claw.openClaw(),
-//                                arm.armDown(),
-//                                slides.lowPos()
-//                        )
-//
-//
-//                )
-//        );
-//
-//
-//        Actions.runBlocking(new SequentialAction(
-//                MoveToSubmersible,
-//                slides.rungPos(),
-//                slides.lowPos()
-//        ));
+
 
         if(isStopRequested()) return;
+
+
+        Actions.runBlocking(
+                new ParallelAction(
+                        MoveToSubmersible,
+                        slides.rungPos(),
+                        arm.armUp()
+                )
+        );
+
+        Actions.runBlocking(
+                new SequentialAction(
+                        slides.hook(),
+                        arm.armDown(),
+                        slides.lowPos(),
+                        PushSamples
+                )
+        );
 
 
 
