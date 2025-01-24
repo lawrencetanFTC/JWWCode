@@ -148,7 +148,7 @@ public class TeleOpFirst extends OpMode {
         }
 
 //        if (gamepad1.x) retract();
-        if (gamepad1.x) armSpecimenGrab();
+        if (gamepad1.x) specimenHangSlides();
         updateAllTelemetry();
     }
 
@@ -198,13 +198,25 @@ public class TeleOpFirst extends OpMode {
         }
     }
 
+    private void specimenHangSlides() {
+        leftSlideMotor.setTargetPosition(8473);
+        rightSlideMotor.setTargetPosition(-8528);
+//        leftSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // Reset encoders
+        leftSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);       // Set RUN_TO_POSITION mode
+//        rightSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftSlideMotor.setPower(0.5);
+        rightSlideMotor.setPower(.5);
+
+    }
+
     private void elbowUp() {
         elbowLeft.setPosition(.8867);
         elbowRight.setPosition(.2211);
     }
 
     private void elbowDown() {
-        elbowLeft.setPosition(9756);
+        elbowLeft.setPosition(.9756);
         elbowRight.setPosition(.2844);
     }
 
@@ -278,6 +290,8 @@ public class TeleOpFirst extends OpMode {
             changeServoPositionBy(shoulderLeft, -.0025);
             changeServoPositionBy(shoulderRight,   .0025);
         }
+
+
     }
 
     private void SetDrivetrainMotorPowers(double frontLeftPower, double frontRightPower, double backLeftPower, double backRightPower) {
