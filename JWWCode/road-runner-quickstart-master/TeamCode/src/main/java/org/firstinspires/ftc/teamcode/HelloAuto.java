@@ -251,6 +251,22 @@ public class HelloAuto extends LinearOpMode {
         public Action armUp() {
             return new ArmUp();
         }
+
+
+
+        public class ArmChamberPos implements Action{
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                elbowLeft.setPosition(.9594);
+                elbowRight.setPosition(.3033);   // change these numbers
+                shoulderLeft.setPosition(0);
+                shoulderRight.setPosition(1);
+                return false;
+            }
+
+        }
+
+        public Action armChamber(){ return new ArmChamberPos();}
     }
 
     public static class Claw {

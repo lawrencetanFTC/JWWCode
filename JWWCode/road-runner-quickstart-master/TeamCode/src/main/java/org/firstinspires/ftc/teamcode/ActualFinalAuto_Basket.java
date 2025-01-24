@@ -34,9 +34,10 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
 
         Action MoveToSubmersible = drive.actionBuilder(initialPose)
                 .strafeToConstantHeading(new Vector2d(0, 47))
-                .strafeToConstantHeading(new Vector2d(5, 47))
+
                 .build();
-        Action PushSamples = drive.actionBuilder(new Pose2d(5,43,Math.toRadians(-90)))
+        Action PushSamples = drive.actionBuilder(new Pose2d(0,47,Math.toRadians(-90)))
+                .strafeToConstantHeading(new Vector2d(5, 47))
                 .splineToConstantHeading(new Vector2d(36.50, 24.00), Math.toRadians(-90.00))
                 .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(0.00))
                 .strafeToConstantHeading(new Vector2d(48,52.5))
@@ -72,6 +73,8 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                         slides.hook(),
+                        claw.openClaw(),
+                        claw.closeClaw(),
                         arm.armDown(),
                         slides.lowPos(),
                         PushSamples
