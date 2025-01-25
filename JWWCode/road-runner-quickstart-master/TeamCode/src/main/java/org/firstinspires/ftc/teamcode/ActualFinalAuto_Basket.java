@@ -20,8 +20,6 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
 
         Pose2d initialPose = new Pose2d(33, 61.5, Math.toRadians(-90));
 
-
-
         Extend extend = new Extend(hardwareMap);
         Wrist wrist = new Wrist(hardwareMap);
         Spintake spintake = new Spintake(hardwareMap);
@@ -31,11 +29,10 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
 
         MecanumDrive drive = new  MecanumDrive(hardwareMap, initialPose);
 
-
         Action MoveToSubmersible = drive.actionBuilder(initialPose)
                 .strafeToConstantHeading(new Vector2d(0, 47))
-
                 .build();
+
         Action PushSamples = drive.actionBuilder(new Pose2d(0,47,Math.toRadians(-90)))
                 .strafeToConstantHeading(new Vector2d(5, 47))
                 .splineToConstantHeading(new Vector2d(36.50, 24.00), Math.toRadians(-90.00))
@@ -45,21 +42,23 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(58,49))
                 .build();
 
+        Action BucketCase = drive.actionBuilder(initialPose)
+                .splineTo(new Vector2d(53.00, 53.00), Math.toRadians(45))
+                .strafeToLinearHeading(new Vector2d(35, 35), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(48.00, -0.00, Math.toRadians(-90.00)), Math.toRadians(0.00))
+                .strafeToConstantHeading(new Vector2d(48,52.5))
+                .splineToConstantHeading(new Vector2d(58,0), Math.toRadians(0.00))
+                .strafeToConstantHeading(new Vector2d(58,49))
+                .build();
 
-
-
-
-
+        boolean AreWeDoingSpecimen = true;
 
         waitForStart();
-
-
-
-
 
         if(isStopRequested()) return;
 
 
+        if(AreWeDoingSpecimen){
         Actions.runBlocking(
                 new SequentialAction(
                         new SleepAction(5),
@@ -76,16 +75,14 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
                         claw.openClaw(),
                         claw.closeClaw(),
                         arm.armDown(),
-                        slides.lowPos(),
-                        PushSamples
+                        slides.lowPos()
+
                 )
-        );
+        );}
 
 
         Actions.runBlocking(new SequentialAction(
-                MoveToSubmersible,
-                slides.rungPos(),
-                slides.lowPos()
+                PushSamples
         ));
 
         if(isStopRequested()) return;
