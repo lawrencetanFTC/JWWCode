@@ -70,7 +70,7 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
 
             );
         }
-        if(AreWeDoingSpecimen){
+        else if(AreWeDoingSpecimen){
         Actions.runBlocking(
                 new SequentialAction(
                         new SleepAction(5),
