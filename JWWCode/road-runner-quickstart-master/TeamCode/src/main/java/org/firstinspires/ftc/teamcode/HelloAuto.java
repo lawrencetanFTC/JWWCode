@@ -531,12 +531,14 @@ public class HelloAuto extends LinearOpMode {
             Extend extend = new Extend(hardwareMap);
             Wrist wrist = new Wrist(hardwareMap);
             Spintake spintake = new Spintake(hardwareMap);
-            Slides slides = new Slides();
+            Slides Slides = new Slides();
             Thread slideThread = new Thread(new SlidesControl(hardwareMap));
             slideThread.start();
 
             Arm arm = new Arm(hardwareMap);
             Claw claw = new Claw(hardwareMap);
+
+
 
             //Create Trajectories here
             Action magic = drive.actionBuilder(initialPose)
@@ -621,11 +623,13 @@ public class HelloAuto extends LinearOpMode {
         // IT DOESN"T GRAB SAMPLES OR SPECIMENS
         if (isStopRequested()) return;
         waitForStart();
+        SlidesControl.slidePosition = 8000;
         Actions.runBlocking(
                 new SequentialAction(
+                        new SleepAction(2),
                         //magic
                         arm.down(),
-                        slides.editSlidePositions(8000),
+//                        SlidesControl.slidePosition = 7000,
 //                        slides.rungPos(),
                         arm.specimenHang(),
 //                        slides.basketPos(),
@@ -637,6 +641,7 @@ public class HelloAuto extends LinearOpMode {
 //                        slides.lowPos()
                 )
         );
+        SlidesControl.slidePosition = 0;
 
 //
 //        Actions.runBlocking(new SequentialAction(
