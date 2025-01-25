@@ -18,7 +18,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 public class ActualFinalAuto_Basket extends LinearOpMode {
     public void runOpMode() {
 
-        Pose2d initialPose = new Pose2d(33, 61.5, Math.toRadians(-90));
+        Pose2d initialPose = new Pose2d(-32.5, -63.5, Math.toRadians(90));
+
+
 
         Extend extend = new Extend(hardwareMap);
         Wrist wrist = new Wrist(hardwareMap);
@@ -77,7 +79,7 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
                 new ParallelAction(
                         MoveToSubmersible,
                         slides.rungPos(),
-                        arm.armUp()
+                        arm.specimenHang()
                 ))
         );
 
@@ -86,7 +88,7 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
                         slides.hook(),
                         claw.openClaw(),
                         claw.closeClaw(),
-                        arm.armDown(),
+                        arm.down(),
                         slides.lowPos()
 
                 )

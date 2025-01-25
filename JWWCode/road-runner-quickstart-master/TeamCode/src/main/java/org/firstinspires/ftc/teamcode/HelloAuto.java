@@ -45,7 +45,7 @@ public class HelloAuto extends LinearOpMode {
                 return false;
             }
         }
-        public Action extendSt() {
+        public Action extend() {
             return new ExtendSt();
         }
 
@@ -57,7 +57,7 @@ public class HelloAuto extends LinearOpMode {
                 return false;
             }
         }
-        public Action retractSt() {
+        public Action retract() {
             return new RetractSt();
         }
     }
@@ -137,7 +137,7 @@ public class HelloAuto extends LinearOpMode {
                 return false;
             }
         }
-        public Action neutral() {
+        public Action stop() {
             return new Neutral();
         }
     }
@@ -165,24 +165,26 @@ public class HelloAuto extends LinearOpMode {
 
         public class MoveSlide implements Action {
             private boolean init = false;
-            private int slideBasketPos = 90;
+            private int slideLeftPos = 30;
+            private int slideRightPos = 30;
             private double motorPower = 0.3;
 
-            MoveSlide(int pos){
-                this.slideBasketPos = pos;
+            MoveSlide(int posLeft, int posRight){
+                this.slideLeftPos = posLeft;
+                this.slideRightPos = posRight;
             }
 
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 if (!init) {
                     leftSlideMotor.setPower(motorPower);
-                    leftSlideMotor.setTargetPosition(-slideBasketPos);
+                    leftSlideMotor.setTargetPosition(slideLeftPos);
                     rightSlideMotor.setPower(motorPower);
-                    rightSlideMotor.setTargetPosition(slideBasketPos);
+                    rightSlideMotor.setTargetPosition(slideRightPos);
                     init = true;
                 }
 
-                boolean running = leftSlideMotor.getCurrentPosition() != -slideBasketPos;
+                boolean running = leftSlideMotor.getCurrentPosition() != slideLeftPos;
                 if (!running) {
                     leftSlideMotor.setPower(0);
                     rightSlideMotor.setPower(0);
@@ -190,23 +192,29 @@ public class HelloAuto extends LinearOpMode {
                 return running;
             }
         }
+        // Left is positive right is negative
+
+        // Tune these values to the max slides can extend
         public Action basketPos() {
-            return new MoveSlide(90);
+            return new MoveSlide(8473, -8528);
         }
 
+        // Tune these to the position for hunging specimen
         public Action rungPos() {
-            return new MoveSlide(50);
+            return new MoveSlide(500, -500);
         }
 
-
+        // Thuse these to the lowest slides can return
         public Action lowPos() {
-            return new MoveSlide(10);
+            return new MoveSlide(30, -30);
         }
-        private int hookDelta = 5;
+
+        // Tune this so that samples get hooked
+        private int hookDelta = 30;
 
 
         public Action hook() {
-            return new MoveSlide(rightSlideMotor.getCurrentPosition() - hookDelta);
+            return new MoveSlide(rightSlideMotor.getCurrentPosition() + hookDelta, leftSlideMotor.getCurrentPosition() - hookDelta);
         }
 
     }
@@ -224,49 +232,70 @@ public class HelloAuto extends LinearOpMode {
             shoulderRight = hardwareMap.get(Servo.class, "shoulderRight");
         }
 
-        public class ArmDown implements Action { //CHECK THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        public class ArmRest implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                elbowLeft.setPosition(.4489);
-                elbowRight.setPosition(.8389);
+                shoulderLeft.setPosition(0);
+                shoulderRight.setPosition(1);
+                elbowLeft.setPosition(.9822);
+                elbowRight.setPosition(.26);
+                return false;
+            }
+        }
+
+        public Action rest() {return  new ArmRest();}
+
+        public class ArmDown implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                elbowLeft.setPosition(.9756);
+                elbowRight.setPosition(.2844);
+                return false;
+            }
+        }
+
+        public Action down() {return new ArmDown();}
+
+        public class ArmSample implements Action {
+            @Override
+            public  boolean run(@NonNull TelemetryPacket packet) {
+                elbowLeft.setPosition(.5211);
+                elbowRight.setPosition(.7661);
                 shoulderLeft.setPosition(.89);
                 shoulderRight.setPosition(0);
                 return false;
             }
         }
-        public Action armDown() {
-            return new ArmDown();
-        }
 
-        public class ArmUp implements Action { //CHECK THIS!!!!!!!!!!!!!!!!!!!!!!
+        public Action sample() {return new ArmSample();}
+
+        public class ArmSpecimenHang implements Action {
             @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                elbowLeft.setPosition(.9594);
-                elbowRight.setPosition(.3033);
-                shoulderLeft.setPosition(0);
-                shoulderRight.setPosition(1);
-                return false;
-            }
-        }
-        public Action armUp() {
-            return new ArmUp();
-        }
-
-
-
-        public class ArmChamberPos implements Action{
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
+            public  boolean run(@NonNull TelemetryPacket packet) {
                 shoulderLeft.setPosition(.7767);
                 shoulderRight.setPosition(.2217);
                 elbowLeft.setPosition(.3611);
                 elbowRight.setPosition(.8672);
                 return false;
             }
-
         }
 
-        public Action armChamber(){ return new ArmChamberPos();}
+        public Action specimenHang() {return new ArmSpecimenHang();}
+
+        public class ArmSpecimenGrab implements Action {
+            @Override
+            public  boolean run(@NonNull TelemetryPacket packet) {
+                shoulderLeft.setPosition(0);
+                shoulderRight.setPosition(1);
+                elbowLeft.setPosition(.4761);
+                elbowRight.setPosition(.7462);
+                return false;
+            }
+        }
+
+        public Action specimenGrab() {return new ArmSpecimenGrab();}
+
+
     }
 
     public static class Claw {
@@ -377,13 +406,48 @@ public class HelloAuto extends LinearOpMode {
                 .splineToLinearHeading(new Pose2d(25.00, 5, Math.toRadians(180.00)), Math.toRadians(150.00))
                 .build();
 
-            if (isStopRequested()) return;
+        Actions.runBlocking(
+                new SequentialAction(
+                        claw.openClaw(),
+                        arm.rest(),
+                        extend.retract(),
+                        wrist.wristUp(),
+                        spintake.stop()
+                )
+        );
 
-            Actions.runBlocking(
-                    new SequentialAction(
-                            magic
-                    )
-            );
+        // FULL ACTIONS TEST
+        // Everything should be fin just tune slide positions before testing
+        // IF something is weird have shreyansh look at all the numbers
+
+        // THIS IS AN ACTIONS TEST
+        // IT DOESN"T GRAB SAMPLES OR SPECIMENS
+        if (isStopRequested()) return;
+        waitForStart();
+        Actions.runBlocking(
+                new SequentialAction(
+                        //magic
+                        extend.extend(),
+                        wrist.wristDown(),
+                        spintake.intake(),
+                        new SleepAction(0.5),
+                        spintake.outtake(),
+                        new SleepAction(0.5),
+                        spintake.stop(),
+                        wrist.wristUp(),
+                        extend.retract(),
+                        arm.down(),
+                        slides.rungPos(),
+                        arm.specimenHang(),
+                        slides.basketPos(),
+                        arm.sample(),
+                        claw.closeClaw(),
+                        claw.openClaw(),
+                        arm.specimenGrab(),
+                        arm.rest(), // arm.rest
+                        slides.lowPos()
+                )
+        );
 
 //
 //        Actions.runBlocking(new SequentialAction(
