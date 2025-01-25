@@ -143,7 +143,7 @@ public class HelloAuto extends LinearOpMode {
             return new Neutral();
         }
     }
-    public class Slides {
+    public static class Slides {
         public Slides() {}
         public class EditSlidePositions implements Action {
             @Override
