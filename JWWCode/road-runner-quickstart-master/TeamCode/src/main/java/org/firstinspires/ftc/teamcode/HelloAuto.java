@@ -318,7 +318,7 @@ public class HelloAuto extends LinearOpMode {
             }
         }
         public Action editSlidePositions(int newSlidePosition) {
-            SlidesControl.slidePosition = newSlidePosition;
+            SlideControl.slidePosition = newSlidePosition;
             return new EditSlidePositions();
         }
 

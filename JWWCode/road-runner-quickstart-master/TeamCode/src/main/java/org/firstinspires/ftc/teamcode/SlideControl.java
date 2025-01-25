@@ -4,16 +4,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class SlidesControl implements Runnable {
+public class SlideControl implements Runnable {
     private DcMotor leftSlideMotor; private DcMotor rightSlideMotor;
-    public SlidesControl(HardwareMap hardwareMap) {
+    public SlideControl(HardwareMap hardwareMap) {
         leftSlideMotor = hardwareMap.get(DcMotor.class, "leftSlideMotor");
         rightSlideMotor = hardwareMap.get(DcMotor.class, "rightSlideMotor");
 
         rightSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
-
     }
+
     public static boolean run = true;
     public static int slidePosition = 8000;
     @Override
