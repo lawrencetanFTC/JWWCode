@@ -5,6 +5,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.transition.Slide;
+
 import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -40,8 +42,8 @@ public class HelloAuto extends LinearOpMode {
         public class ExtendSt implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                extendLeft.setPosition(.3944);
-                extendRight.setPosition(.6028);
+                extendLeft.setPosition(.2928);
+                extendRight.setPosition(.5567);
                 return false;
             }
         }
@@ -141,9 +143,20 @@ public class HelloAuto extends LinearOpMode {
             return new Neutral();
         }
     }
-
-    //Major testing below.
-    public static class Slides { //This class is altered from Arnav's code in "ActualFinalAutoDeckBlue.java"
+    public class Slides {
+        public Slides() {}
+        public class EditSlidePositions implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                return false;
+            }
+        }
+        public Action editSlidePositions(int newSlidePosition) {
+            SlidesControl.slidePosition = newSlidePosition;
+            return new EditSlidePositions();
+        }
+    }
+    /*public class Slides { //This class is altered from Arnav's code in "ActualFinalAutoDeck.java"
         private DcMotor leftSlideMotor;
         private DcMotor rightSlideMotor;
 
@@ -163,28 +176,22 @@ public class HelloAuto extends LinearOpMode {
             leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         }
 
-        public class MoveSlide implements Action {
+        public class Basket implements Action {
             private boolean init = false;
-            private int slideLeftPos = 30;
-            private int slideRightPos = 30;
+            private int slideBasketPos = 90;
             private double motorPower = 0.3;
-
-            MoveSlide(int posLeft, int posRight){
-                this.slideLeftPos = posLeft;
-                this.slideRightPos = posRight;
-            }
 
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 if (!init) {
                     leftSlideMotor.setPower(motorPower);
-                    leftSlideMotor.setTargetPosition(slideLeftPos);
+                    leftSlideMotor.setTargetPosition(slideBasketPos);
                     rightSlideMotor.setPower(motorPower);
-                    rightSlideMotor.setTargetPosition(slideRightPos);
+                    rightSlideMotor.setTargetPosition(slideBasketPos);
                     init = true;
                 }
 
-                boolean running = leftSlideMotor.getCurrentPosition() != slideLeftPos;
+                boolean running = leftSlideMotor.getCurrentPosition() != -slideBasketPos;
                 if (!running) {
                     leftSlideMotor.setPower(0);
                     rightSlideMotor.setPower(0);
@@ -192,32 +199,218 @@ public class HelloAuto extends LinearOpMode {
                 return running;
             }
         }
-        // Left is positive right is negative
+        public Action basket() {
+            return new Basket();
+        }
 
-        // Tune these values to the max slides can extend
+        public class BasketPos implements Action {
+            private boolean init = false;
+            private int slideBasketPos = 90;
+            private double motorPower = 0.3;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!init) {
+                    leftSlideMotor.setPower(motorPower);
+                    leftSlideMotor.setTargetPosition(-slideBasketPos);
+                    rightSlideMotor.setPower(motorPower);
+                    rightSlideMotor.setTargetPosition(slideBasketPos);
+                    init = true;
+                }
+
+                boolean running = leftSlideMotor.getCurrentPosition() != -slideBasketPos;
+                if (!running) {
+                    leftSlideMotor.setPower(0);
+                    rightSlideMotor.setPower(0);
+                }
+                return running;
+            }
+        }
         public Action basketPos() {
-            return new MoveSlide(8473, -8528);
+            return new BasketPos();
         }
 
-        // Tune these to the position for hunging specimen
+        public class RungPos implements Action {
+            private boolean init = false;
+            private int slideBasketPos = 50;
+            private double motorPower = 0.3;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!init) {
+                    leftSlideMotor.setPower(motorPower);
+                    leftSlideMotor.setTargetPosition(-slideBasketPos);
+                    rightSlideMotor.setPower(motorPower);
+                    rightSlideMotor.setTargetPosition(slideBasketPos);
+                    init = true;
+                }
+
+                boolean running = leftSlideMotor.getCurrentPosition() != -slideBasketPos;
+                if (!running) {
+                    leftSlideMotor.setPower(0);
+                    rightSlideMotor.setPower(0);
+                }
+                return running;
+            }
+        }
         public Action rungPos() {
-            return new MoveSlide(500, -500);
+            return new RungPos();
         }
 
-        // Thuse these to the lowest slides can return
+        public class LowPos implements Action {
+            private boolean init = false;
+            private int slideBasketPos = 8000;
+            private double motorPower = 0.75;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (true) {
+                    leftSlideMotor.setPower(motorPower);
+                    rightSlideMotor.setPower(motorPower);
+                    leftSlideMotor.setTargetPosition(slideBasketPos);
+                    rightSlideMotor.setTargetPosition(slideBasketPos);
+                    init = true;
+                }
+
+                boolean running = leftSlideMotor.getCurrentPosition() != slideBasketPos;
+                if (!running) {
+                    leftSlideMotor.setPower(0);
+                    rightSlideMotor.setPower(0);
+                }
+                return running;
+            }
+        }
         public Action lowPos() {
-            return new MoveSlide(30, -30);
+            return new LowPos();
         }
 
-        // Tune this so that samples get hooked
-        private int hookDelta = 30;
+        public class Hook implements Action {
+            private boolean init = false;
+            private int slideBasketPos = 90;
+            private int hookDelta = 5;
+            private double motorPower = 0.3;
 
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!init) {
+                    leftSlideMotor.setPower(motorPower);
+                    leftSlideMotor.setTargetPosition(-(leftSlideMotor.getCurrentPosition() - hookDelta));
+                    rightSlideMotor.setPower(motorPower);
+                    rightSlideMotor.setTargetPosition(rightSlideMotor.getCurrentPosition() - hookDelta);
+                    init = true;
+                }
 
+                boolean running = leftSlideMotor.getCurrentPosition() != -(slideBasketPos - hookDelta);
+                if (!running) {
+                    leftSlideMotor.setPower(0);
+                    rightSlideMotor.setPower(0);
+                }
+                return running;
+            }
+        }
         public Action hook() {
-            return new MoveSlide(rightSlideMotor.getCurrentPosition() + hookDelta, leftSlideMotor.getCurrentPosition() - hookDelta);
+            return new Hook();
+        }
+        public class EditSlidePositions implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                return false;
+            }
+        }
+        public Action editSlidePositions(int newSlidePosition) {
+            SlidesControl.slidePosition = newSlidePosition;
+            return new EditSlidePositions();
         }
 
-    }
+    }*/
+
+    //Major testing below.
+//    public static class Slides { //This class is altered from Arnav's code in "ActualFinalAutoDeckBlue.java"
+//        private DcMotor leftSlideMotor;
+//        private DcMotor rightSlideMotor;
+//
+//        public Slides(HardwareMap hardwareMap) {
+//            leftSlideMotor = hardwareMap.get(DcMotor.class, "leftSlideMotor");
+//            rightSlideMotor = hardwareMap.get(DcMotor.class, "rightSlideMotor");
+//
+//            leftSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            rightSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//
+//            leftSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            rightSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//
+//            leftSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//            rightSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//
+//            leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+//        }
+//
+//        public class MoveSlide implements Action {
+//            private boolean init = false;
+//            private int slideLeftPos = 30;
+//            private int slideRightPos = 30;
+//            private double motorPower = 0.3;
+//
+//            MoveSlide(int posLeft, int posRight){
+//                this.slideLeftPos = posLeft;
+//                this.slideRightPos = posRight;
+//            }
+//
+//            @Override
+//            public boolean run(@NonNull TelemetryPacket packet) {
+//                if (!init) {
+//                    leftSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//                    rightSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//
+////                    leftSlideMotor.setTargetPosition(8473);
+////                    rightSlideMotor.setTargetPosition(-8528);
+//
+//                    leftSlideMotor.setTargetPosition(slideLeftPos);
+//                    rightSlideMotor.setTargetPosition(slideRightPos);
+//
+//                    leftSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                    rightSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//
+//                    leftSlideMotor.setPower(motorPower);
+//                    rightSlideMotor.setPower(motorPower);
+//
+//                    init = true;
+//                }
+//
+//                boolean running = leftSlideMotor.getCurrentPosition() != slideLeftPos;
+//                if (!running) {
+//                    leftSlideMotor.setPower(0);
+//                    rightSlideMotor.setPower(0);
+//                }
+//                return running;
+//            }
+//        }
+//        // Left is positive right is negative
+//
+//        // Tune these values to the max slides can extend
+//        public Action basketPos() {
+//            return new MoveSlide(8473, -8528);
+//        }
+//
+//        // Tune these to the position for hunging specimen
+//        public Action rungPos() {
+//            return new MoveSlide(500, -500);
+//        }
+//
+//        // Thuse these to the lowest slides can return
+//        public Action lowPos() {
+//            return new MoveSlide(30, -30);
+//        }
+//
+//        // Tune this so that samples get hooked
+//        private int hookDelta = 30;
+//
+//
+//        public Action hook() {
+//            return new MoveSlide(rightSlideMotor.getCurrentPosition() + hookDelta, leftSlideMotor.getCurrentPosition() - hookDelta);
+//        }
+//
+//    }
 
     public static class Arm {
         private Servo elbowLeft;
@@ -338,7 +531,10 @@ public class HelloAuto extends LinearOpMode {
             Extend extend = new Extend(hardwareMap);
             Wrist wrist = new Wrist(hardwareMap);
             Spintake spintake = new Spintake(hardwareMap);
-            Slides slides = new Slides(hardwareMap);
+            Slides slides = new Slides();
+            Thread slideThread = new Thread(new SlidesControl(hardwareMap));
+            slideThread.start();
+
             Arm arm = new Arm(hardwareMap);
             Claw claw = new Claw(hardwareMap);
 
@@ -408,11 +604,12 @@ public class HelloAuto extends LinearOpMode {
 
         Actions.runBlocking(
                 new SequentialAction(
+                        claw.closeClaw(),
                         claw.openClaw(),
                         arm.rest(),
-                        extend.retract(),
+                        extend.extend(),
                         wrist.wristUp(),
-                        spintake.stop()
+                        spintake.stop()//                        slides.lowPos()
                 )
         );
 
@@ -427,25 +624,17 @@ public class HelloAuto extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                         //magic
-                        extend.extend(),
-                        wrist.wristDown(),
-                        spintake.intake(),
-                        new SleepAction(0.5),
-                        spintake.outtake(),
-                        new SleepAction(0.5),
-                        spintake.stop(),
-                        wrist.wristUp(),
-                        extend.retract(),
                         arm.down(),
-                        slides.rungPos(),
+                        slides.editSlidePositions(8000),
+//                        slides.rungPos(),
                         arm.specimenHang(),
-                        slides.basketPos(),
+//                        slides.basketPos(),
                         arm.sample(),
                         claw.closeClaw(),
                         claw.openClaw(),
                         arm.specimenGrab(),
-                        arm.rest(), // arm.rest
-                        slides.lowPos()
+                        arm.rest()// arm.rest
+//                        slides.lowPos()
                 )
         );
 
@@ -489,4 +678,3 @@ public class HelloAuto extends LinearOpMode {
 //                    )
         }
 }
-

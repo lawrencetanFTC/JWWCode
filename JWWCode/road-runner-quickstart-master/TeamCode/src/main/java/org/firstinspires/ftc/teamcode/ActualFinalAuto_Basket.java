@@ -22,84 +22,39 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
 
 
 
-        Extend extend = new Extend(hardwareMap);
-        Wrist wrist = new Wrist(hardwareMap);
-        Spintake spintake = new Spintake(hardwareMap);
-        Slides slides = new Slides(hardwareMap);
-        Arm arm = new Arm(hardwareMap);
-        Claw claw = new Claw(hardwareMap);
+//        Extend extend = new Extend(hardwareMap);
+//        Wrist wrist = new Wrist(hardwareMap);
+//        Spintake spintake = new Spintake(hardwareMap);
+//        Slides slides = new Slides(hardwareMap);
+//        Arm arm = new Arm(hardwareMap);
+//        Claw claw = new Claw(hardwareMap);
 
         MecanumDrive drive = new  MecanumDrive(hardwareMap, initialPose);
 
-        Action MoveToSubmersible = drive.actionBuilder(initialPose)
-                .strafeToConstantHeading(new Vector2d(0, 47))
+        Action basketPath = drive.actionBuilder(new Pose2d(-32.69, -63.24, Math.toRadians(90.00)))
+                .splineTo(new Vector2d(-2.70, -55.05), Math.toRadians(90.00))
+                .splineTo(new Vector2d(-48.90, -50.95), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(-48.34, -44.62), Math.toRadians(90.00))
+                .splineTo(new Vector2d(-41.45, -46.11), Math.toRadians(230.00))
                 .build();
 
-        Action PushSamples = drive.actionBuilder(new Pose2d(0,47,Math.toRadians(-90)))
-                .strafeToConstantHeading(new Vector2d(5, 47))
-                .splineToConstantHeading(new Vector2d(36.50, 24.00), Math.toRadians(-90.00))
-                .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(0.00))
-                .strafeToConstantHeading(new Vector2d(48,52.5))
-                .splineToConstantHeading(new Vector2d(58,0), Math.toRadians(0.00))
-                .strafeToConstantHeading(new Vector2d(58,49))
+        Action pushBasket = drive.actionBuilder(initialPose)
+                .splineToConstantHeading(new Vector2d(-47.04, -11.46), Math.toRadians(-100.00))
+                .splineToLinearHeading(new Pose2d(-40, -58.21, Math.toRadians(45.00)), Math.toRadians(263.98))
+                .splineToLinearHeading(new Pose2d(-58.59, -13.32, Math.toRadians(90.00)), Math.toRadians(180.00))
+                .splineToLinearHeading(new Pose2d(-52.63, -52.44, Math.toRadians(45.00)), Math.toRadians(264.81))
+                .splineToLinearHeading(new Pose2d(-32.32, 0.09, Math.toRadians(0.00)), Math.toRadians(0.00))
                 .build();
 
-        Action BucketCase = drive.actionBuilder(initialPose)
-                .splineTo(new Vector2d(53.00, 53.00), Math.toRadians(45))
-                .strafeToLinearHeading(new Vector2d(35, 35), Math.toRadians(90))
-                .splineToLinearHeading(new Pose2d(48.00, -0.00, Math.toRadians(-90.00)), Math.toRadians(0.00))
-                .strafeToConstantHeading(new Vector2d(48,52.5))
-                .splineToConstantHeading(new Vector2d(58,0), Math.toRadians(0.00))
-                .strafeToConstantHeading(new Vector2d(58,49))
-                .build();
-
-        boolean AreWeDoingSpecimen = true;
-        boolean AreWeTestingPaths = true;
-
-        waitForStart();
 
         if(isStopRequested()) return;
-
-
-
-
-        if(AreWeTestingPaths){
-            Actions.runBlocking(
-                    new SequentialAction(
-                            MoveToSubmersible,
-                            PushSamples
-                    )
-
-            );
-        }
-        else if(AreWeDoingSpecimen){
+        waitForStart();
+        //path test
         Actions.runBlocking(
                 new SequentialAction(
-                        new SleepAction(5),
-                new ParallelAction(
-                        MoveToSubmersible,
-                        slides.rungPos(),
-                        arm.specimenHang()
-                ))
-        );
-
-        Actions.runBlocking(
-                new SequentialAction(
-                        slides.hook(),
-                        claw.openClaw(),
-                        claw.closeClaw(),
-                        arm.down(),
-                        slides.lowPos()
-
+                        pushBasket
                 )
-        );} else{
-            Actions.runBlocking(BucketCase);
-        }
-
-
-        Actions.runBlocking(new SequentialAction(
-                PushSamples
-        ));
+        );
 
         if(isStopRequested()) return;
 
