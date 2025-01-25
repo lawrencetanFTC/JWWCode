@@ -52,12 +52,24 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
                 .build();
 
         boolean AreWeDoingSpecimen = true;
+        boolean AreWeTestingPaths = true;
 
         waitForStart();
 
         if(isStopRequested()) return;
 
 
+
+
+        if(AreWeTestingPaths){
+            Actions.runBlocking(
+                    new SequentialAction(
+                            MoveToSubmersible,
+                            PushSamples
+                    )
+
+            );
+        }
         if(AreWeDoingSpecimen){
         Actions.runBlocking(
                 new SequentialAction(
@@ -78,7 +90,9 @@ public class ActualFinalAuto_Basket extends LinearOpMode {
                         slides.lowPos()
 
                 )
-        );}
+        );} else{
+            Actions.runBlocking(BucketCase);
+        }
 
 
         Actions.runBlocking(new SequentialAction(
