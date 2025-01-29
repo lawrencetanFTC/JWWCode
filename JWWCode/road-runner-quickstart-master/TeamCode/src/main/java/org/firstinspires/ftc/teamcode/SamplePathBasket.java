@@ -52,7 +52,7 @@ public class SamplePathBasket extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(58, 49))
                 .build();
 
-        boolean AreWeDoingSpecimen = true;
+//        boolean AreWeDoingSpecimen = true;
         boolean AreWeTestingPaths = true;
 
         waitForStart();
