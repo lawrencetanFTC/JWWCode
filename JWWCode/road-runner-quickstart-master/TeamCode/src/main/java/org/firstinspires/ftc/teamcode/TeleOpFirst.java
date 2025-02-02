@@ -172,8 +172,8 @@ public class TeleOpFirst extends OpMode {
     }
 
     private void controlDrivetrain() {
-        if (gamepad1.dpad_up) SetDrivetrainMotorPowers(.9, .9, .9, .9);
-        else if (gamepad1.dpad_down) SetDrivetrainMotorPowers(-.9, -.9, -.9, -.9);
+//        if (gamepad1.dpad_up) SetDrivetrainMotorPowers(.9, .9, .9, .9);
+        if (gamepad1.dpad_down) SetDrivetrainMotorPowers(-.9, -.9, -.9, -.9);
         else if (gamepad1.dpad_left) SetDrivetrainMotorPowers(-.9, .9, .9, -.9);
         else if (gamepad1.dpad_right) SetDrivetrainMotorPowers(.9, -.9, -.9, .9);
         else {
@@ -219,10 +219,10 @@ public class TeleOpFirst extends OpMode {
     }
 
     private void elbowDown() {
-        shoulderLeft.setPosition(.04);
-        shoulderRight.setPosition(.955);
-        elbowLeft.setPosition(.6371);
-        elbowRight.setPosition(.3339);
+        shoulderLeft.setPosition(.0428);
+        shoulderRight.setPosition(.9522);
+        elbowLeft.setPosition(.7194);
+        elbowRight.setPosition(.2744);
     }
 
     private void armStartPosition() {
@@ -240,8 +240,8 @@ public class TeleOpFirst extends OpMode {
     }
 
     private void wristUp() {
-        wristLeft.setPosition(0);
-        wristRight.setPosition(1);
+        wristLeft.setPosition(.1994);
+        wristRight.setPosition(.7956);
     }
 
     private void wristDown() {
@@ -278,11 +278,11 @@ public class TeleOpFirst extends OpMode {
 
     private void fineTuningControls() {
         if (gamepad2.dpad_down) {
-            changeServoPositionBy(extendLeft, .002);
-            changeServoPositionBy(extendRight, -.002);
+            changeServoPositionBy(wristLeft, .002);
+            changeServoPositionBy(wristRight, -.002);
         } else if (gamepad2.dpad_up) {
-            changeServoPositionBy(extendLeft, -.002);
-            changeServoPositionBy(extendRight, .002);
+            changeServoPositionBy(wristLeft, -.002);
+            changeServoPositionBy(wristRight, .002);
         }
         if (gamepad2.y) {
             changeServoPositionBy(elbowLeft, .0025);

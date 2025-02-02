@@ -14,11 +14,11 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-@Autonomous(name = "HangAuto", group = "Autonomous")
+@Autonomous(name = "BaskettAuto", group = "Autonomous")
 public class SamplePathBasket extends LinearOpMode {
     public void runOpMode() {
 
-        Pose2d initialPose = new Pose2d(-32.5, -63.5, Math.toRadians(90));
+        Pose2d initialPose = new Pose2d(13.5, 62.5, Math.toRadians(-90));
 
         Extend extend = new Extend(hardwareMap);
         Wrist wrist = new Wrist(hardwareMap);
@@ -31,11 +31,11 @@ public class SamplePathBasket extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
         Action MoveToSubmersible = drive.actionBuilder(initialPose)
-                .strafeToConstantHeading(new Vector2d(0, 47))
+                .strafeToConstantHeading(new Vector2d(0, 37))
                 .build();
 
-        Action PushSamples = drive.actionBuilder(new Pose2d(0, 47, Math.toRadians(-90)))
-                .strafeToConstantHeading(new Vector2d(5, 47))
+        Action PushSamples = drive.actionBuilder(new Pose2d(0, 37, Math.toRadians(-90)))
+                .strafeToConstantHeading(new Vector2d(5, 37))
                 .splineToConstantHeading(new Vector2d(36.50, 24.00), Math.toRadians(-90.00))
                 .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(0.00))
                 .strafeToConstantHeading(new Vector2d(48, 52.5))
