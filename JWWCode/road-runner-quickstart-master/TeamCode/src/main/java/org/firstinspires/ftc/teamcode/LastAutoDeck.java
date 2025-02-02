@@ -50,7 +50,13 @@ public class LastAutoDeck extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(58, -53))
                 .splineToConstantHeading(new Vector2d(40.5, -58.5), Math.toRadians(-90.00))
                 .splineToConstantHeading(new Vector2d(2, -48), Math.toRadians(90.00))
-                .splineToConstantHeading(new Vector2d(2.5, -55.5), Math.toRadians(90.00))
+                .strafeToConstantHeading(new Vector2d(2, -55.5))
+                .splineToConstantHeading(new Vector2d(40.5, -58), Math.toRadians(-90.00))
+                .splineToConstantHeading(new Vector2d(2, -48), Math.toRadians(90.00))
+                .strafeToConstantHeading(new Vector2d(2, -55.5))
+                .splineToConstantHeading(new Vector2d(40.5, -58), Math.toRadians(-90.00))
+                .splineToConstantHeading(new Vector2d(2, -48), Math.toRadians(90.00))
+                .strafeToConstantHeading(new Vector2d(2, -55.5))
                 .splineToConstantHeading(new Vector2d(40.5, -58), Math.toRadians(-90.00))
                 .build();
 
