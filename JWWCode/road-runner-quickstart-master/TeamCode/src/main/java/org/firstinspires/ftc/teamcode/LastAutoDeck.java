@@ -61,6 +61,29 @@ public class LastAutoDeck extends LinearOpMode {
                 .build();
 
 
+
+        Action MoveToChamber = drive.actionBuilder(initialPose)
+                .strafeToConstantHeading(new Vector2d(0,-37))
+                .build();
+        Action MoveToSample = drive.actionBuilder(new Pose2d(0,-37, -Math.PI/2))
+                .splineToLinearHeading(new Pose2d(24, -24, Math.toRadians(90)), Math.toRadians(0)) // Move to first sample
+                .build();
+
+
+        Action sweep = drive.actionBuilder(new Pose2d(24,-24, Math.toRadians(-45)))
+                .turn(Math.toRadians(-180)) // Sweep next sample
+                .turnTo(Math.toRadians(45)) // Sweep back
+                .build();
+
+
+        Action MoveToNext = drive.actionBuilder(new Pose2d(24,-24, Math.toRadians(45)))
+                .strafeToConstantHeading(new Vector2d(28,-24))
+                .build();
+
+
+
+
+
         Actions.runBlocking(
                 new SequentialAction(
                         //stuff that needs to happen on init

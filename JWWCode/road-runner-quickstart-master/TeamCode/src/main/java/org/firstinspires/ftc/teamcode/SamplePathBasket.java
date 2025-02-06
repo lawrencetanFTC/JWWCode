@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(name = "BaskettAuto", group = "Autonomous")
 public class SamplePathBasket extends LinearOpMode {
+
     public void runOpMode() {
 
         Pose2d initialPose = new Pose2d(13.5, 62.5, Math.toRadians(-90));
@@ -27,6 +28,8 @@ public class SamplePathBasket extends LinearOpMode {
         Thread slideThread = new Thread(new SlidesControl(hardwareMap));
         Arm arm = new Arm(hardwareMap);
         Claw claw = new Claw(hardwareMap);
+
+
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
