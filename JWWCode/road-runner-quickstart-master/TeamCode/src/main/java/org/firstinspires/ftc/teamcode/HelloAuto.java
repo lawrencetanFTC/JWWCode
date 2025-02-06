@@ -570,8 +570,8 @@ public class HelloAuto extends LinearOpMode {
 
     class FPivot{
         private Servo FPivotServo;
-        FPivot(HardwareMap hardwareMap){
-            FPivotServo = hardwareMap.get(Servo.class, "FPivotServo");000000000
+        public FPivot(HardwareMap hardwareMap){
+            FPivotServo = hardwareMap.get(Servo.class, "FPivotServo");
         }
 
 
@@ -600,7 +600,7 @@ public class HelloAuto extends LinearOpMode {
 
     class BPivot{
         private Servo BPivotServo;
-        BPivot(HardwareMap hardwareMap){
+        public BPivot(HardwareMap hardwareMap){
             BPivotServo = hardwareMap.get(Servo.class, "BPivotServo");
         }
 
