@@ -24,11 +24,10 @@ public class SpecimenPathBasket extends LinearOpMode {
 
         Extend extend = new Extend(hardwareMap);
         Wrist wrist = new Wrist(hardwareMap);
-        Spintake spintake = new Spintake(hardwareMap);
         Slides slides = new Slides();
         Thread slideThread = new Thread(new SlidesControl(hardwareMap));
         Arm arm = new Arm(hardwareMap);
-        Claw claw = new Claw(hardwareMap);
+        BClaw claw = new BClaw(hardwareMap);
 
         MecanumDrive drive = new  MecanumDrive(hardwareMap, initialPose);
 

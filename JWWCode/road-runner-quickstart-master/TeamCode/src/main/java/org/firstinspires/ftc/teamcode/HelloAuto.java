@@ -35,14 +35,12 @@ public class HelloAuto extends LinearOpMode {
         private Servo extendRight;
 
         public Extend(HardwareMap hardwareMap) {
-            extendLeft = hardwareMap.get(Servo.class, "leftExtend");
             extendRight = hardwareMap.get(Servo.class, "rightExtend");
         }
 
         public class ExtendSt implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                extendLeft.setPosition(.2928);
                 extendRight.setPosition(.5567);
                 return false;
             }
@@ -54,7 +52,7 @@ public class HelloAuto extends LinearOpMode {
         public class RetractSt implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                extendLeft.setPosition(1);
+
                 extendRight.setPosition(0);
                 return false;
             }
@@ -64,7 +62,7 @@ public class HelloAuto extends LinearOpMode {
         }
     }
 
-    public static class Wrist {
+    public static class Wrist { //change numbers
         private Servo wristLeft;
         private Servo wristRight;
 
@@ -98,51 +96,6 @@ public class HelloAuto extends LinearOpMode {
         }
     }
 
-    public static class Spintake {
-        private CRServo spinTakeLeft;
-        private CRServo spinTakeRight;
-
-        public Spintake(HardwareMap hardwareMap) {
-            spinTakeLeft = hardwareMap.get(CRServo.class, "spinTakeLeft");
-            spinTakeRight = hardwareMap.get(CRServo.class, "spinTakeRight");
-        }
-
-        public class SpinAction implements Action {
-            private DcMotorSimple.Direction direction;
-
-            SpinAction(DcMotorSimple.Direction direction){
-                this.direction = direction;
-            }
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                spinTakeLeft.setDirection(direction);
-                spinTakeRight.setDirection(direction);
-                spinTakeLeft.setPower(-1);
-                spinTakeRight.setPower(1);
-                return false;
-            }
-        }
-
-        public Action intake() {
-            return new SpinAction(DcMotorSimple.Direction.FORWARD);
-        }
-
-        public Action outtake() {
-            return new SpinAction(DcMotorSimple.Direction.REVERSE);
-        }
-
-        public class Neutral implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                spinTakeLeft.setPower(0);
-                spinTakeRight.setPower(0);
-                return false;
-            }
-        }
-        public Action stop() {
-            return new Neutral();
-        }
-    }
     public static class Slides {
         public Slides() {}
         public class EditSlidePositions implements Action {
@@ -412,15 +365,13 @@ public class HelloAuto extends LinearOpMode {
 //
 //    }
 
-    public static class Arm {
-        private Servo elbowLeft;
-        private Servo elbowRight;
+    public static class Arm { //fix servoo numbers
+
         private Servo shoulderLeft;
         private Servo shoulderRight;
 
         public Arm(HardwareMap hardwareMap) {
-            elbowLeft = hardwareMap.get(Servo.class, "elbowLeft");
-            elbowRight = hardwareMap.get(Servo.class, "elbowRight");
+
             shoulderLeft = hardwareMap.get(Servo.class, "shoulderLeft");
             shoulderRight = hardwareMap.get(Servo.class, "shoulderRight");
         }
@@ -430,8 +381,7 @@ public class HelloAuto extends LinearOpMode {
             public boolean run(@NonNull TelemetryPacket packet) {
                 shoulderLeft.setPosition(0);
                 shoulderRight.setPosition(1);
-                elbowLeft.setPosition(.9822);
-                elbowRight.setPosition(.26);
+
                 return false;
             }
         }
@@ -441,8 +391,7 @@ public class HelloAuto extends LinearOpMode {
         public class ArmDown implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                elbowLeft.setPosition(.9756);
-                elbowRight.setPosition(.2844);
+
                 return false;
             }
         }
@@ -452,8 +401,7 @@ public class HelloAuto extends LinearOpMode {
         public class ArmSample implements Action {
             @Override
             public  boolean run(@NonNull TelemetryPacket packet) {
-                elbowLeft.setPosition(.5211);
-                elbowRight.setPosition(.7661);
+
                 shoulderLeft.setPosition(.89);
                 shoulderRight.setPosition(0);
                 return false;
@@ -467,8 +415,7 @@ public class HelloAuto extends LinearOpMode {
             public  boolean run(@NonNull TelemetryPacket packet) {
                 shoulderLeft.setPosition(.7767);
                 shoulderRight.setPosition(.2217);
-                elbowLeft.setPosition(.3611);
-                elbowRight.setPosition(.8672);
+
                 return false;
             }
         }
@@ -480,8 +427,7 @@ public class HelloAuto extends LinearOpMode {
             public  boolean run(@NonNull TelemetryPacket packet) {
                 shoulderLeft.setPosition(0);
                 shoulderRight.setPosition(1);
-                elbowLeft.setPosition(.4761);
-                elbowRight.setPosition(.7462);
+
                 return false;
             }
         }
@@ -491,10 +437,10 @@ public class HelloAuto extends LinearOpMode {
 
     }
 
-    public static class Claw {
+    public static class BClaw {
         private Servo clawServo;
 
-        public Claw(HardwareMap hardwareMap) {
+        public BClaw(HardwareMap hardwareMap) {
             clawServo = hardwareMap.get(Servo.class, "clawServo");
         }
 
@@ -520,7 +466,167 @@ public class HelloAuto extends LinearOpMode {
             return new CloseClaw();
         }
     }
+    public static class FClaw {
+        private Servo FclawServo;
 
+        public FClaw(HardwareMap hardwareMap) {
+            FclawServo = hardwareMap.get(Servo.class, "FclawServo");
+        }
+
+        public class OpenClaw implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                FclawServo.setPosition(.6794);
+                return false;
+            }
+        }
+        public Action openClaw() {
+            return new OpenClaw();
+        }
+
+        public class CloseClaw implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                FclawServo.setPosition(1);
+                return false;
+            }
+        }
+        public Action closeClaw() {
+            return new CloseClaw();
+        }
+    }
+
+    public static class BArm { //fix servoo numbers
+
+        private Servo shoulderLeft;
+        private Servo shoulderRight;
+
+        public BArm(HardwareMap hardwareMap) {
+
+            shoulderLeft = hardwareMap.get(Servo.class, "BshoulderLeft");
+            shoulderRight = hardwareMap.get(Servo.class, "BshoulderRight");
+        }
+
+        public class ArmRest implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                shoulderLeft.setPosition(0);
+                shoulderRight.setPosition(1);
+
+                return false;
+            }
+        }
+
+        public Action rest() {return  new ArmRest();}
+
+        public class ArmDown implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+
+                return false;
+            }
+        }
+
+        public Action down() {return new ArmDown();}
+
+        public class ArmSample implements Action {
+            @Override
+            public  boolean run(@NonNull TelemetryPacket packet) {
+
+                shoulderLeft.setPosition(.89);
+                shoulderRight.setPosition(0);
+                return false;
+            }
+        }
+
+        public Action sample() {return new ArmSample();}
+
+        public class ArmSpecimenHang implements Action {
+            @Override
+            public  boolean run(@NonNull TelemetryPacket packet) {
+                shoulderLeft.setPosition(.7767);
+                shoulderRight.setPosition(.2217);
+
+                return false;
+            }
+        }
+
+        public Action specimenHang() {return new ArmSpecimenHang();}
+
+        public class ArmSpecimenGrab implements Action {
+            @Override
+            public  boolean run(@NonNull TelemetryPacket packet) {
+                shoulderLeft.setPosition(0);
+                shoulderRight.setPosition(1);
+
+                return false;
+            }
+        }
+
+        public Action specimenGrab() {return new ArmSpecimenGrab();}
+
+
+    }
+
+    class FPivot{
+        private Servo FPivotServo;
+        FPivot(HardwareMap hardwareMap){
+            FPivotServo = hardwareMap.get(Servo.class, "FPivotServo");000000000
+        }
+
+
+        class Pos1 implements Action{
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+               FPivotServo.setPosition(0);
+                return false;
+            }
+
+            public Action pos1(){ return new Pos1();}
+        }
+
+        class Pos2 implements Action{
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                FPivotServo.setPosition(1);
+                return false;
+            }
+
+            public Action pos2(){ return new Pos2();}
+        }
+    }
+
+    class BPivot{
+        private Servo BPivotServo;
+        BPivot(HardwareMap hardwareMap){
+            BPivotServo = hardwareMap.get(Servo.class, "BPivotServo");
+        }
+
+
+        class Pos1 implements Action{
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                BPivotServo.setPosition(0);
+                return false;
+            }
+
+            public Action pos1(){ return new Pos1();}
+        }
+
+        class Pos2 implements Action{
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                BPivotServo.setPosition(1);
+                return false;
+            }
+
+            public Action pos2(){ return new Pos2();}
+        }
+    }
 
     @Override
     public void runOpMode() {
@@ -530,13 +636,12 @@ public class HelloAuto extends LinearOpMode {
 
             Extend extend = new Extend(hardwareMap);
             Wrist wrist = new Wrist(hardwareMap);
-            Spintake spintake = new Spintake(hardwareMap);
             Slides Slides = new Slides();
             Thread slideThread = new Thread(new SlidesControl(hardwareMap));
             slideThread.start();
 
             Arm arm = new Arm(hardwareMap);
-            Claw claw = new Claw(hardwareMap);
+            BClaw claw = new BClaw(hardwareMap);
 
 
 
@@ -610,8 +715,7 @@ public class HelloAuto extends LinearOpMode {
                         claw.openClaw(),
                         arm.rest(),
                         extend.extend(),
-                        wrist.wristUp(),
-                        spintake.stop()//                        slides.lowPos()
+                        wrist.wristUp()
                 )
         );
 
