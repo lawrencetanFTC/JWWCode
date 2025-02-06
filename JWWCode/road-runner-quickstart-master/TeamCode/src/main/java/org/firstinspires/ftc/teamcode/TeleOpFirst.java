@@ -78,16 +78,10 @@ public class TeleOpFirst extends OpMode {
         shoulderRight.setPosition(1);
         elbowLeft.setPosition(9939);
         elbowRight.setPosition(.2667);
-
-        extendLeft.setPosition(1);
-        extendRight.setPosition(0);
-
-        elbowLeft.setPosition(.9822);
-        elbowRight.setPosition(.26);
-
-        wristLeft.setPosition(0);
-        wristRight.setPosition(1);
-
+        retract();
+        elbowLeft.setPosition(.9267);
+        elbowRight.setPosition(.315);
+        wristUp();
         clawServo.setPosition(.6794);
     }
 
@@ -98,9 +92,14 @@ public class TeleOpFirst extends OpMode {
         controlSlides();
         fineTuningControls();
 
-        if (leftSlideMotor.getCurrentPosition() > 15) {
-            retract();
-        }
+//        if (leftSlideMotor.getCurrentPosition() > 15) {
+//            retract();
+//        }
+        if (gamepad1.x) specimenHangSlides();
+
+//        if ()
+
+        if (gamepad1.dpad_up) retract();
 
         if (gamepad1.right_bumper) { // intake
             spinTakeRight.setPower(1);
@@ -132,10 +131,15 @@ public class TeleOpFirst extends OpMode {
                 clawServo.setPosition(.6794); // open claw
                 wristUp();
                 elbowUp();
+                armStartPosition();
                 retract();
                 Thread.sleep(1000);
                 elbowDown();
-                Thread.sleep(500);
+                spinTakeRight.setPower(1);
+                spinTakeLeft.setPower(-1);
+                Thread.sleep(1000);
+                spinTakeRight.setPower(0);
+                spinTakeLeft.setPower(0);
                 clawServo.setPosition(1); // close claw
                 Thread.sleep(500);
                 extend();
@@ -144,11 +148,9 @@ public class TeleOpFirst extends OpMode {
             }
         } else if (gamepad2.dpad_right) { // extend extend servos
             extend();
-//            wristDown();
         }
 
 //        if (gamepad1.x) retract();
-        if (gamepad1.x) specimenHangSlides();
         updateAllTelemetry();
     }
 
@@ -199,38 +201,43 @@ public class TeleOpFirst extends OpMode {
     }
 
     private void specimenHangSlides() {
-        leftSlideMotor.setTargetPosition(8473);
-        rightSlideMotor.setTargetPosition(-8528);
-//        leftSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER); // Reset encoders
-        leftSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);       // Set RUN_TO_POSITION mode
-//        rightSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftSlideMotor.setTargetPosition(8000);
+        rightSlideMotor.setTargetPosition(8000);
+
+        leftSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         leftSlideMotor.setPower(0.5);
-        rightSlideMotor.setPower(.5);
+        rightSlideMotor.setPower(0.5);
 
     }
 
     private void elbowUp() {
-        elbowLeft.setPosition(.8867);
-        elbowRight.setPosition(.2211);
+        elbowLeft.setPosition(.9444);
+        elbowRight.setPosition(.2938);
     }
 
     private void elbowDown() {
-        elbowLeft.setPosition(.9756);
-        elbowRight.setPosition(.2844);
+        shoulderLeft.setPosition(.04);
+        shoulderRight.setPosition(.955);
+        elbowLeft.setPosition(.6371);
+        elbowRight.setPosition(.3339);
     }
 
     private void armStartPosition() {
-        shoulderLeft.setPosition(0);
-        shoulderRight.setPosition(1);
-        elbowLeft.setPosition(.9822);
-        elbowRight.setPosition(.26);
+        shoulderLeft.setPosition(.0711);
+        shoulderRight.setPosition(.9256);
+        elbowLeft.setPosition(.9289);
+        elbowRight.setPosition(.0694);
     }
 
     private void armBasketPosition() {
-        elbowLeft.setPosition(.5211);
-        elbowRight.setPosition(.7661);
-        shoulderLeft.setPosition(.89);
+        elbowLeft.setPosition(.4067);
+        elbowRight.setPosition(.8756);
+        shoulderLeft.setPosition(1);
         shoulderRight.setPosition(0);
     }
 
@@ -245,8 +252,11 @@ public class TeleOpFirst extends OpMode {
     }
 
     private void retract() {
+//        extendLeft.setPosition(1);
+//        extendRight.setPosition(0);
         extendLeft.setPosition(1);
         extendRight.setPosition(0);
+
     }
 
     private void extend() {
@@ -255,10 +265,10 @@ public class TeleOpFirst extends OpMode {
     }
 
     private void armPositionSpecimenHang() {
-        shoulderLeft.setPosition(.7767);
-        shoulderRight.setPosition(.2217);
-        elbowLeft.setPosition(.3611);
-        elbowRight.setPosition(.8672);
+        shoulderLeft.setPosition(.8389);
+        shoulderRight.setPosition(0.0339);
+        elbowLeft.setPosition(0);
+        elbowRight.setPosition(1);
     }
 
     private void armSpecimenGrab() {
@@ -269,12 +279,12 @@ public class TeleOpFirst extends OpMode {
     }
 
     private void fineTuningControls() {
-        if (gamepad2.dpad_up) {
-//            changeServoPositionBy(extendLeft, -.0002);
-            changeServoPositionBy(extendRight, .0002);
-        } else if (gamepad2.dpad_down) {
-//            changeServoPositionBy(extendLeft, .0002);
-            changeServoPositionBy(extendRight, -.0002);
+        if (gamepad2.dpad_down) {
+            changeServoPositionBy(wristLeft, .002);
+            changeServoPositionBy(wristRight, -.002);
+        } else if (gamepad2.dpad_up) {
+            changeServoPositionBy(wristLeft, -.002);
+            changeServoPositionBy(wristRight, .002);
         }
         if (gamepad2.y) {
             changeServoPositionBy(elbowLeft, .0025);
