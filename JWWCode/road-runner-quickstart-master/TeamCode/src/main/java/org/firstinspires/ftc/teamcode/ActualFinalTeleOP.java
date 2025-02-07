@@ -35,6 +35,8 @@ public class ActualFinalTeleOP extends OpMode {
     private final int MAX_POSITION = 8100; // Maximum encoder ticks (full extension)
     private final int MIN_POSITION = 0;
 
+    boolean isWristScanning = false;
+
 
     @Override
     public void init() {
@@ -89,75 +91,92 @@ public class ActualFinalTeleOP extends OpMode {
         // GAMEPAD 1
         // top pivot
         if (gamepad1.left_trigger > 0) {
-            changeServoPositionBy(bottomPivot, .001);
+            endPivotBottom();
         } else if (gamepad1.right_trigger > 0) {
-            changeServoPositionBy(bottomPivot, -.001 );
+            startPivotBottom();
         }
         // bottom claw
         if (gamepad1.left_bumper) {
-            changeServoPositionBy(clawServoBottom, .001);
+            closeClawBottom();
         } else if (gamepad1.right_bumper) {
-            changeServoPositionBy(clawServoBottom, -.001);
+            openClawBottom();
+        }
+
+        if (gamepad1.y) {
+            basketShoulder();
+            sampleScoreWristTop();
         }
 
         // GAMEPAD 2
 
         // wrist
-        if (gamepad2.right_trigger > 0) {
-            changeServoPositionBy(wristLeft, .001);
-            changeServoPositionBy(wristRight, -.001);
+        if (gamepad2.right_trigger > 0 && !isWristScanning) {
+            isWristScanning = true;
+            scanWristBottom();
+        } else if (gamepad2.right_trigger > 0 && isWristScanning) {
+            isWristScanning = false;
+            downWristBottom();
         } else if (gamepad2.left_trigger > 0) {
-            changeServoPositionBy(wristLeft, -.001);
-            changeServoPositionBy(wristRight, .001);
+            isWristScanning = false;
+            upWristBottom();
         }
         // top claw
         if (gamepad2.right_bumper) {
-            changeServoPositionBy(clawServoTop, .001);
+            openClawTop();
         } else if(gamepad2.left_bumper) {
-            changeServoPositionBy(clawServoTop, -.001);
+            closeClawTop();
         }
-        // claw wrist
-        if (gamepad2.dpad_up) {
-            changeServoPositionBy(clawWrist, .001);
-        } else if (gamepad2.dpad_down) {
-            changeServoPositionBy(clawWrist, -.001);
-        }
-        // extend
-        if (gamepad2.dpad_right) {
-            changeServoPositionBy(extendServo, -.001);
-        } else if (gamepad2.dpad_left) {
-            changeServoPositionBy(extendServo, .001);
-        }
+
         // shoulder
         if (gamepad2.y) {
-            changeServoPositionBy(shoulderLeft, .001);
-            changeServoPositionBy(shoulderRight, -.001);
+            try {
+                openClawTop();
+                Thread.sleep(100);
+                startShoulder();
+                sampleGrabWristTop();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         } else if (gamepad2.a) {
-            changeServoPositionBy(shoulderLeft, -.001);
-            changeServoPositionBy(shoulderRight, .001);
-        }
-        // top pivot
-        if (gamepad2.left_trigger > 0) {
-            changeServoPositionBy(topPivot, .001);
-        } else if (gamepad2.right_trigger > 0) {
-            changeServoPositionBy(topPivot, -.001 );
+            try {
+                openClawTop();
+                sampleGrabShoulder();
+                sampleGrabWristTop();
+                Thread.sleep(100);
+                closeClawTop();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+
         }
 
+        if (gamepad2.b) {
+            specimenScoreShoulder();
+            specimenScoreWristTop();
+            endPivotTop();
+        } else if (gamepad2.x) {
+            specimenGrabWristTop();
+            specimenGrabShoulder();
+            startPivotTop();
+        }
 
-//        if (gamepad2.dpad_left) { // retract extend
-//            try {
-//                Thread.sleep(200);
-//            } catch (InterruptedException e) {
-//                // Handle the interrupted exception
-//                Thread.currentThread().interrupt(); // Re-interrupt the thread
-//            }
-//        }
+        if (gamepad2.dpad_left) { // retract extend
+            try {
+                middleWristBottom();
+                Thread.sleep(200);
+                tightCloseClawBottom();
+                Thread.sleep(100);
+                upWristBottom();
+                retract();
+            } catch (InterruptedException e) {
+                // Handle the interrupted exception
+                Thread.currentThread().interrupt(); // Re-interrupt the thread
+            }
+        } else if (gamepad2.dpad_right) {
+            extend();
+        }
 
         updateAllTelemetry();
-    }
-
-    private void changeServoPositionBy(Servo servo, double delta) {
-        servo.setPosition(servo.getPosition() + delta);
     }
 
     private void updateAllTelemetry() {
@@ -181,13 +200,6 @@ public class ActualFinalTeleOP extends OpMode {
         double x = gamepad1.left_stick_x * 1.1;  // Strafe
         double rx = gamepad1.right_stick_x * .6;  // Rotation
 
-        // Calculate motor powers
-//        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-//        double frontLeftPower = (y + x + rx) / denominator;
-//        double backLeftPower = (y - x + rx) / denominator;
-//        double frontRightPower = (y - x - rx) / denominator;
-//        double backRightPower = (y + x - rx) / denominator;
-        // different drive train
         double frontLeftPower = (y + x + rx) * .9;
         double frontRightPower = (y - x - rx) * .9;
         double backLeftPower = (y - x + rx) * .9;
@@ -200,80 +212,109 @@ public class ActualFinalTeleOP extends OpMode {
     }
 
     private void controlSlides() {
-        // SLIDES movement code
-//         if (gamepad2.left_stick_y < 0 && leftSlideMotor.getCurrentPosition() < 8100 && rightSlideMotor.getCurrentPosition() > -8100) {
-//             rightSlideMotor.setPower(-gamepad2.left_stick_y * -.8);
-//             leftSlideMotor.setPower(-gamepad2.left_stick_y * .8);
-//         } else if (gamepad2.left_stick_y > 0 && leftSlideMotor.getCurrentPosition() > 0 && rightSlideMotor.getCurrentPosition() < 0) {
-//             rightSlideMotor.setPower(-gamepad2.left_stick_y * -.8);
-//             leftSlideMotor.setPower(-gamepad2.left_stick_y * .8);
-//         } else {
-//             rightSlideMotor.setPower(0);
-//             leftSlideMotor.setPower(0);
-//         }
-        // Debugging COMMENT LATER ON
         rightSlideMotor.setPower(-gamepad2.left_stick_y * -1);
         leftSlideMotor.setPower(-gamepad2.left_stick_y * 1);
     }
 
     public void openClawTop() {
-
+        clawServoTop.setPosition(.0);
     }
 
     public void closeClawTop() {
-
+        clawServoTop.setPosition(.0);
     }
 
     public void startPivotTop () {
-
+        topPivot.setPosition(.7378);
     }
 
     public void endPivotTop() {
-
+        topPivot.setPosition(.0361);
     }
 
-    public void startShould() {
+    public void sampleGrabWristTop() {
+        clawWrist.setPosition(.0);
+    }
 
+    public void specimenGrabWristTop() {
+        clawWrist.setPosition(.0);
+    }
+
+    public void sampleScoreWristTop() {
+        clawWrist.setPosition(.0);
+    }
+
+    public void specimenScoreWristTop () {
+        clawWrist.setPosition(.0);
+    }
+
+    public void startShoulder() {
+        shoulderLeft.setPosition(.0);
+        shoulderRight.setPosition(.0);
+    }
+
+    public void sampleGrabShoulder() {
+        shoulderLeft.setPosition(.0);
+        shoulderRight.setPosition(.0);
     }
 
     public void basketShoulder() {
-
+        shoulderLeft.setPosition(.0);
+        shoulderRight.setPosition(.0);
     }
 
     public void specimenGrabShoulder() {
-
+        shoulderLeft.setPosition(.0);
+        shoulderRight.setPosition(.0);
     }
 
     public void specimenScoreShoulder() {
-
+        shoulderLeft.setPosition(.0);
+        shoulderRight.setPosition(.0);
     }
 
     public void extend() {
-
+        extendServo.setPosition(.0);
     }
 
     public void retract() {
-
+        extendServo.setPosition(.0);
     }
 
     public void downWristBottom() {
+        wristRight.setPosition(.9117);
+    }
 
+    public void middleWristBottom() {
+        wristRight.setPosition(.0);
+    }
+
+    public void scanWristBottom() {
+        wristRight.setPosition(.8739);
     }
 
     public void upWristBottom() {
-
+        wristRight.setPosition(.0);
     }
 
     public void openClawBottom() {
-
+        clawServoBottom.setPosition(.2978);
     }
 
     public void closeClawBottom() {
+        clawServoBottom.setPosition(.7128);
+    }
 
+    public void tightCloseClawBottom() {
+        clawServoBottom.setPosition(.0);
     }
 
     public void startPivotBottom () {
+        bottomPivot.setPosition(.0367);
+    }
 
+    public void endPivotBottom () {
+        bottomPivot.setPosition(.4033);
     }
 
 }

@@ -87,7 +87,8 @@ public class TeleOpppp extends OpMode {
         controlSlides();
 
         // GAMEPAD 1
-        // top pivot
+
+        // bottom pivot
         if (gamepad1.left_trigger > 0) {
             changeServoPositionBy(bottomPivot, .0002);
         } else if (gamepad1.right_trigger > 0) {
@@ -137,11 +138,12 @@ public class TeleOpppp extends OpMode {
             changeServoPositionBy(shoulderRight, .0002);
         }
         // top pivot
-        if (gamepad2.left_trigger > 0) {
+        if (gamepad2.x) {
             changeServoPositionBy(topPivot, .0002);
-        } else if (gamepad2.right_trigger > 0) {
+        } else if (gamepad2.b) {
             changeServoPositionBy(topPivot, -.0002);
         }
+
 
 
 //        if (gamepad2.dpad_left) { // retract extend
