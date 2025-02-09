@@ -57,15 +57,13 @@ public class LastAutoDeck extends LinearOpMode {
                 // .build();
 
 
-        public class AutonSequence {
-            public Action MoveToChamber{
-                    drive.actionBuilder(initialPose)
+
+          Action MoveToChamber = drive.actionBuilder(initialPose)
                     .strafeToConstantHeading(new Vector2d(0,-47))
                     .build();
-            }
+
             
-            public Action PushSamples {
-                    drive.actionBuilder(new Pose2d(0, -47, Math.toRadians(90))
+          Action PushSamples = drive.actionBuilder(new Pose2d(0, -47, Math.toRadians(90)))
                     .strafeToConstantHeading(new Vector2d(10, -47))
                     // .splineToConstantHeading(new Vector2d(36.50, -24.00), Math.toRadians(90.00))
                     .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(90.00))
@@ -73,33 +71,26 @@ public class LastAutoDeck extends LinearOpMode {
                     .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(90.00))
                     .strafeToConstantHeading(new Vector2d(58, -49))// Move
                     .build();
-            }
     
-            public Action ClawFirstSpec {
-                    drive.actionBuilder(new Pose2d(58, -49, Math.toRadians(90)))
+            Action ClawFirstSpec = drive.actionBuilder(new Pose2d(58, -49, Math.toRadians(90)))
                     .turn(Math.toRadians(-180))
                     .build();
-            }
+
     
     
-            public Action HangSpec { 
-                    drive.actionBuilder(new Pose2d(58, -49, Math.toRadians(-90)))
+            Action HangSpec = drive.actionBuilder(new Pose2d(58, -49, Math.toRadians(-90)))
                     .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90)) // Increment move
                     .build();
-            }
     
-            public Action ClawSpec {
-                    drive.actionBuilder(new Pose2d(0, -47, Math.toRadians(90)))
+            Action ClawSpec = drive.actionBuilder(new Pose2d(0, -47, Math.toRadians(90)))
                     .strafeToLinearHeading(new Vector2d(58, -49), Math.toRadians(-90)) // Increment move
                     .build();
-            }
     
-            public Action SafeStrafe {
-                    drive.actionBuilder(new Pose2d(0, - 47, Math.toRadians(90)))
+            Action SafeStrafe = drive.actionBuilder(new Pose2d(0, - 47, Math.toRadians(90)))
                     .strafeToConstantHeading(new Vector2d(-5, -47))
                     .build();
-            }
-        }
+
+
 
         // Action GrabSpecFirstTime = drive.actionBuilder(new Pose2d((24 + (3*increment)), (-47 + (3*increment)), Math.toRadians(-30)))
         //         .strafeToLinearHeading(new Vector2d(55,-55), Math.toRadians(-90))
@@ -118,17 +109,17 @@ public class LastAutoDeck extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                     new SequentialAction(
-                        AutonSequence.MoveToChamber
+                        MoveToChamber
                         // ArmPosition
                         // WristPosition
-                    )
-                    AutonSequence.PushSamples
+                    ),
+                    PushSamples,
                     new SequentialAction(
-                        AutonSequence.ClawFirstSpec
+                        ClawFirstSpec
                         //WristPosition
-                    )
+                    ),
                     new SequentialAction(
-                        AutonSequence.HangSpec
+                        HangSpec
                         // ArmPosition
                         // WristPostion
                     )
@@ -151,14 +142,14 @@ public class LastAutoDeck extends LinearOpMode {
             Actions.runBlocking(
                 new SequentialAction(
                         new SequentialAction(
-                            AutonSequence.ClawSpec
+                            ClawSpec
                             // WristPosition
-                        )
+                        ),
                         new SequentialAction(
-                            AutonSequence.HangSpec
+                            HangSpec,
                             // ArmPosition
-                            AutonSequence.SafeStrafe
-                            // WristPostion
+                            SafeStrafe
+                            // WristPosition
                         )
                 )
             );
