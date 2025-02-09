@@ -1,6 +1,5 @@
 // All code is written by me except when mentioned otherwise.
 //Copied that same way it is written in the rr.brott.dev website.
-// According to Priyam, js take the trajectories and put them into different methods such as traj 1, traj 2, etc. depending on which trajectories you want to order in a sequence, which you can put in state
 // Then you can take these methods and use followTrajectoryAsync(traj1), this will allow for simultaneous robot movements along with drivetrain.
 
 package org.firstinspires.ftc.teamcode;
@@ -40,82 +39,117 @@ public class LastAutoDeck extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
         // init all the non drive train stuff here
-        int increment = 5;
+        // int increment = 5;
 
         Action deckFull = drive.actionBuilder(initialPose)
+                // .strafeToConstantHeading(new Vector2d(0, -47)) // Hang Specimen
+                // .strafeToLinearHeading(new Vector2d(24, -47), Math.toRadians(60)) // Move
+                // .turn(Math.toRadians(-90))
+                // .strafeToLinearHeading(new Vector2d((24 + (2*increment)), (-47 + (2*increment))), Math.toRadians(60)) // Increment move
+                // .turn(Math.toRadians(-90))
+                // .strafeToLinearHeading(new Vector2d((24 + (3*increment)), (-47 + (3*increment))), Math.toRadians(60)) // Increment move
+                // .turn(Math.toRadians(-90))
+                // .strafeToLinearHeading(new Vector2d(55,-55), Math.toRadians(-90))
+                // .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
+                // .strafeToLinearHeading(new Vector2d(55,-55), Math.toRadians(-90))
+                // .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
+                // .strafeToLinearHeading(new Vector2d(55,-55), Math.toRadians(-90))
+                // .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
+                // .build();
+
                 .strafeToConstantHeading(new Vector2d(0, -47)) // Hang Specimen
-                .strafeToLinearHeading(new Vector2d(24, -47), Math.toRadians(60)) // Move
-                .turn(Math.toRadians(-90))
-                .strafeToLinearHeading(new Vector2d((24 + (2*increment)), (-47 + (2*increment))), Math.toRadians(60)) // Increment move
-                .turn(Math.toRadians(-90))
-                .strafeToLinearHeading(new Vector2d((24 + (3*increment)), (-47 + (3*increment))), Math.toRadians(60)) // Increment move
-                .turn(Math.toRadians(-90))
-                .strafeToLinearHeading(new Vector2d(55,-55), Math.toRadians(-90))
+                .strafeToConstantHeading(new Vector2d(10, -47))
+                // .splineToConstantHeading(new Vector2d(36.50, -24.00), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(90.00))
+                .strafeToConstantHeading(new Vector2d(48, -52.5))
+                .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(90.00))
+                .strafeToConstantHeading(new Vector2d(58, -49))
+                .turn(-180)
                 .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
-                .strafeToLinearHeading(new Vector2d(55,-55), Math.toRadians(-90))
+                .strafeToLinearHeading(new Vector2d(58, -49), Math.toRadians(-90))
                 .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
-                .strafeToLinearHeading(new Vector2d(55,-55), Math.toRadians(-90))
+                .strafeToLinearHeading(new Vector2d(58, -49), Math.toRadians(-90))
                 .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
                 .build();
-
 
 
         Action MoveToChamber = drive.actionBuilder(initialPose)
                 .strafeToConstantHeading(new Vector2d(0,-47))
                 .build();
-        Action MoveToSample = drive.actionBuilder(new Pose2d(0,-37, -Math.PI/2))
-                .strafeToLinearHeading(new Vector2d(24, -47), Math.toRadians(60)) // Move
+        
+        Action PushSamples = drive.actionBuilder(new Pose2d(0, -47, Math.toRadians(90))
+                .strafeToConstantHeading(new Vector2d(10, -47))
+                // .splineToConstantHeading(new Vector2d(36.50, -24.00), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(90.00))
+                .strafeToConstantHeading(new Vector2d(48, -52.5))
+                .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(90.00))
+                .strafeToConstantHeading(new Vector2d(58, -49))// Move
                 .build();
 
 
-        Action sweep = drive.actionBuilder(new Pose2d(24,-24, Math.toRadians(-45)))
-                .turn(Math.toRadians(-90))
+        Action ClawFirstSpec = drive.actionBuilder(new Pose2d(58, -49, Math.toRadians(90)))
+                .turn(Math.toRadians(-180))
                 .build();
 
 
-        Action MoveToNext = drive.actionBuilder(new Pose2d(24,-47, Math.toRadians(45)))
-                .strafeToLinearHeading(new Vector2d((24 + (2*increment)), (-47 + (2*increment))), Math.toRadians(60)) // Increment move
+        Action HangSpec = drive.actionBuilder(new Pose2d(58, -49, Math.toRadians(-90)))
+                .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90)) // Increment move
                 .build();
 
-        Action MoveToThird = drive.actionBuilder(new Pose2d((24 + (2*increment)), (-47 + (2*increment)), Math.toRadians(60)))
-                .strafeToLinearHeading(new Vector2d((24 + (3*increment)), (-47 + (3*increment))), Math.toRadians(60)) // Increment move
+        Action ClawSpec = drive.actionBuilder(new Pose2d(0, -47, Math.toRadians(90)))
+                .strafeToLinearHeading(new Vector2d(58, -49), Math.toRadians(-90)) // Increment move
                 .build();
 
-
-        Action GrabSpecFirstTime = drive.actionBuilder(new Pose2d((24 + (3*increment)), (-47 + (3*increment)), Math.toRadians(-30)))
-                .strafeToLinearHeading(new Vector2d(55,-55), Math.toRadians(-90))
-                .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
-                .build();
-        Action GrabSpec = drive.actionBuilder(new Pose2d(0,-47, Math.toRadians(90)))
-                .strafeToLinearHeading(new Vector2d(55,-55), Math.toRadians(-90))
+        Action SafeStrafe = drive.actionBuilder(new Pose2d(0, - 47, Math.toRadians(90)))
+                .strafeToConstantHeading(new Vector2d(-5, -47))
                 .build();
 
-        Action Score = drive.actionBuilder(new Pose2d(55,-55,Math.toRadians(-90)))
-                .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
-                .build();
-
-
-
-
-
-
-        Actions.runBlocking(
-                new SequentialAction(
-                        //stuff that needs to happen on init
-                )
-        );
-
+        // Action GrabSpecFirstTime = drive.actionBuilder(new Pose2d((24 + (3*increment)), (-47 + (3*increment)), Math.toRadians(-30)))
+        //         .strafeToLinearHeading(new Vector2d(55,-55), Math.toRadians(-90))
+        //         .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
+        //         .build();
+        // Action GrabSpec = drive.actionBuilder(new Pose2d(0,-47, Math.toRadians(90)))
+        //         .strafeToLinearHeading(new Vector2d(55,-55), Math.toRadians(-90))
+        //         .build();
+        // Action Score = drive.actionBuilder(new Pose2d(55,-55,Math.toRadians(-90)))
+        //         .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
+        //         .build();
 
         if (isStopRequested()) return;
         waitForStart();
 
         Actions.runBlocking(
                 new SequentialAction(
-                       // auton goes here
-                        deckFull
+                    new SequentialAction(
+                        MoveToChamber
+                        ArmPosition
+                        WristPosition
+                        
+                    )
+                    PushSamples
+                    new SequentialAction(
+                        ClawFirstSpec
+                        WristPosition
+                    )
+                    new SequentialAction(
+                        HangSpec
+                        ArmPosition
+                        WristPostion
+                    )
+                    for(int i = 0; i < 2; i++) {
+                    new SequentialAction(
+                        new SequentialAction(
+                            ClawSpec
+                            WristPosition
+                        )
+                        new SequentialAction(
+                            HangSpec
+                            ArmPosition
+                            SafeStrafe
+                            WristPostion
+                        )
+                    }
                 )
-        );
-
-        //shreynashe dumb or smth idk
+        ); // Reverse all positions after each Action :)
     }
 }
