@@ -18,25 +18,26 @@ public class MeepMeepTesting {
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(65, 65, Math.toRadians(180), Math.toRadians(180), 15)
-                .setDimensions(17.5, 17)
+                .setConstraints(70, 70, Math.toRadians(180), Math.toRadians(180), 15)
+                .setDimensions(15, 16.125)
                 .build();
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(13.5, -62.5, Math.toRadians(90)))
-                .strafeToConstantHeading(new Vector2d(0, -47)) // Hang Specimen
-                .strafeToLinearHeading(new Vector2d(24, -47), Math.toRadians(60)) // Move
-                .turn(Math.toRadians(-90))
-                .strafeToLinearHeading(new Vector2d((24 + (2*increment)), (-47 + (2*increment))), Math.toRadians(60)) // Increment move
-                .turn(Math.toRadians(-90))
-                .strafeToLinearHeading(new Vector2d((24 + (3*increment)), (-47 + (3*increment))), Math.toRadians(60)) // Increment move
-                .turn(Math.toRadians(-90))
-                .strafeToLinearHeading(new Vector2d(55,-55), Math.toRadians(-90))
-                .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
-                .strafeToLinearHeading(new Vector2d(55,-55), Math.toRadians(-90))
-                .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
-                .strafeToLinearHeading(new Vector2d(55,-55), Math.toRadians(-90))
-                .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
-                .build());
+                 .strafeToConstantHeading(new Vector2d(0, -47)) // Hang Specimen
+                 .strafeToConstantHeading(new Vector2d(10, -47))
+                 // .splineToConstantHeading(new Vector2d(36.50, -24.00), Math.toRadians(90.00))
+                 .splineToConstantHeading(new Vector2d(40, 0.00), Math.toRadians(90.00))
+                 .strafeToConstantHeading(new Vector2d(48, 0))
+                 .strafeToConstantHeading(new Vector2d(48, -52.5))
+                 .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(0.00))
+                 .strafeToConstantHeading(new Vector2d(58, -49))
+                 .turn(Math.toRadians(-180))
+                 .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
+                 .strafeToLinearHeading(new Vector2d(58, -49), Math.toRadians(-90))
+                 .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
+                 .strafeToLinearHeading(new Vector2d(58, -49), Math.toRadians(-90))
+                 .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
+                 .build());
 
 //                .strafeToConstantHeading(new Vector2d(0, -35)) // Move to chamber
 //                .splineToLinearHeading(new Pose2d(24, -24, Math.toRadians(90)), Math.toRadians(0)) // Move to first sample

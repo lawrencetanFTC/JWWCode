@@ -66,9 +66,10 @@ public class LastAutoDeck extends LinearOpMode {
           Action PushSamples = drive.actionBuilder(new Pose2d(0, -47, Math.toRadians(90)))
                     .strafeToConstantHeading(new Vector2d(10, -47))
                     // .splineToConstantHeading(new Vector2d(36.50, -24.00), Math.toRadians(90.00))
-                    .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(90.00))
+                    .splineToConstantHeading(new Vector2d(40.00, 0.00), Math.toRadians(90.00))
+                    .strafeToConstantHeading(new Vector2d(48, 0))
                     .strafeToConstantHeading(new Vector2d(48, -52.5))
-                    .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(90.00))
+                    .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(0.00))
                     .strafeToConstantHeading(new Vector2d(58, -49))// Move
                     .build();
     
