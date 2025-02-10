@@ -77,8 +77,6 @@ public class LastAutoDeck extends LinearOpMode {
                     .turn(Math.toRadians(-180))
                     .build();
 
-    
-    
             Action HangSpec = drive.actionBuilder(new Pose2d(58, -49, Math.toRadians(-90)))
                     .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90)) // Increment move
                     .build();
