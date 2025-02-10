@@ -55,26 +55,24 @@ public final class MecanumDrive {
     public static class Params {
         // IMU orientation
         public RevHubOrientationOnRobot.LogoFacingDirection logoFacingDirection =
-                RevHubOrientationOnRobot.LogoFacingDirection.FORWARD;
+                RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
         public RevHubOrientationOnRobot.UsbFacingDirection usbFacingDirection =
                 RevHubOrientationOnRobot.UsbFacingDirection.UP;
 
         // drive model parameters
-        public double inPerTick = 0.0029236892536;
-        public double lateralInPerTick = 0.0019921903854695625;
-        public double trackWidthTicks = 5045.597462235031;
+        public double inPerTick = 0.00293593636;
+        public double lateralInPerTick = 0.001986484680478152;
+        public double trackWidthTicks = 4317.731462028812;
 
         // feedforward parameters (in tick units)
-        public double kS = 0.9602609678748535;
-        //                 1.0056907290343262
-        public double kV = 0.0005895066546565508;
-        //                 0.000592719263734198
+        public double kS = 1.1009899712237674;
+        public double kV = 0.0005899486703921847;
         public double kA = 0.0001;
 
         // path profile parameters (in inches)
-        public double maxWheelVel = 10;
-        public double minProfileAccel = -10;
-        public double maxProfileAccel = 10;
+        public double maxWheelVel = 50;
+        public double minProfileAccel = -50;
+        public double maxProfileAccel = 50;
 
         // turn profile parameters (in radians)
         public double maxAngVel = Math.PI; // shared with path
@@ -231,6 +229,7 @@ public final class MecanumDrive {
 
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         lazyImu = new LazyImu(hardwareMap, "imu", new RevHubOrientationOnRobot(
