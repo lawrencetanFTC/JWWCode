@@ -19,7 +19,7 @@ public class SamplePathBasket extends LinearOpMode {
 
     public void runOpMode() {
 
-        Pose2d initialPose = new Pose2d(13.5, 62.5, Math.toRadians(-90));
+        Pose2d initialPose = new Pose2d(23.5, 62.5, Math.toRadians(-90));
 
         Extend extend = new Extend(hardwareMap);
         Wrist wrist = new Wrist(hardwareMap);
@@ -37,7 +37,8 @@ public class SamplePathBasket extends LinearOpMode {
                 .build();
 
         Action PushSamples = drive.actionBuilder(new Pose2d(0, 37, Math.toRadians(-90)))
-                .strafeToConstantHeading(new Vector2d(5, 37))
+                .strafeToConstantHeading(new Vector2d(0, 40))
+                .strafeToConstantHeading(new Vector2d(5, 40))
                 .splineToConstantHeading(new Vector2d(36.50, 24.00), Math.toRadians(-90.00))
                 .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(0.00))
                 .strafeToConstantHeading(new Vector2d(48, 52.5))
@@ -46,27 +47,42 @@ public class SamplePathBasket extends LinearOpMode {
                 .build();
 
         Action BucketCase = drive.actionBuilder(initialPose)
-                .splineTo(new Vector2d(53.00, 53.00), Math.toRadians(45))
-                .strafeToLinearHeading(new Vector2d(35, 35), Math.toRadians(90))
-                .splineToLinearHeading(new Pose2d(48.00, -0.00, Math.toRadians(-90.00)), Math.toRadians(0.00))
-                .strafeToConstantHeading(new Vector2d(48, 52.5))
-                .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(0.00))
-                .strafeToConstantHeading(new Vector2d(58, 49))
+                .strafeToConstantHeading(new Vector2d(0, 37))
+                .strafeToConstantHeading(new Vector2d(5, 37))
+                .splineToLinearHeading(new Pose2d(36.50, 24.00, Math.toRadians(90.00)), Math.toRadians(-90)) //
+                .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(0.00))
+                .strafeToLinearHeading(new Vector2d(42, 52.5), Math.toRadians(-135))
+                .strafeToConstantHeading(new Vector2d(48, 52.5)) //
+                .strafeToConstantHeading(new Vector2d(46.5, 52.5))
+                .splineToLinearHeading(new Pose2d(58, 0, Math.toRadians(90.00)), Math.toRadians(0.00))
+                .strafeToLinearHeading(new Vector2d(48, 52.5), Math.toRadians(-135))
                 .build();
 
-//        boolean AreWeDoingSpecimen = true;
-        boolean AreWeTestingPaths = true;
+        boolean AreWeDoingBucket = true;
+//        boolean AreWeTestingPaths = true;
 
         waitForStart();
 
         if (isStopRequested()) return;
 
 
-        if (AreWeTestingPaths) {
+        if (AreWeDoingBucket) {
             Actions.runBlocking(
                     new SequentialAction(
                             MoveToSubmersible,
+                            //Paralell Action
+                            // Arm
+                            // wrist
+
+
                             PushSamples
+
+                            // Between each sample
+
+                            // arm
+                            //wrist
+                            //slide
+                            // reverse them.
                     )
 
             );

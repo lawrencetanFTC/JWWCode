@@ -4,6 +4,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
 import android.transition.Slide;
 
 import androidx.annotation.NonNull;
@@ -59,7 +61,7 @@ public class LastAutoDeck extends LinearOpMode {
 
 
           Action MoveToChamber = drive.actionBuilder(initialPose)
-                    .strafeToConstantHeading(new Vector2d(0,-47))
+                    .strafeToLinearHeading(new Vector2d(0,-47), Math.toRadians(-90))
                     .build();
 
             
@@ -67,7 +69,7 @@ public class LastAutoDeck extends LinearOpMode {
                     .strafeToConstantHeading(new Vector2d(10, -47))
                     // .splineToConstantHeading(new Vector2d(36.50, -24.00), Math.toRadians(90.00))
                     .splineToConstantHeading(new Vector2d(40.00, 0.00), Math.toRadians(90.00))
-                    .strafeToConstantHeading(new Vector2d(48, 0))
+                    .strafeToLinearHeading(new Vector2d(48, 0), Math.toRadians(-90))
                     .strafeToConstantHeading(new Vector2d(48, -52.5))
                     .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(0.00))
                     .strafeToConstantHeading(new Vector2d(58, -49))// Move
@@ -78,11 +80,11 @@ public class LastAutoDeck extends LinearOpMode {
                     .build();
 
             Action HangSpec = drive.actionBuilder(new Pose2d(58, -49, Math.toRadians(-90)))
-                    .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90)) // Increment move
+                    .strafeToConstantHeading(new Vector2d(0, -47)) // Increment move
                     .build();
     
             Action ClawSpec = drive.actionBuilder(new Pose2d(0, -47, Math.toRadians(90)))
-                    .strafeToLinearHeading(new Vector2d(58, -49), Math.toRadians(-90)) // Increment move
+                    .strafeToConstantHeading(new Vector2d(58, -49)) // Increment move
                     .build();
     
             Action SafeStrafe = drive.actionBuilder(new Pose2d(0, - 47, Math.toRadians(90)))
