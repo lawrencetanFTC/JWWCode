@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
+
+
 import org.firstinspires.ftc.teamcode.HelloAuto.*;
 
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -75,6 +78,8 @@ public class SamplePathBasket extends LinearOpMode {
         Arm arm = new Arm(hardwareMap);
         BClaw claw = new BClaw(hardwareMap);
 
+
+
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
         Action MoveToSubmersible = drive.actionBuilder(initialPose)
@@ -84,23 +89,21 @@ public class SamplePathBasket extends LinearOpMode {
         Action FirstPositionBucket = drive.actionBuilder(new Pose2d(0, 40, Math.toRadians(-90)))
                 .strafeToConstantHeading(new Vector2d(5, 40))
                 .splineToLinearHeading(new Pose2d(36.50, 24.00, Math.toRadians(90.00)), Math.toRadians(-90)) //
-                .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(0.00))
-                .build();
+                .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(0.00)).build();
 
         Action FirstOrientBucket = drive.actionBuilder(new Pose2d(48, 0, Math.toRadians(90)))
                 .strafeToLinearHeading(new Vector2d(42, 52.5), Math.toRadians(-135))
                 .strafeToConstantHeading(new Vector2d(48, 52.5)) //
                 .build();
-            
+
         Action SecondPositionBucket = drive.actionBuilder(new Pose2d(48, 52.5, Math.toRadians(-135)))
                 .strafeToConstantHeading(new Vector2d(46.5, 52.5))
                 .splineToLinearHeading(new Pose2d(58, 0, Math.toRadians(90.00)), Math.toRadians(0.00))
                 .build();
 
         Action SecondOrientBucket = drive.actionBuilder(new Pose2d(58, 0, Math.toRadians(90)))
-                .strafeToLinearHeading(new Vector2d(48, 52.5), Math.toRadians(-135))
-                .build();
-            
+                .strafeToLinearHeading(new Vector2d(48, 52.5), Math.toRadians(-135)).build();
+
         Action PushSamples = drive.actionBuilder(initialPose)
                 .strafeToConstantHeading(new Vector2d(0, 40))
                 .strafeToConstantHeading(new Vector2d(5, 40))
@@ -160,10 +163,7 @@ public class SamplePathBasket extends LinearOpMode {
             Actions.runBlocking(
                     new SequentialAction(
                             MoveToSubmersible,
-                            openClawTop,
-                            new ParallelAction(
-
-                            ),
+                            // new ParalellAction(
 
                             PushSamples
 
