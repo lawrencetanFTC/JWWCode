@@ -82,16 +82,6 @@ public class TeleOpFirst extends OpMode {
         shoulderRight.setPosition(1);
         elbowLeft.setPosition(9939);
         elbowRight.setPosition(.2667);
-
-        extendLeft.setPosition(1);
-        extendRight.setPosition(0);
-
-        elbowLeft.setPosition(.9822);
-        elbowRight.setPosition(.26);
-
-        wristLeft.setPosition(0);
-        wristRight.setPosition(1);
-
         retract();
         elbowLeft.setPosition(.9267);
         elbowRight.setPosition(.315);
