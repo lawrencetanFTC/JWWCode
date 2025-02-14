@@ -41,20 +41,16 @@ public class SamplePathBasket extends LinearOpMode {
                 .splineToLinearHeading(new Pose2d(36.50, 24.00, Math.toRadians(90.00)), Math.toRadians(-90)) //
                 .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(0.00))
 
-        Action FirstOrientBucket = drive.actionBuilder(new Pose2d(0, 40, Math.toRadians(-90)))
-                .strafeToConstantHeading(new Vector2d(5, 40))
-                .splineToLinearHeading(new Pose2d(36.50, 24.00, Math.toRadians(90.00)), Math.toRadians(-90)) //
-                .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(0.00))
+        Action FirstOrientBucket = drive.actionBuilder(new Pose2d(48, 0, Math.toRadians(90)))
+                .strafeToLinearHeading(new Vector2d(42, 52.5), Math.toRadians(-135))
+                .strafeToConstantHeading(new Vector2d(48, 52.5)) //
             
-        Action SecondPositionBucket = drive.actionBuilder(new Pose2d(0, 40, Math.toRadians(-90)))
-                .strafeToConstantHeading(new Vector2d(5, 40))
-                .splineToLinearHeading(new Pose2d(36.50, 24.00, Math.toRadians(90.00)), Math.toRadians(-90)) //
-                .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(0.00))
+        Action SecondPositionBucket = drive.actionBuilder(new Pose2d(48, 52.5, Math.toRadians(-135)))
+                .strafeToConstantHeading(new Vector2d(46.5, 52.5))
+                .splineToLinearHeading(new Pose2d(58, 0, Math.toRadians(90.00)), Math.toRadians(0.00))
 
-        Action SecondOrientBucket = drive.actionBuilder(new Pose2d(0, 40, Math.toRadians(-90)))
-                .strafeToConstantHeading(new Vector2d(5, 40))
-                .splineToLinearHeading(new Pose2d(36.50, 24.00, Math.toRadians(90.00)), Math.toRadians(-90)) //
-                .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(0.00))
+        Action SecondOrientBucket = drive.actionBuilder(new Pose2d(58, 0, Math.toRadians(90)))
+                .strafeToLinearHeading(new Vector2d(48, 52.5), Math.toRadians(-135))
             
         Action PushSamples = drive.actionBuilder(initialPose)
                 .strafeToConstantHeading(new Vector2d(0, 40))
@@ -66,7 +62,7 @@ public class SamplePathBasket extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(58, 49))
                 .build();
 
-        Action BucketCase = drive.actionBuilder(new Pose2d(0, 37, Math.toRadians(-90)))
+        Action BucketCase = drive.actionBuilder(new Pose2d(initialPose)
                 .strafeToConstantHeading(new Vector2d(0, 40))
                 .strafeToConstantHeading(new Vector2d(5, 40))
                 .splineToLinearHeading(new Pose2d(36.50, 24.00, Math.toRadians(90.00)), Math.toRadians(-90)) //
@@ -90,10 +86,7 @@ public class SamplePathBasket extends LinearOpMode {
             Actions.runBlocking(
                     new SequentialAction(
                             MoveToSubmersible,
-                            //Paralell Action
-                            // Arm
-                            // wrist
-
+                            new Paralell Action(
 
                             PushSamples
 
