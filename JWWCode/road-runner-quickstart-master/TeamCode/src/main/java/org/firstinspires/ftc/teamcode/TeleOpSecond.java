@@ -6,12 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.Servo;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> d0834f6bce7c8a7f8c22bdf15043857f7544a338
-@TeleOp(name = "ASTeleOpFinal", group = "TeleOp")
-public class TeleOpFirst extends OpMode {
+@TeleOp(name = "ASTeleOpFinal123456789", group = "TeleOp")
+public class TeleOpSecond extends OpMode {
     // Define motors for driving
     private DcMotor frontLeft;
     private DcMotor frontRight;
@@ -82,16 +78,6 @@ public class TeleOpFirst extends OpMode {
         shoulderRight.setPosition(1);
         elbowLeft.setPosition(9939);
         elbowRight.setPosition(.2667);
-
-        extendLeft.setPosition(1);
-        extendRight.setPosition(0);
-
-        elbowLeft.setPosition(.9822);
-        elbowRight.setPosition(.26);
-
-        wristLeft.setPosition(0);
-        wristRight.setPosition(1);
-
         retract();
         elbowLeft.setPosition(.9267);
         elbowRight.setPosition(.315);
@@ -106,11 +92,6 @@ public class TeleOpFirst extends OpMode {
         controlSlides();
         fineTuningControls();
 
-<<<<<<< HEAD
-        if (leftSlideMotor.getCurrentPosition() > 15) {
-            retract();
-        }
-=======
 //        if (leftSlideMotor.getCurrentPosition() > 15) {
 //            retract();
 //        }
@@ -118,8 +99,7 @@ public class TeleOpFirst extends OpMode {
 
 //        if ()
 
-        if (gamepad1.dpad_up) retract();
->>>>>>> d0834f6bce7c8a7f8c22bdf15043857f7544a338
+            if (gamepad1.dpad_up) retract();
 
         if (gamepad1.right_bumper) { // intake
             spinTakeRight.setPower(1);
@@ -151,12 +131,6 @@ public class TeleOpFirst extends OpMode {
                 clawServo.setPosition(.6794); // open claw
                 wristUp();
                 elbowUp();
-<<<<<<< HEAD
-                retract();
-                Thread.sleep(1000);
-                elbowDown();
-                Thread.sleep(500);
-=======
                 armStartPosition();
                 retract();
                 Thread.sleep(1000);
@@ -166,7 +140,6 @@ public class TeleOpFirst extends OpMode {
                 Thread.sleep(1000);
                 spinTakeRight.setPower(0);
                 spinTakeLeft.setPower(0);
->>>>>>> d0834f6bce7c8a7f8c22bdf15043857f7544a338
                 clawServo.setPosition(1); // close claw
                 Thread.sleep(500);
                 extend();
@@ -175,17 +148,9 @@ public class TeleOpFirst extends OpMode {
             }
         } else if (gamepad2.dpad_right) { // extend extend servos
             extend();
-<<<<<<< HEAD
-//            wristDown();
-        }
-
-        if (gamepad1.x) retract();
-
-=======
         }
 
 //        if (gamepad1.x) retract();
->>>>>>> d0834f6bce7c8a7f8c22bdf15043857f7544a338
         updateAllTelemetry();
     }
 
@@ -235,29 +200,6 @@ public class TeleOpFirst extends OpMode {
         }
     }
 
-<<<<<<< HEAD
-    private void elbowUp() {
-        elbowLeft.setPosition(.8867);
-        elbowRight.setPosition(.2211);
-    }
-
-    private void elbowDown() {
-        elbowLeft.setPosition(9756);
-        elbowRight.setPosition(.2844);
-    }
-
-    private void armStartPosition() {
-        shoulderLeft.setPosition(0);
-        shoulderRight.setPosition(1);
-        elbowLeft.setPosition(.9822);
-        elbowRight.setPosition(.26);
-    }
-
-    private void armBasketPosition() {
-        elbowLeft.setPosition(.5211);
-        elbowRight.setPosition(.7661);
-        shoulderLeft.setPosition(.89);
-=======
     private void specimenHangSlides() {
         leftSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -296,7 +238,6 @@ public class TeleOpFirst extends OpMode {
         elbowLeft.setPosition(.4067);
         elbowRight.setPosition(.8756);
         shoulderLeft.setPosition(1);
->>>>>>> d0834f6bce7c8a7f8c22bdf15043857f7544a338
         shoulderRight.setPosition(0);
     }
 
@@ -311,16 +252,11 @@ public class TeleOpFirst extends OpMode {
     }
 
     private void retract() {
-<<<<<<< HEAD
-        extendLeft.setPosition(1);
-        extendRight.setPosition(0);
-=======
 //        extendLeft.setPosition(1);
 //        extendRight.setPosition(0);
         extendLeft.setPosition(1);
         extendRight.setPosition(0);
 
->>>>>>> d0834f6bce7c8a7f8c22bdf15043857f7544a338
     }
 
     private void extend() {
@@ -329,21 +265,6 @@ public class TeleOpFirst extends OpMode {
     }
 
     private void armPositionSpecimenHang() {
-<<<<<<< HEAD
-        shoulderLeft.setPosition(.7767);
-        shoulderRight.setPosition(.2217);
-        elbowLeft.setPosition(.3611);
-        elbowRight.setPosition(.8672);
-    }
-
-    private void fineTuningControls() {
-        if (gamepad2.dpad_up) {
-//            changeServoPositionBy(extendLeft, -.0002);
-            changeServoPositionBy(extendRight, .0002);
-        } else if (gamepad2.dpad_down) {
-//            changeServoPositionBy(extendLeft, .0002);
-            changeServoPositionBy(extendRight, -.0002);
-=======
         shoulderLeft.setPosition(.8389);
         shoulderRight.setPosition(0.0339);
         elbowLeft.setPosition(0);
@@ -364,7 +285,6 @@ public class TeleOpFirst extends OpMode {
         } else if (gamepad2.dpad_up) {
             changeServoPositionBy(wristLeft, -.002);
             changeServoPositionBy(wristRight, .002);
->>>>>>> d0834f6bce7c8a7f8c22bdf15043857f7544a338
         }
         if (gamepad2.y) {
             changeServoPositionBy(elbowLeft, .0025);
@@ -378,15 +298,10 @@ public class TeleOpFirst extends OpMode {
             changeServoPositionBy(shoulderRight, -.0025);
         } else if (gamepad1.a) {
             changeServoPositionBy(shoulderLeft, -.0025);
-<<<<<<< HEAD
-            changeServoPositionBy(shoulderRight, .0025);
-        }
-=======
             changeServoPositionBy(shoulderRight,   .0025);
         }
 
 
->>>>>>> d0834f6bce7c8a7f8c22bdf15043857f7544a338
     }
 
     private void SetDrivetrainMotorPowers(double frontLeftPower, double frontRightPower, double backLeftPower, double backRightPower) {
@@ -398,33 +313,18 @@ public class TeleOpFirst extends OpMode {
 
     private void controlSlides() {
         // SLIDES movement code
-<<<<<<< HEAD
-//         if (gamepad2.left_stick_y < 0 && leftSlideMotor.getCurrentPosition() < 8100 && rightSlideMotor.getCurrentPosition() > -8100) {
-//             rightSlideMotor.setPower(-gamepad2.left_stick_y * -.8);
-//             leftSlideMotor.setPower(-gamepad2.left_stick_y * .8);
-//         } else if (gamepad2.left_stick_y > 0 && leftSlideMotor.getCurrentPosition() > 0 && rightSlideMotor.getCurrentPosition() < 0) {
-//             rightSlideMotor.setPower(-gamepad2.left_stick_y * -.8);
-//             leftSlideMotor.setPower(-gamepad2.left_stick_y * .8);
-//         } else {
-//             rightSlideMotor.setPower(0);
-//             leftSlideMotor.setPower(0);
-//         }
-        rightSlideMotor.setPower(-gamepad2.left_stick_y * -1);
-        leftSlideMotor.setPower(-gamepad2.left_stick_y * 1);
-=======
-         if (gamepad2.left_stick_y < 0 && leftSlideMotor.getCurrentPosition() < 8100 && rightSlideMotor.getCurrentPosition() > -8100) {
-             rightSlideMotor.setPower(-gamepad2.left_stick_y * -1);
-             leftSlideMotor.setPower(-gamepad2.left_stick_y * 1);
-         } else if (gamepad2.left_stick_y > 0 && leftSlideMotor.getCurrentPosition() > 0 && rightSlideMotor.getCurrentPosition() < 0) {
-             rightSlideMotor.setPower(-gamepad2.left_stick_y * -1);
-             leftSlideMotor.setPower(-gamepad2.left_stick_y * 1);
-         } else {
-             rightSlideMotor.setPower(0);
-             leftSlideMotor.setPower(0);
-         }
+        if (gamepad2.left_stick_y < 0 && leftSlideMotor.getCurrentPosition() < 8100 && rightSlideMotor.getCurrentPosition() > -8100) {
+            rightSlideMotor.setPower(-gamepad2.left_stick_y * -1);
+            leftSlideMotor.setPower(-gamepad2.left_stick_y * 1);
+        } else if (gamepad2.left_stick_y > 0 && leftSlideMotor.getCurrentPosition() > 0 && rightSlideMotor.getCurrentPosition() < 0) {
+            rightSlideMotor.setPower(-gamepad2.left_stick_y * -1);
+            leftSlideMotor.setPower(-gamepad2.left_stick_y * 1);
+        } else {
+            rightSlideMotor.setPower(0);
+            leftSlideMotor.setPower(0);
+        }
 //        rightSlideMotor.setPower(-gamepad2.left_stick_y * -1);
 //        leftSlideMotor.setPower(-gamepad2.left_stick_y * 1);
->>>>>>> d0834f6bce7c8a7f8c22bdf15043857f7544a338
     }
 }
 //
@@ -694,8 +594,4 @@ public class TeleOpFirst extends OpMode {
 //        rightSlideMotor.setPower(-gamepad2.left_stick_y * -.8);
 //        leftSlideMotor.setPower(-gamepad2.left_stick_y * .8);
 //    }
-<<<<<<< HEAD
 //}
-=======
-//}
->>>>>>> d0834f6bce7c8a7f8c22bdf15043857f7544a338
