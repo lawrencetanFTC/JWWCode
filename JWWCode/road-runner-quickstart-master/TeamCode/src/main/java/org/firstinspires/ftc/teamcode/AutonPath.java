@@ -50,6 +50,22 @@ public class Drive {
     }
 }
 
+public class ServoControl {
+    public Action setPosition(p) {
+        return ServoControl.setPosition(p);
+    }
+
+    public Action setPower(p2) {
+        return ServoControl.setPower(p2);
+    }
+}
+
+public class MotorControl {
+    public Action setPower(p) {
+        return MotorControl.setPower(p);
+    }
+}
+
 public class AutonPath extends LinearOpMode{
     public void runOpMode throws InterruptedException{
         Drive pathCreator = new Drive();
@@ -64,16 +80,19 @@ public class AutonPath extends LinearOpMode{
                 therefore, turns can happen at the same time as movement...
                 Benefits: Increases Robot Speed & Accuracy, but has to be timed well.
                 */
-                new ParallelAction(
+                new SequentialAction(
                         new SequentialAction(
                             /*
                              Movement 1 to 2, can use any condensed form of...
                              splineToPoint, strafeToPoint, etc.
                              Ex: pathCreator.splineToPoint(P1, P2, P3);
                             */
-                        )
+                                new ParallelAction(
+
+                                ) // Motors & Servos, while driving in specific orders
+                        ) // Drivetrain
                 )
         )
         );
     }
-}
+} // Create instances of each class for specific motors, servos, etc.
