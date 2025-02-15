@@ -137,7 +137,9 @@ public class LastAutoDeck extends LinearOpMode {
     public void runOpMode() {
         ActionControl asc = new ActionControl(hardwareMap);
 
-        Pose2d initialPose = new Pose2d(15,-63.5, Math.toRadians(90.00));
+        change();
+
+        Pose2d initialPose = new Pose2d(15,-63.5, Math.toRadians(-90.00));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
             // Clamp target position within bounds
             targetPosition = Math.max(MIN_POSITION, Math.min(BASKET_SLIDE_POSITION, targetPosition));
@@ -206,15 +208,15 @@ public class LastAutoDeck extends LinearOpMode {
             Action EndBottomPivot = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, .4033, asc.extendPosition, asc.wristRightPosition );
 
             Action MoveToChamber = drive.actionBuilder(initialPose)
-                    .strafeToLinearHeading(new Vector2d(0,-47), Math.toRadians(-90))
+                    .strafeToConstantHeading(new Vector2d(0,-47))
                     .build();
 
 
-            Action PushSamples = drive.actionBuilder(new Pose2d(0, -47, Math.toRadians(90)))
+            Action PushSamples = drive.actionBuilder(new Pose2d(0, -47, Math.toRadians(-90)))
                     .strafeToConstantHeading(new Vector2d(10, -47))
                     // .splineToConstantHeading(new Vector2d(36.50, -24.00), Math.toRadians(90.00))
                     .splineToConstantHeading(new Vector2d(40.00, 0.00), Math.toRadians(90.00))
-                    .strafeToLinearHeading(new Vector2d(48, 0), Math.toRadians(-90))
+                    .strafeToLinearHeading(new Vector2d(48, 0), Math.toRadians(90))
                     .strafeToConstantHeading(new Vector2d(48, -52.5))
                     .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(0.00))
                     .strafeToConstantHeading(new Vector2d(58, -49))// Move
@@ -228,11 +230,11 @@ public class LastAutoDeck extends LinearOpMode {
                     .strafeToConstantHeading(new Vector2d(0, -47)) // Increment move
                     .build();
 
-            Action ClawSpec = drive.actionBuilder(new Pose2d(0, -47, Math.toRadians(90)))
+            Action ClawSpec = drive.actionBuilder(new Pose2d(0, -47, Math.toRadians(-90)))
                     .strafeToConstantHeading(new Vector2d(58, -49)) // Increment move
                     .build();
 
-            Action SafeStrafe = drive.actionBuilder(new Pose2d(0, - 47, Math.toRadians(90)))
+            Action SafeStrafe = drive.actionBuilder(new Pose2d(0, - 47, Math.toRadians(-90)))
                     .strafeToConstantHeading(new Vector2d(-5, -47))
                     .build();
 
@@ -273,9 +275,10 @@ public class LastAutoDeck extends LinearOpMode {
 
             Actions.runBlocking(
                     new SequentialAction(
+                            MoveToChamber,
                             startPivotTop,
                             new ParallelAction(
-                                    sampleGrabShoulder,
+                                    startShoulder,
                                     sampleGrabWristTop,
                                     new SleepAction(.3)
                             ),
@@ -290,9 +293,10 @@ public class LastAutoDeck extends LinearOpMode {
                             PushSamples,
                             ClawFirstSpec,
                             new ParallelAction(
-                                    sampleGrabShoulder,
+                                    specimenGrabShoulder,
+                                    specimenGrabWristTop,
                                     openClawTop,
-                                    new SleepAction(.3)
+                                    new SleepAction(.4)
                             ),
                             closeClawTop,
                             new SleepAction(.3)
@@ -317,9 +321,10 @@ public class LastAutoDeck extends LinearOpMode {
 
             Actions.runBlocking(
                     new SequentialAction(
+                            HangSpec,
                             startPivotTop,
                             new ParallelAction(
-                                    sampleGrabShoulder,
+                                    startShoulder,
                                     sampleGrabWristTop,
                                     new SleepAction(.3)
                             ),
@@ -332,10 +337,10 @@ public class LastAutoDeck extends LinearOpMode {
             for (int i = 0; i < 2; i++) {
                 Actions.runBlocking(
                                         new SequentialAction(
-                                                PushSamples,
-                                                ClawFirstSpec,
+                                                ClawSpec,
                                                 new ParallelAction(
-                                                        sampleGrabShoulder,
+                                                        specimenGrabShoulder,
+                                                        specimenGrabWristTop,
                                                         openClawTop,
                                                         new SleepAction(.3)
                                                 ),
@@ -362,13 +367,15 @@ public class LastAutoDeck extends LinearOpMode {
 
             Actions.runBlocking(
                     new SequentialAction(
+                            SafeStrafe,
+                            HangSpec,
                             startPivotTop,
                             new ParallelAction(
-                                    sampleGrabShoulder,
+                                    startShoulder,
                                     sampleGrabWristTop,
                                     new SleepAction(.3)
                             ),
-                            new SleepAction(.3)
+                            new SleepAction(.4)
                     )
             );
 
