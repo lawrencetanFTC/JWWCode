@@ -573,11 +573,11 @@ public class TeleOpFirst extends OpMode {
     }
     @Override
     public void loop() {
-        if (gamepad2.dpad_up) targetPosition += 5; // Increase target position
-        else if (gamepad2.dpad_down) targetPosition -= 5; // Decrease target position
+        if (gamepad2.dpad_up) targetPosition += 25; // Increase target position
+        else if (gamepad2.dpad_down) targetPosition -= 25; // Decrease target position
 
-        if (gamepad1.dpad_up) changeServoPositionBy(clawWrist, .002);
-        else if (gamepad1.dpad_down) changeServoPositionBy(clawWrist, -.002);
+//        if (gamepad1.dpad_up) changeServoPositionBy(clawWrist, .002);
+//        else if (gamepad1.dpad_down) changeServoPositionBy(clawWrist, -.002);
 
         runSlidePID(); // Slide PID
         controlDrivetrain(); // Drivetrain
@@ -695,21 +695,21 @@ public class TeleOpFirst extends OpMode {
     }
 
     private void controlDrivetrain() {
-        double frontLeftFactor = 1;
-        double frontRightFactor = 1;
-        double backLeftFactor = 1;
-        double backRightFactor = 1;
-        if (gamepad1.left_stick_button) {
-            frontLeftFactor = .4;
-            frontRightFactor = .4;
-            backLeftFactor = .4;
-            backRightFactor = .4;
-        }
+//        double frontLeftFactor = 1;
+//        double frontRightFactor = 1;
+//        double backLeftFactor = 1;
+//        double backRightFactor = 1;
+//        if (gamepad1.left_stick_button) {
+        double frontLeftFactor = .2;
+        double frontRightFactor = .2;
+        double backLeftFactor = .2;
+        double backRightFactor = .2;
+//        }
 
-//        if (gamepad1.dpad_up) SetDrivetrainMotorPowers(frontLeftFactor, frontRightFactor, backLeftFactor, backRightFactor);
-//        else if (gamepad1.dpad_down) SetDrivetrainMotorPowers(-frontLeftFactor, -frontRightFactor, -backLeftFactor, -backRightFactor);
-//        else if (gamepad1.dpad_left) SetDrivetrainMotorPowers(-frontLeftFactor, frontRightFactor, backLeftFactor, -backRightFactor);
-//        else if (gamepad1.dpad_right) SetDrivetrainMotorPowers(frontLeftFactor,-frontRightFactor, -backLeftFactor, backRightFactor);
+        if (gamepad1.dpad_up) SetDrivetrainMotorPowers(frontLeftFactor, frontRightFactor, backLeftFactor, backRightFactor);
+        else if (gamepad1.dpad_down) SetDrivetrainMotorPowers(-frontLeftFactor, -frontRightFactor, -backLeftFactor, -backRightFactor);
+        else if (gamepad1.dpad_left) SetDrivetrainMotorPowers(-frontLeftFactor, frontRightFactor, backLeftFactor, -backRightFactor);
+        else if (gamepad1.dpad_right) SetDrivetrainMotorPowers(frontLeftFactor,-frontRightFactor, -backLeftFactor, backRightFactor);
 
         double y = -gamepad1.left_stick_y;  // Forward/backward
         double x = gamepad1.left_stick_x * 1.1;  // Strafe
@@ -719,13 +719,14 @@ public class TeleOpFirst extends OpMode {
         y = Math.abs(y) > deadzone ? y : 0;
         x = Math.abs(x) > deadzone ? x : 0;
         rx = Math.abs(rx) > deadzone ? rx : 0;
-
-        double factor = isDrivetrainReversed ? -1 : 1;
+        double factor = 1;
+        if (gamepad1.left_stick_button) factor = .1;
+//        double factor = isDrivetrainReversed ? -1 : 1;
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-        double frontLeftPower = (y + x + rx) / denominator;
-        double backLeftPower = (y - x + rx) / denominator;
-        double frontRightPower = (y - x - rx) / denominator;
-        double backRightPower = (y + x - rx) / denominator;
+        double frontLeftPower = ((y + x + rx) / denominator) * factor;
+        double backLeftPower = ((y - x + rx) / denominator) * factor;
+        double frontRightPower = ((y - x - rx) / denominator) * factor;
+        double backRightPower = ((y + x - rx) / denominator) * factor;
 //        double targetFrontLeftPower = (y + x + rx) * factor * frontLeftFactor;
 //        double targetFrontRightPower = (y - x - rx) * factor * frontRightFactor;
 //        double targetBackLeftPower = (y - x + rx) * factor * backLeftFactor;

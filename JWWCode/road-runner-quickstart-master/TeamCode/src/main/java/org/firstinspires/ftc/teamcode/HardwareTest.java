@@ -10,6 +10,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -17,26 +18,54 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "BaskettAuto", group = "Autonomous")
+@Autonomous(name = "hardwareTest", group = "Autonomous")
 public class HardwareTest extends LinearOpMode {
 
     public class EditControl implements Action {
+        double newClawTopPosition;
+        double newShoulderLeftPosition;
+        double newShoulderRightPosition;
+        double newClawBottomPosition;
+        double newClawWristPosition;
+        double newTopPivotPosition;
+        double newBottomPivotPosition;
+        double newExtendPosition;
+        double newWristRightPosition;
+
+
+        EditControl(double newClawTopPosition, double newShoulderLeftPosition, double newShoulderRightPosition, double newClawBottomPosition, double newClawWristPosition, double newTopPivotPosition, double newBottomPivotPosition, double newExtendPosition, double newWristRightPosition){
+            this.newClawTopPosition = newClawTopPosition;
+            this.newShoulderLeftPosition = newShoulderLeftPosition;
+            this.newShoulderRightPosition = newShoulderRightPosition;
+            this.newClawBottomPosition = newClawBottomPosition;
+            this.newClawWristPosition = newClawWristPosition;
+            this.newTopPivotPosition = newTopPivotPosition;
+            this.newBottomPivotPosition = newBottomPivotPosition;
+            this.newExtendPosition = newExtendPosition;
+            this.newWristRightPosition = newWristRightPosition;
+        }
+
+
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
+            clawServoTop.setPosition(newClawTopPosition);
+            shoulderLeft.setPosition(newShoulderLeftPosition);
+            shoulderRight.setPosition(newShoulderRightPosition);
+            clawServoBottom.setPosition(newClawBottomPosition);
+            clawWrist.setPosition(newClawWristPosition);
+            topPivot.setPosition(newTopPivotPosition);
+            bottomPivot.setPosition(newBottomPivotPosition);
+            extendServo.setPosition(newExtendPosition);
+            wristRight.setPosition(newWristRightPosition);
+
+            telemetry.addData("CHANGING POS", Math.floor(Math.random() * 10));
             return false;
         }
+
     }
     public Action updateServo(double newClawTopPosition, double newShoulderLeftPosition, double newShoulderRightPosition, double newClawBottomPosition, double newClawWristPosition, double newTopPivotPosition, double newBottomPivotPosition, double newExtendPosition, double newWristRightPosition) {
-        clawServoTop.setPosition(newClawTopPosition);
-        shoulderLeft.setPosition(newShoulderLeftPosition);
-        shoulderRight.setPosition(newShoulderRightPosition);
-        clawServoBottom.setPosition(newClawBottomPosition);
-        clawWrist.setPosition(newClawWristPosition);
-        topPivot.setPosition(newTopPivotPosition);
-        bottomPivot.setPosition(newBottomPivotPosition);
-        extendServo.setPosition(newExtendPosition);
-        wristRight.setPosition(newWristRightPosition);
-        return new EditControl();
+
+        return new EditControl(newClawTopPosition, newShoulderLeftPosition,  newShoulderRightPosition,  newClawBottomPosition,  newClawWristPosition,  newTopPivotPosition, newBottomPivotPosition,  newExtendPosition,  newWristRightPosition);
     }
 
 
@@ -148,46 +177,59 @@ public class HardwareTest extends LinearOpMode {
         startBottomPivot = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, .0367, asc.extendPosition, asc.wristRightPosition);
         EndBottomPivot = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, .4033, asc.extendPosition, asc.wristRightPosition);
 
-
+        telemetry.addData("BOB ","a");
+        telemetry.update();
     }
 
     public void runOpMode() {
 
         Pose2d initialPose = new Pose2d(23.5, 62.5, Math.toRadians(-90));
-        change();
+
 
         waitForStart();
         if(isStopRequested()) return;
 
+        change();
+
+        telemetry.addData("I AM DOUBLE DEAD INSIDE", "b");
+        telemetry.update();
+
+        Actions.runBlocking(new SleepAction(1));
+
+        telemetry.addData("I AM TRIPLE DEAD INSIDE", "c");
+        telemetry.update();
+
         Actions.runBlocking(
                 new SequentialAction(
-                        openClawTop,
-                        closeClawTop,
-                        startPivotTop,
-                        endPivotTop,
-                        sampleGrabWristTop,
-                        specimenGrabWristTop,
-                        sampleScoreWristTop,
-                        specimenScoreWristTop,
-                        startShoulder,
-                        sampleGrabShoulder,
-                        basketShoulder,
-                        specimenGrabShoulder,
-                        specimenScoreShoulder,
-                        retract,
-                        extend,
-                        downWristBottom,
-                        middleWristBottom,
-                        scanWristBottom,
-                        upWristBottom,
-                        openClawBottom,
-                        closeClawBottom,
-                        closeClawTightBottom,
-                        startBottomPivot,
+                        openClawTop, new SleepAction(2),
+                        closeClawTop, new SleepAction(2),
+                        startPivotTop,new SleepAction(2),
+                        endPivotTop,new SleepAction(2),
+                        sampleGrabWristTop,new SleepAction(2),
+                        specimenGrabWristTop, new SleepAction(2),
+                        sampleScoreWristTop, new SleepAction(2),
+                        specimenScoreWristTop, new SleepAction(2),
+                        startShoulder, new SleepAction(2),
+                        sampleGrabShoulder, new SleepAction(2),
+                        basketShoulder, new SleepAction(2),
+                        specimenGrabShoulder, new SleepAction(2),
+                        specimenScoreShoulder, new SleepAction(2),
+                        retract, new SleepAction(2),
+                        extend, new SleepAction(2),
+                        downWristBottom, new SleepAction(2),
+                        middleWristBottom, new SleepAction(2),
+                        scanWristBottom, new SleepAction(2),
+                        upWristBottom, new SleepAction(2),
+                        openClawBottom, new SleepAction(2),
+                        closeClawBottom, new SleepAction(2),
+                        closeClawTightBottom, new SleepAction(2),
+                        startBottomPivot, new SleepAction(2),
                         EndBottomPivot
-                );
+                )
+
 
         );
-
+        telemetry.addData("WE ARE QUADRUPLE DEAD INSIDE", "d");
+        telemetry.update();
 
     }}

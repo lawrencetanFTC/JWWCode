@@ -261,9 +261,11 @@ public class LastAutoDeck extends LinearOpMode {
                     new SequentialAction(
                             new ParallelAction(
                                     specimenScoreShoulder,
-                                    specimenScoreWristTop
+                                    specimenScoreWristTop,
+                                    new SleepAction(.3)
                             ),
-                            endPivotTop
+                            endPivotTop,
+                            new SleepAction(.3)
                     )
             );
 
@@ -271,12 +273,13 @@ public class LastAutoDeck extends LinearOpMode {
 
             Actions.runBlocking(
                     new SequentialAction(
-                            MoveToChamber,
                             startPivotTop,
                             new ParallelAction(
-                                    startShoulder,
-                                    sampleGrabWristTop
-                            )
+                                    sampleGrabShoulder,
+                                    sampleGrabWristTop,
+                                    new SleepAction(.3)
+                            ),
+                            new SleepAction(.3)
                     )
             );
 
@@ -287,20 +290,12 @@ public class LastAutoDeck extends LinearOpMode {
                             PushSamples,
                             ClawFirstSpec,
                             new ParallelAction(
-                                    specimenGrabShoulder,
-                                    openClawTop
+                                    sampleGrabShoulder,
+                                    openClawTop,
+                                    new SleepAction(.3)
                             ),
-                            closeClawTop
-                    )
-            );
-
-            Actions.runBlocking(
-                    new SequentialAction(
-                            new ParallelAction(
-                                    specimenScoreShoulder,
-                                    specimenScoreWristTop
-                            ),
-                            endPivotTop
+                            closeClawTop,
+                            new SleepAction(.3)
                     )
             );
 
@@ -308,12 +303,27 @@ public class LastAutoDeck extends LinearOpMode {
 
             Actions.runBlocking(
                     new SequentialAction(
-                            HangSpec,
+                            new ParallelAction(
+                                    specimenScoreShoulder,
+                                    specimenScoreWristTop,
+                                    new SleepAction(.3)
+                            ),
+                            endPivotTop,
+                            new SleepAction(.3)
+                    )
+            );
+
+            targetPosition = 490;
+
+            Actions.runBlocking(
+                    new SequentialAction(
                             startPivotTop,
                             new ParallelAction(
-                                    startShoulder,
-                                    sampleGrabWristTop
-                            )
+                                    sampleGrabShoulder,
+                                    sampleGrabWristTop,
+                                    new SleepAction(.3)
+                            ),
+                            new SleepAction(.3)
                     )
             );
 
@@ -322,41 +332,47 @@ public class LastAutoDeck extends LinearOpMode {
             for (int i = 0; i < 2; i++) {
                 Actions.runBlocking(
                                         new SequentialAction(
-                                                ClawSpec,
+                                                PushSamples,
+                                                ClawFirstSpec,
                                                 new ParallelAction(
-                                                        specimenGrabShoulder,
-                                                        openClawTop
+                                                        sampleGrabShoulder,
+                                                        openClawTop,
+                                                        new SleepAction(.3)
                                                 ),
-                                                closeClawTop
+                                                closeClawTop,
+                                                new SleepAction(.3)
                                         )
-                );
-
-                Actions.runBlocking(
-                        new SequentialAction(
-                                new ParallelAction(
-                                        specimenScoreShoulder,
-                                        specimenScoreWristTop
-                                ),
-                                endPivotTop
-                        )
                 );
 
                 targetPosition = 490;
 
                 Actions.runBlocking(
                         new SequentialAction(
-                                HangSpec,
-                                startPivotTop,
                                 new ParallelAction(
-                                        startShoulder,
-                                        sampleGrabWristTop
-                                )
+                                        specimenScoreShoulder,
+                                        specimenScoreWristTop,
+                                        new SleepAction(.3)
+                                ),
+                                endPivotTop,
+                                new SleepAction(.3)
                         )
                 );
 
-                targetPosition = 0;
-
             }
+
+            Actions.runBlocking(
+                    new SequentialAction(
+                            startPivotTop,
+                            new ParallelAction(
+                                    sampleGrabShoulder,
+                                    sampleGrabWristTop,
+                                    new SleepAction(.3)
+                            ),
+                            new SleepAction(.3)
+                    )
+            );
+
+            targetPosition = 0;
 
         } else {
             Actions.runBlocking(
