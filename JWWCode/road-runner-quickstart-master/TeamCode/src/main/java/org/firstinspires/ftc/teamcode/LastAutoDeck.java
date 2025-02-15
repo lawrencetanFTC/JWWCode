@@ -31,7 +31,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 // @Disabled
 public class LastAutoDeck extends LinearOpMode {
 
-    public class EditControl implements Action {
+    public static class EditControl implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
             return false;
@@ -48,7 +48,7 @@ public class LastAutoDeck extends LinearOpMode {
         bottomPivot.setPosition(newBottomPivotPosition);
         extendServo.setPosition(newExtendPosition);
         wristRight.setPosition(newWristRightPosition);
-        return new LastAutoDeck.EditControl();
+        return new EditControl();
     }
 
 
@@ -167,6 +167,19 @@ public class LastAutoDeck extends LinearOpMode {
                     // Update last error
                     lastError = error;
 
+                    targetPosition = 490;
+
+//                    Actions.runBlocking(
+//                            new SequentialAction(
+//                                    new ParallelAction(
+//                                            specimenScoreShoulder,
+//                                            specimenScoreWristTop,
+//                                            new SleepAction(2)
+//                                    ),
+//                                    endPivotTop,
+//                                    new SleepAction(2)
+//                            )
+
                     try{
                         Thread.sleep(50);
                     } catch(InterruptedException e){
@@ -266,19 +279,18 @@ public class LastAutoDeck extends LinearOpMode {
         boolean AreWeDoingBucket = true;
 //        boolean AreWeTestingPaths = true;
 
-        waitForStart();
+//        waitForStart();
 
-        if (isStopRequested()) return;
+//        if (isStopRequested()) return;
 
 
         if (AreWeDoingBucket) {
             Actions.runBlocking(
                     new SequentialAction(
-                            new ParallelAction(
                                     specimenScoreShoulder,
+                            new SleepAction(2),
                                     specimenScoreWristTop,
-                                    new SleepAction(2)
-                            ),
+                                    new SleepAction(2),
                             endPivotTop,
                             new SleepAction(2)
                     )
@@ -291,16 +303,14 @@ public class LastAutoDeck extends LinearOpMode {
                             MoveToChamber,
                             startPivotTop,
                             new SleepAction(2),
-                            new ParallelAction(
                                     specimenScoreShoulder,
+                            new SleepAction(2),
                                     specimenScoreWristTop,
-                                    new SleepAction(2)
-                            ),
                             new SleepAction(2)
                     )
             );
 
-            targetPosition = 0;
+//            targetPosition = 0;
 //
 //            Actions.runBlocking(
 //                    new SequentialAction(
