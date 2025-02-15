@@ -68,10 +68,32 @@ public class LastAutoDeck extends LinearOpMode {
     private Servo extendServo;
     private Servo wristRight;
 
+    double kp = 0.01;
+    // Integral gain
+    double ki = 0.0;
+    // Derivative gain
+    double kd = 0.001;
+
+//    private long delayStartTime = 0;
+//    private boolean isDelaying = false;
+
+    // PID variables
+    private double targetPosition = 0; // Desired encoder position
+    private double integralSum = 0;
+    private double lastError = 0;
+    private double currentPosition = 0;
+    private double power = 0;
+
+    // Constants for slides
+    private final int BASKET_SLIDE_POSITION = 3000;     // Maximum encoder ticks (full extension)
+    private final int SPECIMEN_HANG_POS = 490;
+    private final int SPECIMEN_GRAB_POS = 0;
+    private final int MIN_POSITION = 0;       // Minimum encoder ticks (fully retracted)
+    private final int NORMAL_INCREMENT = 50;   // Encoder ticks per loop for continuous motion
+
+
     // Slide boundaries
     private final int MAX_POSITION = 8100; // Maximum encoder ticks (full extension)
-    private final int MIN_POSITION = 0;
-
     public double clawTopPosition = 0.0889;
     public double shoulderLeftPosition = 0.6861;
     public double shoulderRightPosition = 0.2661;
@@ -93,6 +115,7 @@ public class LastAutoDeck extends LinearOpMode {
         // Set them to run using encoders after reset
         leftSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftSlideMotor.setDirection(DcMotor.Direction.REVERSE);
 
         shoulderLeft = hardwareMap.get(Servo.class, "shoulderLeft");
         shoulderRight = hardwareMap.get(Servo.class, "shoulderRight");
@@ -108,46 +131,41 @@ public class LastAutoDeck extends LinearOpMode {
         bottomPivot = hardwareMap.get(Servo.class, "bottomPivot");
 
         clawWrist = hardwareMap.get(Servo.class, "clawWrist");
-
-        Action openClawTop = updateServo(.3511, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
-        Action closeClawTop = updateServo(0.0889, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
-        Action startPivotTop = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, .7328, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
-        Action endPivotTop = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, .0322, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
-        Action sampleGrabWristTop = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, 0.1222, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
-        Action specimenGrabWristTop = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, .5478, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
-        Action sampleScoreWristTop = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, .6856, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
-        Action specimenScoreWristTop = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, .15, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
-        Action startShoulder = updateServo(asc.clawTopPosition, .6861, .2661, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
-        Action sampleGrabShoulder = updateServo(asc.clawTopPosition, .8467, .1017, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
-        Action basketShoulder = updateServo(asc.clawTopPosition, .4111, .5839, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
-        Action specimenGrabShoulder = updateServo(asc.clawTopPosition, .8983, .05, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
-        Action specimenScoreShoulder = updateServo(asc.clawTopPosition, .1461, .8011, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
-        Action retract = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, 0, asc.wristRightPosition );
-        Action extend = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, .56, asc.wristRightPosition );
-        Action downWristBottom = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, .922 );
-        Action middleWristBottom = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, .5116 );
-        Action scanWristBottom = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, .8206);
-        Action upWristBottom = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, .0978 );
-        Action openClawBottom = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, .3817, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
-        Action closeClawBottom = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, .18, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
-        Action closeClawTightBottom = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, .1122, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
-        Action startBottomPivot = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, .0367, asc.extendPosition, asc.wristRightPosition );
-        Action EndBottomPivot = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, .4033, asc.extendPosition, asc.wristRightPosition );
-
     }
 
     @Override
     public void runOpMode() {
+        ActionControl asc = new ActionControl(hardwareMap);
 
         Pose2d initialPose = new Pose2d(15,-63.5, Math.toRadians(90.00));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
+            // Clamp target position within bounds
+            targetPosition = Math.max(MIN_POSITION, Math.min(BASKET_SLIDE_POSITION, targetPosition));
+
+            // Get the current position from encoders
+            double currentPosition = (leftSlideMotor.getCurrentPosition() + rightSlideMotor.getCurrentPosition()) / 2.0;
+
+            // Calculate PID terms
+            double error = targetPosition - currentPosition;
+            integralSum += error; // Accumulate error for integral term
+            double derivative = error - lastError; // Change in error for derivative term
+
+            // Compute motor power using PID
+            double power = (kp * error) + (ki * integralSum) + (kd * derivative);
+
+            // Apply power to both motors
+            leftSlideMotor.setPower(power);
+            rightSlideMotor.setPower(power);
+
+            // Update last error
+            lastError = error;
 
         // init all the non drive train stuff here
         // int increment = 5;
 
                 // .strafeToConstantHeading(new Vector2d(0, -47)) // Hang Specimen
                 // .strafeToConstantHeading(new Vector2d(10, -47))
-                // // .splineToConstantHeading(new Vector2d(36.50, -24.00), Math.toRadians(90.00))
+                // .splineToConstantHeading(new Vector2d(36.50, -24.00), Math.toRadians(90.00))
                 // .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(90.00))
                 // .strafeToConstantHeading(new Vector2d(48, -52.5))
                 // .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(90.00))
@@ -162,12 +180,37 @@ public class LastAutoDeck extends LinearOpMode {
 
 
 
-          Action MoveToChamber = drive.actionBuilder(initialPose)
+            Action openClawTop = updateServo(.3511, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
+            Action closeClawTop = updateServo(0.0889, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
+            Action startPivotTop = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, .7328, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
+            Action endPivotTop = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, .0322, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
+            Action sampleGrabWristTop = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, 0.1222, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
+            Action specimenGrabWristTop = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, .5478, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
+            Action sampleScoreWristTop = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, .6856, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
+            Action specimenScoreWristTop = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, .15, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
+            Action startShoulder = updateServo(asc.clawTopPosition, .6861, .2661, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
+            Action sampleGrabShoulder = updateServo(asc.clawTopPosition, .8467, .1017, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
+            Action basketShoulder = updateServo(asc.clawTopPosition, .4111, .5839, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
+            Action specimenGrabShoulder = updateServo(asc.clawTopPosition, .8983, .05, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
+            Action specimenScoreShoulder = updateServo(asc.clawTopPosition, .1461, .8011, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
+            Action retract = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, 0, asc.wristRightPosition );
+            Action extend = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, .56, asc.wristRightPosition );
+            Action downWristBottom = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, .922 );
+            Action middleWristBottom = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, .5116 );
+            Action scanWristBottom = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, .8206);
+            Action upWristBottom = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, .0978 );
+            Action openClawBottom = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, .3817, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
+            Action closeClawBottom = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, .18, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
+            Action closeClawTightBottom = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, .1122, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
+            Action startBottomPivot = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, .0367, asc.extendPosition, asc.wristRightPosition );
+            Action EndBottomPivot = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, .4033, asc.extendPosition, asc.wristRightPosition );
+
+            Action MoveToChamber = drive.actionBuilder(initialPose)
                     .strafeToLinearHeading(new Vector2d(0,-47), Math.toRadians(-90))
                     .build();
 
-            
-          Action PushSamples = drive.actionBuilder(new Pose2d(0, -47, Math.toRadians(90)))
+
+            Action PushSamples = drive.actionBuilder(new Pose2d(0, -47, Math.toRadians(90)))
                     .strafeToConstantHeading(new Vector2d(10, -47))
                     // .splineToConstantHeading(new Vector2d(36.50, -24.00), Math.toRadians(90.00))
                     .splineToConstantHeading(new Vector2d(40.00, 0.00), Math.toRadians(90.00))
@@ -176,7 +219,7 @@ public class LastAutoDeck extends LinearOpMode {
                     .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(0.00))
                     .strafeToConstantHeading(new Vector2d(58, -49))// Move
                     .build();
-    
+
             Action ClawFirstSpec = drive.actionBuilder(new Pose2d(58, -49, Math.toRadians(90)))
                     .turn(Math.toRadians(-180))
                     .build();
@@ -184,15 +227,14 @@ public class LastAutoDeck extends LinearOpMode {
             Action HangSpec = drive.actionBuilder(new Pose2d(58, -49, Math.toRadians(-90)))
                     .strafeToConstantHeading(new Vector2d(0, -47)) // Increment move
                     .build();
-    
+
             Action ClawSpec = drive.actionBuilder(new Pose2d(0, -47, Math.toRadians(90)))
                     .strafeToConstantHeading(new Vector2d(58, -49)) // Increment move
                     .build();
-    
+
             Action SafeStrafe = drive.actionBuilder(new Pose2d(0, - 47, Math.toRadians(90)))
                     .strafeToConstantHeading(new Vector2d(-5, -47))
                     .build();
-
 
 
         // Action GrabSpecFirstTime = drive.actionBuilder(new Pose2d((24 + (3*increment)), (-47 + (3*increment)), Math.toRadians(-30)))
@@ -206,56 +248,49 @@ public class LastAutoDeck extends LinearOpMode {
         //         .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
         //         .build();
 
-        if (isStopRequested()) return;
+        boolean AreWeDoingBucket = true;
+//        boolean AreWeTestingPaths = true;
+
         waitForStart();
 
-        Actions.runBlocking(
-                new SequentialAction(
-                    new SequentialAction(
-                        MoveToChamber
-                        // ArmPosition
-                        // WristPosition
-                    ),
-                    PushSamples,
-                    new SequentialAction(
-                        ClawFirstSpec
-                        //WristPosition
-                    ),
-                    new SequentialAction(
-                        HangSpec
-                        // ArmPosition
-                        // WristPostion
-                    )
-                    // for(int i = 0; i < 2; i++) {
-                    // new SequentialAction(
-                    //     new SequentialAction(
-                    //         AutonSequence.ClawSpec
-                    //         // WristPosition
-                    //     )
-                    //     new SequentialAction(
-                    //         AutonSequence.HangSpec
-                    //         // ArmPosition
-                    //         AutonSequence.SafeStrafe
-                    //         // WristPostion
-                    //     )
-                    // }
-                )
-        ); // Reverse all positions after each Action :)
-        for(int i = 0; i < 2; i++) {
+        if (isStopRequested()) return;
+
+
+        if (AreWeDoingBucket) {
             Actions.runBlocking(
-                new SequentialAction(
-                        new SequentialAction(
-                            ClawSpec
-                            // WristPosition
-                        ),
-                        new SequentialAction(
-                            HangSpec,
-                            // ArmPosition
-                            SafeStrafe
-                            // WristPosition
-                        )
-                )
+                    new SequentialAction(
+
+                    )
+
             );
+        } else {
+            Actions.runBlocking(
+                    new SequentialAction(
+                            new SequentialAction(
+
+                            )
+                    )
+            );
+
+            Actions.runBlocking(
+                    new SequentialAction(
+
+                    )
+            );
+
+            Actions.runBlocking(
+                    new SequentialAction(
+
+                    )
+            );
+
+            for(int i = 0; i < 2; i++) {
+                Actions.runBlocking(
+                    new SequentialAction(
+
+                    )
+                );
+            }
         }
     }
 }

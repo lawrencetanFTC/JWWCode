@@ -99,6 +99,24 @@ public class SamplePathBasket extends LinearOpMode {
         bottomPivot = hardwareMap.get(Servo.class, "bottomPivot");
 
         clawWrist = hardwareMap.get(Servo.class, "clawWrist");
+    }
+
+    public void runOpMode() {
+
+        Pose2d initialPose = new Pose2d(23.5, 62.5, Math.toRadians(-90));
+
+        ActionControl asc = new ActionControl(hardwareMap);
+
+        Extend extendForm = new Extend(hardwareMap);
+        Wrist wrist = new Wrist(hardwareMap);
+        Slides slides = new Slides();
+        Thread slideThread = new Thread(new SlidesControl(hardwareMap));
+        Arm arm = new Arm(hardwareMap);
+        BClaw claw = new BClaw(hardwareMap);
+
+
+
+        MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
         Action openClawTop = updateServo(.3511, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
         Action closeClawTop = updateServo(0.0889, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
@@ -124,44 +142,31 @@ public class SamplePathBasket extends LinearOpMode {
         Action closeClawTightBottom = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, .1122, asc.clawWristPosition, asc.topPivotPosition, asc.bottomPivotPosition, asc.extendPosition, asc.wristRightPosition );
         Action startBottomPivot = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, .0367, asc.extendPosition, asc.wristRightPosition );
         Action EndBottomPivot = updateServo(asc.clawTopPosition, asc.shoulderLeftPosition, asc.shoulderRightPosition, asc.clawBottomPosition, asc.clawWristPosition, asc.topPivotPosition, .4033, asc.extendPosition, asc.wristRightPosition );
-    }
 
-    public void runOpMode() {
-
-        Pose2d initialPose = new Pose2d(23.5, 62.5, Math.toRadians(-90));
-
-        Extend extend = new Extend(hardwareMap);
-        Wrist wrist = new Wrist(hardwareMap);
-        Slides slides = new Slides();
-        Thread slideThread = new Thread(new SlidesControl(hardwareMap));
-        Arm arm = new Arm(hardwareMap);
-        BClaw claw = new BClaw(hardwareMap);
-
-
-
-        MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
-
-        Action MoveToSubmersible = drive.actionBuilder(initialPose)
-                .strafeToConstantHeading(new Vector2d(0, 40))
+        Action goToBucket = drive.actionBuilder(initialPose)
+                .strafeToConstantHeading(new Vector2d(-32.5, -57))
+                .splineToLinearHeading(new Pose2d(-53.5, -54, Math.toRadians(45.00)), Math.toRadians(-135.00))
                 .build();
 
-        Action FirstPositionBucket = drive.actionBuilder(new Pose2d(0, 40, Math.toRadians(-90)))
-                .strafeToConstantHeading(new Vector2d(5, 40))
-                .splineToLinearHeading(new Pose2d(36.50, 24.00, Math.toRadians(90.00)), Math.toRadians(-90)) //
-                .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(0.00)).build();
-
-        Action FirstOrientBucket = drive.actionBuilder(new Pose2d(48, 0, Math.toRadians(90)))
-                .strafeToLinearHeading(new Vector2d(42, 52.5), Math.toRadians(-135))
-                .strafeToConstantHeading(new Vector2d(48, 52.5)) //
+        Action goBackToBucket1 = drive.actionBuilder(new Pose2d(-51, -52, Math.toRadians(90.00)))
+                .splineToLinearHeading(new Pose2d(-53.5, -54, Math.toRadians(45.00)), Math.toRadians(-135.00))
                 .build();
 
-        Action SecondPositionBucket = drive.actionBuilder(new Pose2d(48, 52.5, Math.toRadians(-135)))
-                .strafeToConstantHeading(new Vector2d(46.5, 52.5))
-                .splineToLinearHeading(new Pose2d(58, 0, Math.toRadians(90.00)), Math.toRadians(0.00))
+        Action goBackToBucket2 = drive.actionBuilder(new Pose2d(-61, -52, Math.toRadians(90.00)))
+                .splineToLinearHeading(new Pose2d(-53.5, -54, Math.toRadians(45.00)), Math.toRadians(-135.00))
                 .build();
 
-        Action SecondOrientBucket = drive.actionBuilder(new Pose2d(58, 0, Math.toRadians(90)))
-                .strafeToLinearHeading(new Vector2d(48, 52.5), Math.toRadians(-135)).build();
+        Action sample1 = drive.actionBuilder(new Pose2d(-53.5, -54, Math.toRadians(45.00)))
+                .splineToLinearHeading(new Pose2d(-51, -52, Math.toRadians(90.00)), Math.toRadians(90.00))
+                .build();
+
+        Action sample2 = drive.actionBuilder(new Pose2d(-53.5, -54, Math.toRadians(45.00)))
+                .splineToLinearHeading(new Pose2d(-61, -52, Math.toRadians(90.00)), Math.toRadians(90.00))
+                .build();
+
+        Action accent = drive.actionBuilder(new Pose2d(-53.5, -54, Math.toRadians(45)))
+                .splineToLinearHeading(new Pose2d(-28, -12, Math.toRadians(180.00)), Math.toRadians(-45.00))
+                .build();
 
         Action PushSamples = drive.actionBuilder(initialPose)
                 .strafeToConstantHeading(new Vector2d(0, 40))
@@ -173,42 +178,17 @@ public class SamplePathBasket extends LinearOpMode {
                 .strafeToConstantHeading(new Vector2d(58, 49))
                 .build();
 
-        Action BucketCase = drive.actionBuilder(initialPose)
-                .strafeToConstantHeading(new Vector2d(0, 40))
-                .strafeToConstantHeading(new Vector2d(5, 40))
-                .splineToLinearHeading(new Pose2d(36.50, 24.00, Math.toRadians(90.00)), Math.toRadians(-90)) //
-                .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(0.00))
-                .strafeToLinearHeading(new Vector2d(42, 52.5), Math.toRadians(-135))
-                .strafeToConstantHeading(new Vector2d(48, 52.5)) //
-                .strafeToConstantHeading(new Vector2d(46.5, 52.5))
-                .splineToLinearHeading(new Pose2d(58, 0, Math.toRadians(90.00)), Math.toRadians(0.00))
-                .strafeToLinearHeading(new Vector2d(48, 52.5), Math.toRadians(-135))
-                .build();
-
-        Action openClawTop = ObjectPos.openClawTop();
-        Action closeClawTop = ObjectPos.closeClawTop();
-        Action startPivotTop = ObjectPos.startPivotTop();
-        Action endPivotTop = ObjectPos.endPivotTop();
-        Action sampleGrabWristTop = ObjectPos.sampleGrabWristTop();
-        Action specimenGrabWristTop = ObjectPos.specimenGrabWristTop();
-        Action sampleScoreWristTop = ObjectPos.sampleScoreWristTop();
-        Action specimenScoreWristTop = ObjectPos.specimenScoreWristTop();
-        Action startShoulder = ObjectPos.startShoulder();
-        Action sampleGrabShoulder = ObjectPos.sampleGrabShoulder();
-        Action basketShoulder = ObjectPos.basketShoulder();
-        Action specimenGrabShoulder = ObjectPos.specimenGrabShoulder();
-        Action specimenScoreShoulder = ObjectPos.specimenScoreShoulder();
-        Action retract = ObjectPos.retract();
-        Action extendForm = ObjectPos.extendForm();
-        Action downWristBottom = ObjectPos.downWristBottom();
-        Action middleWristBottom = ObjectPos.middleWristBottom();
-        Action scanWristBottom = ObjectPos.scanWristBottom();
-        Action upWristBottom = ObjectPos.upWristBottom();
-        Action openClawBottom = ObjectPos.openClawBottom();
-        Action closeClawBottom = ObjectPos.closeClawBottom();
-        Action tightCloseClawBottom = ObjectPos.tightCloseClawBottom();
-        Action startPivotBottom = ObjectPos.startPivotBottom();
-        Action endPivotBottom = ObjectPos.endPivotBottom();
+//        Action BucketCase = drive.actionBuilder(initialPose)
+//                .strafeToConstantHeading(new Vector2d(0, 40))
+//                .strafeToConstantHeading(new Vector2d(5, 40))
+//                .splineToLinearHeading(new Pose2d(36.50, 24.00, Math.toRadians(90.00)), Math.toRadians(-90)) //
+//                .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(0.00))
+//                .strafeToLinearHeading(new Vector2d(42, 52.5), Math.toRadians(-135))
+//                .strafeToConstantHeading(new Vector2d(48, 52.5)) //
+//                .strafeToConstantHeading(new Vector2d(46.5, 52.5))
+//                .splineToLinearHeading(new Pose2d(58, 0, Math.toRadians(90.00)), Math.toRadians(0.00))
+//                .strafeToLinearHeading(new Vector2d(48, 52.5), Math.toRadians(-135))
+//                .build();
 
         boolean AreWeDoingBucket = true;
 //        boolean AreWeTestingPaths = true;
@@ -221,17 +201,7 @@ public class SamplePathBasket extends LinearOpMode {
         if (AreWeDoingBucket) {
             Actions.runBlocking(
                     new SequentialAction(
-                            MoveToSubmersible,
-                            // new ParalellAction(
 
-                            PushSamples
-
-                            // Between each sample
-
-                            // arm
-                            //wrist
-                            //slide
-                            // reverse them.
                     )
 
             );
@@ -239,59 +209,21 @@ public class SamplePathBasket extends LinearOpMode {
             Actions.runBlocking(
                     new SequentialAction(
                             new SequentialAction(
-                                    MoveToSubmersible
+
                             )
                     )
             );
 
-            SlideControl.slidePosition = 4000;
-
             Actions.runBlocking(
                     new SequentialAction(
-                            arm.specimenHang()
+
                     )
             );
 
-            SlideControl.slidePosition = 1000;
-
             Actions.runBlocking(
-                    new SequentialAction(
-                            claw.openClaw(),
-                            claw.closeClaw(),
-                            arm.sample()
-                    )
+                    PushSamples // Current Placeholder
             );
-
-            SlideControl.slidePosition = 8000;
 
         }
     }
 }
-
-//        else {
-//            Actions.runBlocking(
-//
-//            );
-//        }
-//
-//
-////        Actions.runBlocking(new SequentialAction(
-////                PushSamples
-////        ));
-//
-////        if(isStopRequested());
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//    }
-//
-//
-//}
