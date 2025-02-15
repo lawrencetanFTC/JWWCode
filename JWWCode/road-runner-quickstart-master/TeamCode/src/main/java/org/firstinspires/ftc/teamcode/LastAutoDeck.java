@@ -166,6 +166,12 @@ public class LastAutoDeck extends LinearOpMode {
 
                     // Update last error
                     lastError = error;
+
+                    try{
+                        Thread.sleep(50);
+                    } catch(InterruptedException e){
+                        Thread.currentThread().interrupt();
+                    }
                 }
             }).start();
         }
@@ -271,10 +277,10 @@ public class LastAutoDeck extends LinearOpMode {
                             new ParallelAction(
                                     specimenScoreShoulder,
                                     specimenScoreWristTop,
-                                    new SleepAction(1)
+                                    new SleepAction(2)
                             ),
                             endPivotTop,
-                            new SleepAction(1)
+                            new SleepAction(2)
                     )
             );
 
@@ -284,12 +290,13 @@ public class LastAutoDeck extends LinearOpMode {
                     new SequentialAction(
                             MoveToChamber,
                             startPivotTop,
+                            new SleepAction(2),
                             new ParallelAction(
                                     specimenScoreShoulder,
                                     specimenScoreWristTop,
-                                    new SleepAction(1)
+                                    new SleepAction(2)
                             ),
-                            new SleepAction(1)
+                            new SleepAction(2)
                     )
             );
 
