@@ -259,38 +259,111 @@ public class LastAutoDeck extends LinearOpMode {
         if (AreWeDoingBucket) {
             Actions.runBlocking(
                     new SequentialAction(
-
+                            new ParallelAction(
+                                    specimenScoreShoulder,
+                                    specimenScoreWristTop
+                            ),
+                            endPivotTop
                     )
-
             );
-        } else {
+
+            targetPosition = 490;
+
             Actions.runBlocking(
                     new SequentialAction(
-                            new SequentialAction(
-
+                            startPivotTop,
+                            new ParallelAction(
+                                    sampleGrabShoulder,
+                                    sampleGrabWristTop
                             )
                     )
             );
 
-            Actions.runBlocking(
-                    new SequentialAction(
-
-                    )
-            );
+            targetPosition = 0;
 
             Actions.runBlocking(
                     new SequentialAction(
-
+                            PushSamples,
+                            ClawFirstSpec,
+                            new ParallelAction(
+                                    sampleGrabShoulder,
+                                    openClawTop
+                            ),
+                            closeClawTop
                     )
             );
 
-            for(int i = 0; i < 2; i++) {
+            targetPosition = 490;
+
+            Actions.runBlocking(
+                    new SequentialAction(
+                            new ParallelAction(
+                                    specimenScoreShoulder,
+                                    specimenScoreWristTop
+                            ),
+                            endPivotTop
+                    )
+            );
+
+            targetPosition = 490;
+
+            Actions.runBlocking(
+                    new SequentialAction(
+                            startPivotTop,
+                            new ParallelAction(
+                                    sampleGrabShoulder,
+                                    sampleGrabWristTop
+                            )
+                    )
+            );
+
+            targetPosition = 0;
+
+            for (int i = 0; i < 2; i++) {
                 Actions.runBlocking(
-                    new SequentialAction(
-
-                    )
+                                        new SequentialAction(
+                                                PushSamples,
+                                                ClawFirstSpec,
+                                                new ParallelAction(
+                                                        sampleGrabShoulder,
+                                                        openClawTop
+                                                ),
+                                                closeClawTop
+                                        )
                 );
+
+                targetPosition = 490;
+
+                Actions.runBlocking(
+                        new SequentialAction(
+                                new ParallelAction(
+                                        specimenScoreShoulder,
+                                        specimenScoreWristTop
+                                ),
+                                endPivotTop
+                        )
+                );
+
             }
+
+            Actions.runBlocking(
+                    new SequentialAction(
+                            startPivotTop,
+                            new ParallelAction(
+                                    sampleGrabShoulder,
+                                    sampleGrabWristTop
+                            )
+                    )
+            );
+
+            targetPosition = 0;
+
+        } else {
+            Actions.runBlocking(
+                    new SequentialAction(
+                            PushSamples
+                    )
+            );
         }
     }
 }
