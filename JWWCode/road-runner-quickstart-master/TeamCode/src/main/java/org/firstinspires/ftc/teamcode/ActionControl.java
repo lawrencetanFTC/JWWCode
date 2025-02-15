@@ -35,12 +35,12 @@ public class ActionControl {
     public double clawTopPosition = 0.0889;
     public double shoulderLeftPosition = 0.6861;
     public double shoulderRightPosition = 0.2661;
-    public double clawBottomPosition = 0.5139;
-    public double clawWristPosition = 0.0744;
-    public double topPivotPosition = 0.0322;
+    public double clawBottomPosition = 0.18;
+    public double clawWristPosition = 0.1222;
+    public double topPivotPosition = 0.7328;
     public double bottomPivotPosition = 0.0367;
-    public double extendPosition = 0.56;
-    public double wristRightPosition = 0.8206;
+    public double extendPosition = 0;
+    public double wristRightPosition = 0.0978;
 
     ActionControl(@NonNull HardwareMap hardwareMap) {
         leftSlideMotor = hardwareMap.get(DcMotor.class, "leftSlideMotor");
