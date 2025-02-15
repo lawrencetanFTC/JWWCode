@@ -68,71 +68,71 @@ public class ActionControl {
         clawWrist = hardwareMap.get(Servo.class, "clawWrist");
     }
 
-    public void resetToInitial() {
-        clawServoTop.setPosition(clawTopPosition);
-        shoulderLeft.setPosition(shoulderLeftPosition);
-        shoulderRight.setPosition(shoulderRightPosition);
-        clawServoBottom.setPosition(clawBottomPosition);
-        clawWrist.setPosition(clawWristPosition);
-        topPivot.setPosition(topPivotPosition);
-        bottomPivot.setPosition(bottomPivotPosition);
-        extendServo.setPosition(extendPosition);
-        wristRight.setPosition(wristRightPosition);
-    }
-
-
-    private TelemetryPacket telemetryPacket;
-
-//    public Action updateServo(double newClawTopPosition, double newShoulderLeftPosition, double newShoulderRightPosition, double newClawBottomPosition, double newClawWristPosition, double newTopPivotPosition, double newBottomPivotPosition, double newExtendPosition, double newWristRightPosition) {
-//        return Actions.runBlocking(() -> {
-//            clawServoTop.setPosition(newClawTopPosition);
-//            shoulderLeft.setPosition(newShoulderLeftPosition);
-//            shoulderRight.setPosition(newShoulderRightPosition);
-//            clawServoBottom.setPosition(newClawBottomPosition);
-//            clawWrist.setPosition(newClawWristPosition);
-//            topPivot.setPosition(newTopPivotPosition);
-//            bottomPivot.setPosition(newBottomPivotPosition);
-//            extendServo.setPosition(newExtendPosition);
-//            wristRight.setPosition(newWristRightPosition);
-//
-//            return null; // Explicitly return null or an empty Action if required
-//        });
+//    public void resetToInitial() {
+//        clawServoTop.setPosition(clawTopPosition);
+//        shoulderLeft.setPosition(shoulderLeftPosition);
+//        shoulderRight.setPosition(shoulderRightPosition);
+//        clawServoBottom.setPosition(clawBottomPosition);
+//        clawWrist.setPosition(clawWristPosition);
+//        topPivot.setPosition(topPivotPosition);
+//        bottomPivot.setPosition(bottomPivotPosition);
+//        extendServo.setPosition(extendPosition);
+//        wristRight.setPosition(wristRightPosition);
 //    }
-
-    class ThreadedControl implements Runnable {
-
-        public void run() {
-            while (runThread) {
-                clawServoTop.setPosition(clawTopPosition);
-                shoulderLeft.setPosition(shoulderLeftPosition);
-                shoulderRight.setPosition(shoulderRightPosition);
-                clawServoBottom.setPosition(clawBottomPosition);
-                clawWrist.setPosition(clawWristPosition);
-                topPivot.setPosition(topPivotPosition);
-                bottomPivot.setPosition(bottomPivotPosition);
-                extendServo.setPosition(extendPosition);
-                wristRight.setPosition(wristRightPosition);
-            }
-        }
-    }
-
-    public class EditControl implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            return false;
-        }
-    }
-    public Action updateServo(double newClawTopPosition, double newShoulderLeftPosition, double newShoulderRightPosition, double newClawBottomPosition, double newClawWristPosition, double newTopPivotPosition, double newBottomPivotPosition, double newExtendPosition, double newWristRightPosition) {
-        clawServoTop.setPosition(newClawTopPosition);
-        shoulderLeft.setPosition(newShoulderLeftPosition);
-        shoulderRight.setPosition(newShoulderRightPosition);
-        clawServoBottom.setPosition(newClawBottomPosition);
-        clawWrist.setPosition(newClawWristPosition);
-        topPivot.setPosition(newTopPivotPosition);
-        bottomPivot.setPosition(newBottomPivotPosition);
-        extendServo.setPosition(newExtendPosition);
-        wristRight.setPosition(newWristRightPosition);
-        return new EditControl();
-    }
+//
+//
+//    private TelemetryPacket telemetryPacket;
+//
+////    public Action updateServo(double newClawTopPosition, double newShoulderLeftPosition, double newShoulderRightPosition, double newClawBottomPosition, double newClawWristPosition, double newTopPivotPosition, double newBottomPivotPosition, double newExtendPosition, double newWristRightPosition) {
+////        return Actions.runBlocking(() -> {
+////            clawServoTop.setPosition(newClawTopPosition);
+////            shoulderLeft.setPosition(newShoulderLeftPosition);
+////            shoulderRight.setPosition(newShoulderRightPosition);
+////            clawServoBottom.setPosition(newClawBottomPosition);
+////            clawWrist.setPosition(newClawWristPosition);
+////            topPivot.setPosition(newTopPivotPosition);
+////            bottomPivot.setPosition(newBottomPivotPosition);
+////            extendServo.setPosition(newExtendPosition);
+////            wristRight.setPosition(newWristRightPosition);
+////
+////            return null; // Explicitly return null or an empty Action if required
+////        });
+////    }
+//
+////    class ThreadedControl implements Runnable {
+////
+////        public void run() {
+////            while (runThread) {
+////                clawServoTop.setPosition(clawTopPosition);
+////                shoulderLeft.setPosition(shoulderLeftPosition);
+////                shoulderRight.setPosition(shoulderRightPosition);
+////                clawServoBottom.setPosition(clawBottomPosition);
+////                clawWrist.setPosition(clawWristPosition);
+////                topPivot.setPosition(topPivotPosition);
+////                bottomPivot.setPosition(bottomPivotPosition);
+////                extendServo.setPosition(extendPosition);
+////                wristRight.setPosition(wristRightPosition);
+//            }
+//        }
+//    }
+//
+////    public class EditControl implements Action {
+////        @Override
+////        public boolean run(@NonNull TelemetryPacket packet) {
+////            return false;
+////        }
+////    }
+////    public Action updateServo(double newClawTopPosition, double newShoulderLeftPosition, double newShoulderRightPosition, double newClawBottomPosition, double newClawWristPosition, double newTopPivotPosition, double newBottomPivotPosition, double newExtendPosition, double newWristRightPosition) {
+////        clawServoTop.setPosition(newClawTopPosition);
+////        shoulderLeft.setPosition(newShoulderLeftPosition);
+////        shoulderRight.setPosition(newShoulderRightPosition);
+////        clawServoBottom.setPosition(newClawBottomPosition);
+////        clawWrist.setPosition(newClawWristPosition);
+////        topPivot.setPosition(newTopPivotPosition);
+////        bottomPivot.setPosition(newBottomPivotPosition);
+////        extendServo.setPosition(newExtendPosition);
+////        wristRight.setPosition(newWristRightPosition);
+////        return new EditControl();
+////    }
 }
 
