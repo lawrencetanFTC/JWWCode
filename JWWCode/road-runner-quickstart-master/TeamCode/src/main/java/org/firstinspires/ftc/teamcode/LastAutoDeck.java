@@ -271,9 +271,10 @@ public class LastAutoDeck extends LinearOpMode {
 
             Actions.runBlocking(
                     new SequentialAction(
+                            MoveToChamber,
                             startPivotTop,
                             new ParallelAction(
-                                    sampleGrabShoulder,
+                                    startShoulder,
                                     sampleGrabWristTop
                             )
                     )
@@ -286,14 +287,12 @@ public class LastAutoDeck extends LinearOpMode {
                             PushSamples,
                             ClawFirstSpec,
                             new ParallelAction(
-                                    sampleGrabShoulder,
+                                    specimenGrabShoulder,
                                     openClawTop
                             ),
                             closeClawTop
                     )
             );
-
-            targetPosition = 490;
 
             Actions.runBlocking(
                     new SequentialAction(
@@ -309,9 +308,10 @@ public class LastAutoDeck extends LinearOpMode {
 
             Actions.runBlocking(
                     new SequentialAction(
+                            HangSpec,
                             startPivotTop,
                             new ParallelAction(
-                                    sampleGrabShoulder,
+                                    startShoulder,
                                     sampleGrabWristTop
                             )
                     )
@@ -322,17 +322,14 @@ public class LastAutoDeck extends LinearOpMode {
             for (int i = 0; i < 2; i++) {
                 Actions.runBlocking(
                                         new SequentialAction(
-                                                PushSamples,
-                                                ClawFirstSpec,
+                                                ClawSpec,
                                                 new ParallelAction(
-                                                        sampleGrabShoulder,
+                                                        specimenGrabShoulder,
                                                         openClawTop
                                                 ),
                                                 closeClawTop
                                         )
                 );
-
-                targetPosition = 490;
 
                 Actions.runBlocking(
                         new SequentialAction(
@@ -344,19 +341,22 @@ public class LastAutoDeck extends LinearOpMode {
                         )
                 );
 
+                targetPosition = 490;
+
+                Actions.runBlocking(
+                        new SequentialAction(
+                                HangSpec,
+                                startPivotTop,
+                                new ParallelAction(
+                                        startShoulder,
+                                        sampleGrabWristTop
+                                )
+                        )
+                );
+
+                targetPosition = 0;
+
             }
-
-            Actions.runBlocking(
-                    new SequentialAction(
-                            startPivotTop,
-                            new ParallelAction(
-                                    sampleGrabShoulder,
-                                    sampleGrabWristTop
-                            )
-                    )
-            );
-
-            targetPosition = 0;
 
         } else {
             Actions.runBlocking(
