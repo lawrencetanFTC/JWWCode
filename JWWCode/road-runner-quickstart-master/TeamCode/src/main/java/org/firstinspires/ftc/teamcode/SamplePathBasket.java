@@ -59,9 +59,27 @@ public class SamplePathBasket extends LinearOpMode {
     private Servo extendServo;
     private Servo wristRight;
 
+    double kp = 0.01;
+    // Integral gain
+    double ki = 0.0;
+    // Derivative gain
+    double kd = 0.001;
+
+    private double targetPosition = 0; // Desired encoder position
+    private double integralSum = 0;
+    private double lastError = 0;
+    private double currentPosition = 0;
+    private double power = 0;
+
+    // Constants for slides
+    private final int BASKET_SLIDE_POSITION = 3000;     // Maximum encoder ticks (full extension)
+    private final int SPECIMEN_HANG_POS = 490;
+    private final int SPECIMEN_GRAB_POS = 0;
+    private final int MIN_POSITION = 0;       // Minimum encoder ticks (fully retracted)
+    private final int NORMAL_INCREMENT = 50;   // Encoder ticks per loop for continuous motion
+
     // Slide boundaries
     private final int MAX_POSITION = 8100; // Maximum encoder ticks (full extension)
-    private final int MIN_POSITION = 0;
 
     public double clawTopPosition = 0.0889;
     public double shoulderLeftPosition = 0.6861;
@@ -113,6 +131,26 @@ public class SamplePathBasket extends LinearOpMode {
         Thread slideThread = new Thread(new SlidesControl(hardwareMap));
         Arm arm = new Arm(hardwareMap);
         BClaw claw = new BClaw(hardwareMap);
+
+        targetPosition = Math.max(MIN_POSITION, Math.min(BASKET_SLIDE_POSITION, targetPosition));
+
+        // Get the current position from encoders
+        double currentPosition = (leftSlideMotor.getCurrentPosition() + rightSlideMotor.getCurrentPosition()) / 2.0;
+
+        // Calculate PID terms
+        double error = targetPosition - currentPosition;
+        integralSum += error; // Accumulate error for integral term
+        double derivative = error - lastError; // Change in error for derivative term
+
+        // Compute motor power using PID
+        double power = (kp * error) + (ki * integralSum) + (kd * derivative);
+
+        // Apply power to both motors
+        leftSlideMotor.setPower(power);
+        rightSlideMotor.setPower(power);
+
+        // Update last error
+        lastError = error;
 
 
 
@@ -201,29 +239,22 @@ public class SamplePathBasket extends LinearOpMode {
         if (AreWeDoingBucket) {
             Actions.runBlocking(
                     new SequentialAction(
-
+                            new ParallelAction(
+                                    basketShoulder,
+                                    specimenScoreWristTop
+                            ),
+                            endPivotTop
                     )
-
             );
+
+            targetPosition = 3000;
+
         } else {
             Actions.runBlocking(
                     new SequentialAction(
-                            new SequentialAction(
-
-                            )
+                            PushSamples
                     )
             );
-
-            Actions.runBlocking(
-                    new SequentialAction(
-
-                    )
-            );
-
-            Actions.runBlocking(
-                    PushSamples // Current Placeholder
-            );
-
         }
     }
 }
