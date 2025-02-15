@@ -35,78 +35,100 @@ public class LastAutoDeck extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        Pose2d initialPose = new Pose2d(15,-63.5, Math.toRadians(90.00));
+        Pose2d initialPose = new Pose2d(15, -63, Math.toRadians(-90.00));
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
         // init all the non drive train stuff here
-        // int increment = 5;
-
-                // .strafeToConstantHeading(new Vector2d(0, -47)) // Hang Specimen
-                // .strafeToConstantHeading(new Vector2d(10, -47))
-                // // .splineToConstantHeading(new Vector2d(36.50, -24.00), Math.toRadians(90.00))
-                // .splineToConstantHeading(new Vector2d(48.00, 0.00), Math.toRadians(90.00))
-                // .strafeToConstantHeading(new Vector2d(48, -52.5))
-                // .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(90.00))
-                // .strafeToConstantHeading(new Vector2d(58, -49))
-                // .turn(-180)
-                // .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
-                // .strafeToLinearHeading(new Vector2d(58, -49), Math.toRadians(-90))
-                // .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
-                // .strafeToLinearHeading(new Vector2d(58, -49), Math.toRadians(-90))
-                // .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
-                // .build();
 
 
+        Action SamplePath = drive.actionBuilder(initialPose)
+                .splineToConstantHeading(new Vector2d(15, -55), Math.toRadians(104.20))
+                .splineToConstantHeading(new Vector2d(0, -33.5), Math.toRadians(90.00))
+                .strafeToConstantHeading(new Vector2d(2, -40))
+                /*.splineToLinearHeading(new Pose2d(34, -38, Math.toRadians(90.00)), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(46, -14.5), Math.toRadians(-90.00))
+                .splineToConstantHeading(new Vector2d(46, -52), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(50, -14), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(57, -14), Math.toRadians(-90.00))
+                .splineToConstantHeading(new Vector2d(57, -52), Math.toRadians(-90))
+                .splineToLinearHeading(new Pose2d(41, -61, Math.toRadians(-90.00)), Math.toRadians(-90.00))
+                .splineToConstantHeading(new Vector2d(41, -53), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(2, -33.5), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(41, -61), Math.toRadians(-90.00))
+                .splineToConstantHeading(new Vector2d(41, -53), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(2, -33.5), Math.toRadians(90.00))*/
+                .splineToConstantHeading(new Vector2d(41, -61), Math.toRadians(-90.00))
+                .splineToConstantHeading(new Vector2d(41, -53), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(2, -33.5), Math.toRadians(90.00))
+                //.strafeToConstantHeading(new Vector2d(0, -33.5))
+                .splineToConstantHeading(new Vector2d(41, -61), Math.toRadians(-90.00))
+                .build();
 
-          Action MoveToChamber = drive.actionBuilder(initialPose)
-                    .strafeToConstantHeading(new Vector2d(0,-47))
-                    .build();
+        Action GoToRung = drive.actionBuilder(initialPose)
+                .splineToConstantHeading(new Vector2d(15, -55), Math.toRadians(104.20))
+                .splineToConstantHeading(new Vector2d(0, -33.5), Math.toRadians(90.00))
+                .build();
 
-            
-          Action PushSamples = drive.actionBuilder(new Pose2d(0, -47, Math.toRadians(90)))
-                    .strafeToConstantHeading(new Vector2d(10, -47))
-                    // .splineToConstantHeading(new Vector2d(36.50, -24.00), Math.toRadians(90.00))
-                    .splineToConstantHeading(new Vector2d(40.00, 0.00), Math.toRadians(90.00))
-                    .strafeToConstantHeading(new Vector2d(48, 0))
-                    .strafeToConstantHeading(new Vector2d(48, -52.5))
-                    .splineToConstantHeading(new Vector2d(58, 0), Math.toRadians(0.00))
-                    .strafeToConstantHeading(new Vector2d(58, -49))// Move
-                    .build();
-    
-            Action ClawFirstSpec = drive.actionBuilder(new Pose2d(58, -49, Math.toRadians(90)))
-                    .turn(Math.toRadians(-180))
-                    .build();
+        Action PUSH = drive.actionBuilder(new Pose2d(0, -33.5, Math.toRadians(-90)))
+                .strafeToConstantHeading(new Vector2d(2, -40))
+                .splineToLinearHeading(new Pose2d(34, -38, Math.toRadians(90.00)), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(46, -14.5), Math.toRadians(-90.00))
+                .splineToConstantHeading(new Vector2d(46, -52), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(50, -14), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(57, -14), Math.toRadians(-90.00))
+                .splineToConstantHeading(new Vector2d(57, -52), Math.toRadians(-90))
+                .build();
 
-    
-    
-            Action HangSpec = drive.actionBuilder(new Pose2d(58, -49, Math.toRadians(-90)))
-                    .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90)) // Increment move
-                    .build();
-    
-            Action ClawSpec = drive.actionBuilder(new Pose2d(0, -47, Math.toRadians(90)))
-                    .strafeToLinearHeading(new Vector2d(58, -49), Math.toRadians(-90)) // Increment move
-                    .build();
-    
-            Action SafeStrafe = drive.actionBuilder(new Pose2d(0, - 47, Math.toRadians(90)))
-                    .strafeToConstantHeading(new Vector2d(-5, -47))
-                    .build();
+        Action back = drive.actionBuilder(new Pose2d(0, -33.5, Math.toRadians(-90)))
+                .strafeToConstantHeading(new Vector2d(2, -40))
+                .build();
 
+        Action PickSpecimen1 = drive.actionBuilder(new Pose2d(57, -52, Math.toRadians(90)))
+                .splineToLinearHeading(new Pose2d(41, -61, Math.toRadians(-90.00)), Math.toRadians(-90.00))
+                .build();
 
+        Action PickSpecimen2 = drive.actionBuilder(new Pose2d(2, -33.5, Math.toRadians(-90)))
+                .splineToConstantHeading(new Vector2d(41, -61), Math.toRadians(-90.00))
+                .build();
 
-        // Action GrabSpecFirstTime = drive.actionBuilder(new Pose2d((24 + (3*increment)), (-47 + (3*increment)), Math.toRadians(-30)))
-        //         .strafeToLinearHeading(new Vector2d(55,-55), Math.toRadians(-90))
-        //         .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
-        //         .build();
-        // Action GrabSpec = drive.actionBuilder(new Pose2d(0,-47, Math.toRadians(90)))
-        //         .strafeToLinearHeading(new Vector2d(55,-55), Math.toRadians(-90))
-        //         .build();
-        // Action Score = drive.actionBuilder(new Pose2d(55,-55,Math.toRadians(-90)))
-        //         .strafeToLinearHeading(new Vector2d(0, -47), Math.toRadians(90))
-        //         .build();
+        Action PickSpecimen3 = drive.actionBuilder(new Pose2d(2, -40, Math.toRadians(-90)))
+                .splineToConstantHeading(new Vector2d(41, -61), Math.toRadians(-90.00))
+                .build();
+
+        Action GoToRung1 = drive.actionBuilder(new Pose2d(41, -61, Math.toRadians(-90)))
+                .splineToConstantHeading(new Vector2d(41, -53), Math.toRadians(90.00))
+                .splineToConstantHeading(new Vector2d(2, -33.5), Math.toRadians(90.00))
+                .build();
+
+        Action park = drive.actionBuilder(new Pose2d(2, -33.5, Math.toRadians(-90)))
+                .splineToConstantHeading(new Vector2d(41, -61), Math.toRadians(-90.00))
+                .build();
 
         if (isStopRequested()) return;
         waitForStart();
 
+        Actions.runBlocking(
+                new SequentialAction(
+                        // 2 Specimen
+                        GoToRung,
+                        back,
+                        PickSpecimen3,
+                        GoToRung1,
+                        park
+                        /*// 4 Specimen
+                        GoToRung,
+                        PUSH,
+                        PickSpecimen1,
+                        GoToRung1,
+                        PickSpecimen2,
+                        GoToRung1,
+                        PickSpecimen2,
+                        GoToRung1,
+                        park*/
+                )
+        );
+
+        /*
         Actions.runBlocking(
                 new SequentialAction(
                     new SequentialAction(
@@ -154,6 +176,8 @@ public class LastAutoDeck extends LinearOpMode {
                         )
                 )
             );
-        }
+
+
+        }*/
     }
 }
