@@ -1,0 +1,17 @@
+Index: TeamCode/src/main/java/org/firstinspires/ftc/teamcode/ActualFinalAuto_Basket.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/ActualFinalAuto_Basket.java b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/ActualFinalAuto_Basket.java
+--- a/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/ActualFinalAuto_Basket.java	
++++ b/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/ActualFinalAuto_Basket.java	(date 1737819411349)
+@@ -25,7 +25,7 @@
+         Extend extend = new Extend(hardwareMap);
+         Wrist wrist = new Wrist(hardwareMap);
+         Spintake spintake = new Spintake(hardwareMap);
+-        Slides slides = new Slides(hardwareMap);
++        Slides slides = new Slides();
+         Arm arm = new Arm(hardwareMap);
+         Claw claw = new Claw(hardwareMap);
+ 

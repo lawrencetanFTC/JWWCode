@@ -5,6 +5,8 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import android.transition.Slide;
+
 import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -33,36 +35,34 @@ public class HelloAuto extends LinearOpMode {
         private Servo extendRight;
 
         public Extend(HardwareMap hardwareMap) {
-            extendLeft = hardwareMap.get(Servo.class, "leftExtend");
             extendRight = hardwareMap.get(Servo.class, "rightExtend");
         }
 
         public class ExtendSt implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                extendLeft.setPosition(.3944);
-                extendRight.setPosition(.6028);
+                extendRight.setPosition(.5567);
                 return false;
             }
         }
-        public Action extendSt() {
+        public Action extend() {
             return new ExtendSt();
         }
 
         public class RetractSt implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                extendLeft.setPosition(1);
+
                 extendRight.setPosition(0);
                 return false;
             }
         }
-        public Action retractSt() {
+        public Action retract() {
             return new RetractSt();
         }
     }
 
-    public static class Wrist {
+    public static class Wrist { //change numbers
         private Servo wristLeft;
         private Servo wristRight;
 
@@ -96,54 +96,20 @@ public class HelloAuto extends LinearOpMode {
         }
     }
 
-    public static class Spintake {
-        private CRServo spinTakeLeft;
-        private CRServo spinTakeRight;
-
-        public Spintake(HardwareMap hardwareMap) {
-            spinTakeLeft = hardwareMap.get(CRServo.class, "spinTakeLeft");
-            spinTakeRight = hardwareMap.get(CRServo.class, "spinTakeRight");
-        }
-
-        public class SpinAction implements Action {
-            private DcMotorSimple.Direction direction;
-
-            SpinAction(DcMotorSimple.Direction direction){
-                this.direction = direction;
-            }
+    public static class Slides {
+        public Slides() {}
+        public class EditSlidePositions implements Action {
             @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                spinTakeLeft.setDirection(direction);
-                spinTakeRight.setDirection(direction);
-                spinTakeLeft.setPower(-1);
-                spinTakeRight.setPower(1);
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
                 return false;
             }
         }
-
-        public Action intake() {
-            return new SpinAction(DcMotorSimple.Direction.FORWARD);
-        }
-
-        public Action outtake() {
-            return new SpinAction(DcMotorSimple.Direction.REVERSE);
-        }
-
-        public class Neutral implements Action {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                spinTakeLeft.setPower(0);
-                spinTakeRight.setPower(0);
-                return false;
-            }
-        }
-        public Action neutral() {
-            return new Neutral();
+        public Action editSlidePositions(int newSlidePosition) {
+            SlidesControl.slidePosition = newSlidePosition;
+            return new EditSlidePositions();
         }
     }
-
-    //Major testing below.
-    public static class Slides { //This class is altered from Arnav's code in "ActualFinalAutoDeckBlue.java"
+    /*public class Slides { //This class is altered from Arnav's code in "ActualFinalAutoDeck.java"
         private DcMotor leftSlideMotor;
         private DcMotor rightSlideMotor;
 
@@ -163,14 +129,37 @@ public class HelloAuto extends LinearOpMode {
             leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         }
 
-        public class MoveSlide implements Action {
+        public class Basket implements Action {
             private boolean init = false;
             private int slideBasketPos = 90;
             private double motorPower = 0.3;
 
-            MoveSlide(int pos){
-                this.slideBasketPos = pos;
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!init) {
+                    leftSlideMotor.setPower(motorPower);
+                    leftSlideMotor.setTargetPosition(slideBasketPos);
+                    rightSlideMotor.setPower(motorPower);
+                    rightSlideMotor.setTargetPosition(slideBasketPos);
+                    init = true;
+                }
+
+                boolean running = leftSlideMotor.getCurrentPosition() != -slideBasketPos;
+                if (!running) {
+                    leftSlideMotor.setPower(0);
+                    rightSlideMotor.setPower(0);
+                }
+                return running;
             }
+        }
+        public Action basket() {
+            return new Basket();
+        }
+
+        public class BasketPos implements Action {
+            private boolean init = false;
+            private int slideBasketPos = 90;
+            private double motorPower = 0.3;
 
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
@@ -191,72 +180,267 @@ public class HelloAuto extends LinearOpMode {
             }
         }
         public Action basketPos() {
-            return new MoveSlide(90);
+            return new BasketPos();
         }
 
+        public class RungPos implements Action {
+            private boolean init = false;
+            private int slideBasketPos = 50;
+            private double motorPower = 0.3;
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!init) {
+                    leftSlideMotor.setPower(motorPower);
+                    leftSlideMotor.setTargetPosition(-slideBasketPos);
+                    rightSlideMotor.setPower(motorPower);
+                    rightSlideMotor.setTargetPosition(slideBasketPos);
+                    init = true;
+                }
+
+                boolean running = leftSlideMotor.getCurrentPosition() != -slideBasketPos;
+                if (!running) {
+                    leftSlideMotor.setPower(0);
+                    rightSlideMotor.setPower(0);
+                }
+                return running;
+            }
+        }
         public Action rungPos() {
-            return new MoveSlide(50);
+            return new RungPos();
         }
 
+        public class LowPos implements Action {
+            private boolean init = false;
+            private int slideBasketPos = 8000;
+            private double motorPower = 0.75;
 
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (true) {
+                    leftSlideMotor.setPower(motorPower);
+                    rightSlideMotor.setPower(motorPower);
+                    leftSlideMotor.setTargetPosition(slideBasketPos);
+                    rightSlideMotor.setTargetPosition(slideBasketPos);
+                    init = true;
+                }
+
+                boolean running = leftSlideMotor.getCurrentPosition() != slideBasketPos;
+                if (!running) {
+                    leftSlideMotor.setPower(0);
+                    rightSlideMotor.setPower(0);
+                }
+                return running;
+            }
+        }
         public Action lowPos() {
-            return new MoveSlide(10);
+            return new LowPos();
         }
-        private int hookDelta = 5;
 
+        public class Hook implements Action {
+            private boolean init = false;
+            private int slideBasketPos = 90;
+            private int hookDelta = 5;
+            private double motorPower = 0.3;
 
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                if (!init) {
+                    leftSlideMotor.setPower(motorPower);
+                    leftSlideMotor.setTargetPosition(-(leftSlideMotor.getCurrentPosition() - hookDelta));
+                    rightSlideMotor.setPower(motorPower);
+                    rightSlideMotor.setTargetPosition(rightSlideMotor.getCurrentPosition() - hookDelta);
+                    init = true;
+                }
+
+                boolean running = leftSlideMotor.getCurrentPosition() != -(slideBasketPos - hookDelta);
+                if (!running) {
+                    leftSlideMotor.setPower(0);
+                    rightSlideMotor.setPower(0);
+                }
+                return running;
+            }
+        }
         public Action hook() {
-            return new MoveSlide(rightSlideMotor.getCurrentPosition() - hookDelta);
+            return new Hook();
+        }
+        public class EditSlidePositions implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                return false;
+            }
+        }
+        public Action editSlidePositions(int newSlidePosition) {
+            SlideControl.slidePosition = newSlidePosition;
+            return new EditSlidePositions();
         }
 
-    }
+    }*/
 
-    public static class Arm {
-        private Servo elbowLeft;
-        private Servo elbowRight;
+    //Major testing below.
+//    public static class Slides { //This class is altered from Arnav's code in "ActualFinalAutoDeckBlue.java"
+//        private DcMotor leftSlideMotor;
+//        private DcMotor rightSlideMotor;
+//
+//        public Slides(HardwareMap hardwareMap) {
+//            leftSlideMotor = hardwareMap.get(DcMotor.class, "leftSlideMotor");
+//            rightSlideMotor = hardwareMap.get(DcMotor.class, "rightSlideMotor");
+//
+//            leftSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//            rightSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//
+//            leftSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//            rightSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//
+//            leftSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//            rightSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//
+//            leftSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+//        }
+//
+//        public class MoveSlide implements Action {
+//            private boolean init = false;
+//            private int slideLeftPos = 30;
+//            private int slideRightPos = 30;
+//            private double motorPower = 0.3;
+//
+//            MoveSlide(int posLeft, int posRight){
+//                this.slideLeftPos = posLeft;
+//                this.slideRightPos = posRight;
+//            }
+//
+//            @Override
+//            public boolean run(@NonNull TelemetryPacket packet) {
+//                if (!init) {
+//                    leftSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//                    rightSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//
+////                    leftSlideMotor.setTargetPosition(8473);
+////                    rightSlideMotor.setTargetPosition(-8528);
+//
+//                    leftSlideMotor.setTargetPosition(slideLeftPos);
+//                    rightSlideMotor.setTargetPosition(slideRightPos);
+//
+//                    leftSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//                    rightSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//
+//                    leftSlideMotor.setPower(motorPower);
+//                    rightSlideMotor.setPower(motorPower);
+//
+//                    init = true;
+//                }
+//
+//                boolean running = leftSlideMotor.getCurrentPosition() != slideLeftPos;
+//                if (!running) {
+//                    leftSlideMotor.setPower(0);
+//                    rightSlideMotor.setPower(0);
+//                }
+//                return running;
+//            }
+//        }
+//        // Left is positive right is negative
+//
+//        // Tune these values to the max slides can extend
+//        public Action basketPos() {
+//            return new MoveSlide(8473, -8528);
+//        }
+//
+//        // Tune these to the position for hunging specimen
+//        public Action rungPos() {
+//            return new MoveSlide(500, -500);
+//        }
+//
+//        // Thuse these to the lowest slides can return
+//        public Action lowPos() {
+//            return new MoveSlide(30, -30);
+//        }
+//
+//        // Tune this so that samples get hooked
+//        private int hookDelta = 30;
+//
+//
+//        public Action hook() {
+//            return new MoveSlide(rightSlideMotor.getCurrentPosition() + hookDelta, leftSlideMotor.getCurrentPosition() - hookDelta);
+//        }
+//
+//    }
+
+    public static class Arm { //fix servoo numbers
+
         private Servo shoulderLeft;
         private Servo shoulderRight;
 
         public Arm(HardwareMap hardwareMap) {
-            elbowLeft = hardwareMap.get(Servo.class, "elbowLeft");
-            elbowRight = hardwareMap.get(Servo.class, "elbowRight");
+
             shoulderLeft = hardwareMap.get(Servo.class, "shoulderLeft");
             shoulderRight = hardwareMap.get(Servo.class, "shoulderRight");
         }
 
-        public class ArmDown implements Action { //CHECK THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        public class ArmRest implements Action {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                elbowLeft.setPosition(.4489);
-                elbowRight.setPosition(.8389);
+                shoulderLeft.setPosition(0);
+                shoulderRight.setPosition(1);
+
+                return false;
+            }
+        }
+
+        public Action rest() {return  new ArmRest();}
+
+        public class ArmDown implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+
+                return false;
+            }
+        }
+
+        public Action down() {return new ArmDown();}
+
+        public class ArmSample implements Action {
+            @Override
+            public  boolean run(@NonNull TelemetryPacket packet) {
+
                 shoulderLeft.setPosition(.89);
                 shoulderRight.setPosition(0);
                 return false;
             }
         }
-        public Action armDown() {
-            return new ArmDown();
-        }
 
-        public class ArmUp implements Action { //CHECK THIS!!!!!!!!!!!!!!!!!!!!!!
+        public Action sample() {return new ArmSample();}
+
+        public class ArmSpecimenHang implements Action {
             @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                elbowLeft.setPosition(.9594);
-                elbowRight.setPosition(.3033);
-                shoulderLeft.setPosition(0);
-                shoulderRight.setPosition(1);
+            public  boolean run(@NonNull TelemetryPacket packet) {
+                shoulderLeft.setPosition(.7767);
+                shoulderRight.setPosition(.2217);
+
                 return false;
             }
         }
-        public Action armUp() {
-            return new ArmUp();
+
+        public Action specimenHang() {return new ArmSpecimenHang();}
+
+        public class ArmSpecimenGrab implements Action {
+            @Override
+            public  boolean run(@NonNull TelemetryPacket packet) {
+                shoulderLeft.setPosition(0);
+                shoulderRight.setPosition(1);
+
+                return false;
+            }
         }
+
+        public Action specimenGrab() {return new ArmSpecimenGrab();}
+
+
     }
 
-    public static class Claw {
+    public static class BClaw {
         private Servo clawServo;
 
-        public Claw(HardwareMap hardwareMap) {
+        public BClaw(HardwareMap hardwareMap) {
             clawServo = hardwareMap.get(Servo.class, "clawServo");
         }
 
@@ -282,45 +466,304 @@ public class HelloAuto extends LinearOpMode {
             return new CloseClaw();
         }
     }
+    public static class FClaw {
+        private Servo FclawServo;
 
+        public FClaw(HardwareMap hardwareMap) {
+            FclawServo = hardwareMap.get(Servo.class, "FclawServo");
+        }
+
+        public class OpenClaw implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                FclawServo.setPosition(.6794);
+                return false;
+            }
+        }
+        public Action openClaw() {
+            return new OpenClaw();
+        }
+
+        public class CloseClaw implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                FclawServo.setPosition(1);
+                return false;
+            }
+        }
+        public Action closeClaw() {
+            return new CloseClaw();
+        }
+    }
+
+    public static class BArm { //fix servoo numbers
+
+        private Servo shoulderLeft;
+        private Servo shoulderRight;
+
+        public BArm(HardwareMap hardwareMap) {
+
+            shoulderLeft = hardwareMap.get(Servo.class, "BshoulderLeft");
+            shoulderRight = hardwareMap.get(Servo.class, "BshoulderRight");
+        }
+
+        public class ArmRest implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                shoulderLeft.setPosition(0);
+                shoulderRight.setPosition(1);
+
+                return false;
+            }
+        }
+
+        public Action rest() {return  new ArmRest();}
+
+        public class ArmDown implements Action {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+
+                return false;
+            }
+        }
+
+        public Action down() {return new ArmDown();}
+
+        public class ArmSample implements Action {
+            @Override
+            public  boolean run(@NonNull TelemetryPacket packet) {
+
+                shoulderLeft.setPosition(.89);
+                shoulderRight.setPosition(0);
+                return false;
+            }
+        }
+
+        public Action sample() {return new ArmSample();}
+
+        public class ArmSpecimenHang implements Action {
+            @Override
+            public  boolean run(@NonNull TelemetryPacket packet) {
+                shoulderLeft.setPosition(.7767);
+                shoulderRight.setPosition(.2217);
+
+                return false;
+            }
+        }
+
+        public Action specimenHang() {return new ArmSpecimenHang();}
+
+        public class ArmSpecimenGrab implements Action {
+            @Override
+            public  boolean run(@NonNull TelemetryPacket packet) {
+                shoulderLeft.setPosition(0);
+                shoulderRight.setPosition(1);
+
+                return false;
+            }
+        }
+
+        public Action specimenGrab() {return new ArmSpecimenGrab();}
+
+
+    }
+
+    class FPivot{
+        private Servo FPivotServo;
+        public FPivot(HardwareMap hardwareMap){
+            FPivotServo = hardwareMap.get(Servo.class, "FPivotServo");
+        }
+
+
+        class Pos1 implements Action{
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+               FPivotServo.setPosition(0);
+                return false;
+            }
+
+            public Action pos1(){ return new Pos1();}
+        }
+
+        class Pos2 implements Action{
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                FPivotServo.setPosition(1);
+                return false;
+            }
+
+            public Action pos2(){ return new Pos2();}
+        }
+    }
+
+    class BPivot{
+        private Servo BPivotServo;
+        public BPivot(HardwareMap hardwareMap){
+            BPivotServo = hardwareMap.get(Servo.class, "BPivotServo");
+        }
+
+
+        class Pos1 implements Action{
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                BPivotServo.setPosition(0);
+                return false;
+            }
+
+            public Action pos1(){ return new Pos1();}
+        }
+
+        class Pos2 implements Action{
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                BPivotServo.setPosition(1);
+                return false;
+            }
+
+            public Action pos2(){ return new Pos2();}
+        }
+    }
 
     @Override
     public void runOpMode() {
 
-            Pose2d initialPose = new Pose2d(24, -60, Math.toRadians(90)); //WHAT IS THIS?
+            Pose2d initialPose = new Pose2d(15,-63.5, Math.toRadians(90.00)); //WHAT IS THIS?
             MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
-//            Extend extend = new Extend(hardwareMap);
-//            Wrist wrist = new Wrist(hardwareMap);
-//            Spintake spintake = new Spintake(hardwareMap);
-//            Slides slides = new Slides(hardwareMap);
-//            Arm arm = new Arm(hardwareMap);
-//            Claw claw = new Claw(hardwareMap);
+            Extend extend = new Extend(hardwareMap);
+            Wrist wrist = new Wrist(hardwareMap);
+            Slides Slides = new Slides();
+            Thread slideThread = new Thread(new SlidesControl(hardwareMap));
+            slideThread.start();
+
+            Arm arm = new Arm(hardwareMap);
+            BClaw claw = new BClaw(hardwareMap);
+
+
 
             //Create Trajectories here
             Action magic = drive.actionBuilder(initialPose)
-                    .strafeToConstantHeading(new Vector2d(0,-37))
-                    .strafeToConstantHeading(new Vector2d(35,-37))
-                    .strafeToConstantHeading(new Vector2d(35,-13))
-                    .splineToLinearHeading(new Pose2d(45, -13, Math.toRadians(0)), Math.toRadians(-90))
-                    .strafeTo(new Vector2d(45,-45))
-                    .strafeTo(new Vector2d(45,-13))
-                    .strafeToConstantHeading(new Vector2d(55, -13))
-                    .strafeTo(new Vector2d(55,-45))
-                    .strafeToLinearHeading(new Vector2d(48, -45), Math.toRadians(45))
-                    .turn(Math.toRadians(-90))
-                    .strafeToLinearHeading(new Vector2d(10, -60), Math.toRadians(0))
-                    .strafeToLinearHeading(new Vector2d(0, -37), Math.toRadians(90))
-                    .strafeToLinearHeading(new Vector2d(10, -60), Math.toRadians(0))
-                    .strafeToLinearHeading(new Vector2d(0, -37), Math.toRadians(90))
-                    .strafeToLinearHeading(new Vector2d(10, -60), Math.toRadians(0))
-                    .strafeToLinearHeading(new Vector2d(0, -37), Math.toRadians(90))
-                    .build();
+                .splineToConstantHeading(new Vector2d(0, -35), Math.toRadians(116.89))
+                .strafeToConstantHeading(new Vector2d(0, -40))
+                .splineToConstantHeading(new Vector2d(35.5, -40.5), Math.toRadians(1.90))
+                .splineToConstantHeading(new Vector2d(37.5, -19), Math.toRadians(56.92))
+                .splineToConstantHeading(new Vector2d(43.5, -12.5), Math.toRadians(35.34))
+                .strafeToConstantHeading(new Vector2d(43.5, -55.5))
+                .splineToConstantHeading(new Vector2d(47.5, -15), Math.toRadians(66.34))
+                .splineToConstantHeading(new Vector2d(60, -13), Math.toRadians(78.12))
+                .strafeToConstantHeading(new Vector2d(60, -55.5))
+                .splineTo(new Vector2d(41.5, -45), Math.toRadians(187.57))
+                .splineToLinearHeading(new Pose2d(27, -59, Math.toRadians(0.00)), Math.toRadians(-17.94))
+                .strafeToConstantHeading(new Vector2d(32, -59))
+                .splineToLinearHeading(new Pose2d(3, -35, Math.toRadians(90.00)), Math.toRadians(150.36))
+                .strafeToConstantHeading(new Vector2d(3, -40))
+                .splineToLinearHeading(new Pose2d(27, -59, Math.toRadians(0.00)), Math.toRadians(248.96))
+                .strafeToConstantHeading(new Vector2d(32, -59))
+                .splineToLinearHeading(new Pose2d(3, -35, Math.toRadians(90.00)), Math.toRadians(150.36))
+                .strafeToConstantHeading(new Vector2d(3, -40))
+                .splineToLinearHeading(new Pose2d(27, -59, Math.toRadians(0.00)), Math.toRadians(248.96))
+                .strafeToConstantHeading(new Vector2d(32, -59))
+                .splineToLinearHeading(new Pose2d(3, -35, Math.toRadians(90.00)), Math.toRadians(150.36))
+                .strafeToConstantHeading(new Vector2d(3, -40))
+                .splineToConstantHeading(new Vector2d(40, -59), Math.toRadians(248.96))
+                .build();
+
+            /*Action magic2 = drive.actionBuilder(new Pose2d(2, -41, Math.toRadians(90)))
+                    h.toRadians(224.46))
+                    .build();*/
             //Init Actions here
 
-            if (isStopRequested()) return;
+        Action MoveToBasket = drive.actionBuilder(initialPose)
+                .splineToSplineHeading(new Pose2d(52, 52, Math.toRadians(45.00)), Math.toRadians(45.00))
+                .build();
 
-            Actions.runBlocking(magic);
+        Action MoveToSample1 = drive.actionBuilder(new Pose2d(53,53,Math.toRadians(45)))
+                .strafeToLinearHeading(new Vector2d(48,52), Math.toRadians(-90))
+                .build();
+
+        Action Score1 = drive.actionBuilder(new Pose2d(48,51, Math.toRadians(-90)))
+                .strafeToLinearHeading(new Vector2d(52,52), Math.toRadians(45.00))
+                .build();
+
+        Action MoveToSample2 = drive.actionBuilder(new Pose2d(53,53, Math.toRadians(45)))
+                .strafeToLinearHeading(new Vector2d(58,45), Math.toRadians(-90))
+                .build();
+
+        Action Score2 = drive.actionBuilder(new Pose2d(52,51, Math.toRadians(-90)))
+                .strafeToLinearHeading(new Vector2d(52,52), Math.toRadians(45.00))
+                .build();
+
+        Action MoveToSample3 = drive.actionBuilder(new Pose2d(53,53, Math.toRadians(45)))
+                .strafeToLinearHeading(new Vector2d(48, 27), Math.toRadians(0))
+                .build();
+
+        Action Score3 = drive.actionBuilder(new Pose2d(47,27, Math.toRadians(0)))
+                .strafeToLinearHeading(new Vector2d(53.00, 53.00), Math.toRadians(45))
+                .build();
+
+        Action MoveToSubmersible = drive.actionBuilder(new Pose2d(53,53, Math.toRadians(45)))
+                .splineToLinearHeading(new Pose2d(25.00, 5, Math.toRadians(180.00)), Math.toRadians(150.00))
+                .build();
+
+        Actions.runBlocking(
+                new SequentialAction(
+                        claw.closeClaw(),
+                        claw.openClaw(),
+                        arm.rest(),
+                        extend.extend(),
+                        wrist.wristUp()
+                )
+        );
+
+        // FULL ACTIONS TEST
+        // Everything should be fin just tune slide positions before testing
+        // IF something is weird have shreyansh look at all the numbers
+
+        // THIS IS AN ACTIONS TEST
+        // IT DOESN"T GRAB SAMPLES OR SPECIMENS
+        if (isStopRequested()) return;
+        waitForStart();
+        SlidesControl.slidePosition = 8000;
+        Actions.runBlocking(
+                new SequentialAction(
+                        new SleepAction(2),
+                        //magic
+                        arm.down(),
+//                        SlidesControl.slidePosition = 7000,
+//                        slides.rungPos(),
+                        arm.specimenHang(),
+//                        slides.basketPos(),
+                        arm.sample(),
+                        claw.closeClaw(),
+                        claw.openClaw(),
+                        arm.specimenGrab(),
+                        arm.rest()// arm.rest
+//                        slides.lowPos()
+                )
+        );
+        SlidesControl.slidePosition = 0;
+
+//
+//        Actions.runBlocking(new SequentialAction(
+//                new SequentialAction(
+//                        MoveToBasket,
+//                        MoveToSample1,
+//                        Score1,
+//                        MoveToSample2,
+//                        Score2,
+//                        MoveToSample3,
+//                        Score3,
+//                        MoveToSubmersible
+//                )
+//
+//
+//
+//
+//        ));
 //                            new SequentialAction(
 //                                    new SleepAction(3),
 //                                    extend.extendSt(),
@@ -344,4 +787,3 @@ public class HelloAuto extends LinearOpMode {
 //                    )
         }
 }
-
